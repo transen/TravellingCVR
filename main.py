@@ -3,3 +3,10 @@ from datetime import datetime
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from config import *
+
+
+
+
+
+
+# Hi there
