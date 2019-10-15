@@ -25,3 +25,4 @@ def cvrapinavn(navn, land='dk'):
     else:
         print("CVR API Error response:" + str(response))
         raise TypeError("CVR-nummer findes ikke")
+#oioh
