@@ -26,3 +26,26 @@ def cvrapinavn(navn, land='dk'):
         print("CVR API Error response:" + str(response))
         raise TypeError("CVR-nummer findes ikke")
 #oioh
+
+
+# Slår CVR-registret op efter CVR-nummer og returnerer dict over virksomheden
+def cvrapicvr(cvr, land='dk'):
+    """Looks up the the CVR-register of a company VAT-number and returns a dictionary from the API
+
+    :param cvr: The VAT-number of the company searched for
+    :type file_loc: number
+    :param land: The country in which one wishes to search for the company in
+        (default is 'dk')
+    :type print_cols: str
+    :returns: A dictionary of the company, served from the API
+    :rtype: dict
+    """
+    response = requests.get(
+        url='http://cvrapi.dk/api',
+        params={'search': cvr, 'country': land},
+        headers={'User-Agent': cvr_api_header})
+    if 'vat' in response.json():
+        return response.json()
+    else:
+        print("CVR API Error response:" + str(response))
+        raise TypeError("CVR-nummer findes ikke")
