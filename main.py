@@ -4,15 +4,3 @@ from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from config import *
 
-
-
-
-
-#asiduagsidugas
-
-
-
-
-
-
-# Hi there
