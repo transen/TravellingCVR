@@ -15,6 +15,7 @@ def cvrapiname(name, country='dk'):
     The function relies on the module 'requests', which handles HTTP for python, and we utilize the .json()-method, to
     decode the JSON response to a dictionary. If the HTTP-request returns a response, the function will return
     the business-info as a dictionary. If not, the function will print the response-error to the console.
+    The variable "response" is True if it recieves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses
 
     :param name: The name of the company searched for, must be an exact match
     :type name: str
