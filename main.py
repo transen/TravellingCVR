@@ -13,9 +13,9 @@ def cvrapiname(name, country='dk'):
     as they're optional and not relevant for this project. It also requires an User-Agent in the header.
     See documentation here: https://cvrapi.dk/documentation (only in Danish)
     The function relies on the module 'requests', which handles HTTP for python, and we utilize the .json()-method, to
-    decode the JSON response to a dictionary. If the HTTP-request returns a response, the function will return
-    the business-info as a dictionary. If not, the function will print the response-error to the console.
-    The variable "response" is True if it recieves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses
+    decode the JSON response to a dictionary. If the HTTP-request returns a response including a vat-key, the function
+    will return the business-info as a dictionary. If not, the function will print the response-error to the console.
+    The variable "response" is True if it recieves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses.
 
     :param name: The name of the company searched for, must be an exact match
     :type name: str
@@ -29,7 +29,7 @@ def cvrapiname(name, country='dk'):
         url='http://cvrapi.dk/api',
         params={'name': name, 'country': country},
         headers={'User-Agent': cvr_api_header})
-    if response:
+    if 'vat' in response:
         return response.json()
     else:
         print("CVR API Error response:" + str(response))
