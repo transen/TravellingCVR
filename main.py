@@ -38,23 +38,6 @@ def business_from_api(vat_or_name, country='dk'):
         raise ValueError("Business doesn't exist")
 
 
-def create_address_string(business):
-    """
-    This function creates and returns a string being the address of the business, derived from the original
-    dictionary served from the API. It does so by utilizing formatted strings, creating a single string from values
-    within the passed business-dictionary.
-
-    #TODO delete this, as I've integrated it in the "fetch_coords" function below.
-
-    :param business: A dictinary that contains address-, zipcode- and city-key/value-pairs.
-    :type business: dictionary
-    :returns: An address in a single string, which format is compatible with the MapQuest API
-    :rtype: str
-    """
-    address_string = f"{business.get('address')},{business.get('zipcode')},{business.get('city')},DK"
-    return address_string
-
-
 # Henter koordinater fra mapquest ud fra adresse
 def fetch_coords(business):
     """
@@ -72,8 +55,8 @@ def fetch_coords(business):
     :param business: A dictinary that contains address-, zipcode- and city-key/value-pairs.
     :type business: dictionary
     :raises ValueError:
-    :returns:
-    :rtype:
+    :returns: a set of coordinates in a list
+    :rtype: list
     """
     address = f"{business.get('address')},{business.get('zipcode')},{business.get('city')},DK"
     if "aa" in address or "oe" in address or "aa" in address:
@@ -92,7 +75,7 @@ def fetch_coords(business):
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
 
 # TODO fejler på "Rugaardsvej" men virker på "Rugårdsvej"... Det må være mapquest der handler det underligt, GM kan godt
-# ^^ fixet?
+# ^^ fixet med linje 2?
 
 
 def test(testarg):
