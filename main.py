@@ -32,13 +32,26 @@ def business_from_api(vat_or_name, country='dk'):
         params={'search': vat_or_name, 'country': country},
         headers={'User-Agent': cvr_api_header})
     if response:
-        return response.json()
+        business = response.json()
+        # We clear out the information we don't need
+        entries_to_remove = ('t', 'version', 'cityname', 'fax', 'enddate', 'creditstartdate', 'creditstatus', 'productionunits')
+        for entry in entries_to_remove:
+            business.pop(entry, None)
+        # We attach on a timestamp through datetime.now()
+        now = datetime.now()
+        addedtime = {'timeadded': now}
+        business.update(addedtime)
+        # We add a status-key
+        business.update({"status": "Just added"})
+        # We add a note-key, defaulting to None, that the user can write whatever in
+        business.update({"note": None})
+        print(business)
+        return business
     else:
-        print("CVR API Error response:" + str(response))
+        print("CVR API Error response: " + str(response))
         raise ValueError("Business doesn't exist")
 
 
-# Henter koordinater fra mapquest ud fra adresse
 def fetch_coords(business):
     """
     This function starts off by creating a string being the address of the business, derived from the original
@@ -50,7 +63,7 @@ def fetch_coords(business):
     latitude and longtitude, and save them in a list, which is in the end returned.
     In the event of MapQuest returning a less-than-perfect quality, the function will raise a ValueError.
 
-    #TODO Expand error-handling to report which part of the given address-string is unsure about (lists and stuff)
+    # TODO Expand error-handling to report which part of the given address-string is unsure about (lists and stuff)
 
     :param business: A dictinary that contains address-, zipcode- and city-key/value-pairs.
     :type business: dictionary
@@ -61,7 +74,6 @@ def fetch_coords(business):
     address = f"{business.get('address')},{business.get('zipcode')},{business.get('city')},DK"
     if "aa" in address or "oe" in address or "aa" in address:
         address = address.replace("aa", "å").replace("ae", "æ").replace("oe", "ø")  # mapquest needs æ ø å
-    print(address)  # delete me later
     response = requests.get(
         url='https://www.mapquestapi.com/geocoding/v1/address',
         params={'key': api_mapkey, 'location': address, 'maxResults': 1},
@@ -73,9 +85,6 @@ def fetch_coords(business):
         return coords
     else:
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
-
-# TODO fejler på "Rugaardsvej" men virker på "Rugårdsvej"... Det må være mapquest der handler det underligt, GM kan godt
-# ^^ fixet med linje 2?
 
 
 def test(testarg):
