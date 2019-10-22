@@ -19,6 +19,8 @@ def business_from_api(vat_or_name, country='dk'):
     and raise a ValueError.
     The object "response" return True if it recieves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses
 
+    TODO add comments in code to the docstring
+
     :param vat_or_name: The name or VAT (8 digits) of the company searched for, must be an exact match
     :type vat_or_name: int or str
     :param country: The country in which one wishes to search for the company in, defaults to 'dk')
@@ -63,7 +65,8 @@ def fetch_coords(business):
     latitude and longtitude, and save them in a list, which is in the end returned.
     In the event of MapQuest returning a less-than-perfect quality, the function will raise a ValueError.
 
-    # TODO Expand error-handling to report which part of the given address-string is unsure about (lists and stuff)
+    TODO Expand error-handling to report which part of the given address-string is unsure about (lists and stuff)
+    TODO add comments in code to the docstring
 
     :param business: A dictinary that contains address-, zipcode- and city-key/value-pairs.
     :type business: dictionary
