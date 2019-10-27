@@ -36,7 +36,8 @@ def business_from_api(vat_or_name, country='dk'):
     if response:
         business = response.json()
         # We clear out the information we don't need
-        entries_to_remove = ('t', 'version', 'cityname', 'fax', 'enddate', 'creditstartdate', 'creditstatus', 'productionunits')
+        entries_to_remove = (
+            't', 'version', 'cityname', 'fax', 'enddate', 'creditstartdate', 'creditstatus', 'productionunits')
         for entry in entries_to_remove:
             business.pop(entry, None)
         # We attach on a timestamp through datetime.now()
@@ -47,7 +48,7 @@ def business_from_api(vat_or_name, country='dk'):
         business.update({"status": 0})
         # We add a note-key, defaulting to an empty string, that the user can write whatever in
         business.update({"note": ""})
-        print(business) # delete me at some point
+        print(business)  # delete me at some point
         return business
     else:
         print("CVR API Error response: " + str(response))
