@@ -43,11 +43,11 @@ def business_from_api(vat_or_name, country='dk'):
         now = datetime.now()
         addedtime = {'timeadded': now}
         business.update(addedtime)
-        # We add a status-key
-        business.update({"status": "Just added"})
-        # We add a note-key, defaulting to None, that the user can write whatever in
-        business.update({"note": None})
-        print(business)
+        # We add a status-key (scheme must be defined at a later stage)
+        business.update({"status": 0})
+        # We add a note-key, defaulting to an empty string, that the user can write whatever in
+        business.update({"note": ""})
+        print(business) # delete me at some point
         return business
     else:
         print("CVR API Error response: " + str(response))
@@ -87,6 +87,7 @@ def fetch_coords(business):
         coords = list(lat_lng.values())
         return coords
     else:
+        print(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
 
 
