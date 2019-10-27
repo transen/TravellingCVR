@@ -43,7 +43,7 @@ def business_from_api(vat_or_name, country='dk'):
         entries_to_remove = (
             't', 'version', 'cityname', 'fax', 'enddate', 'creditstartdate', 'creditstatus', 'productionunits')
         for entry in entries_to_remove:
-            business.pop(entry, None)
+            business.pop(entry, None)  # returns None if entry doesn't exist in dictionary
         # We attach on a timestamp through datetime.now()
         now = datetime.now()
         addedtime = {'timeadded': now}
@@ -96,7 +96,10 @@ def attach_coords(business):
 
 def insert_business(business):
     """
-    This function inserts a business into the mongodb.
+    This function inserts a business into the mongodb, via the module "Pymongo" which bridges the gap between python and
+    and the hosted MongoDB-database. MongoDB is inherently noSQL, compared to a traditional relational SQL-database,
+    which we are accustomed to, and used to work with. This has been an intentionally added challenge, in order to
+    obtain more practical knowledge of noSQL-moddeled behaviour in regards to non-structured data.
     TODO explain this further
 
     :param business:
@@ -113,43 +116,109 @@ def insert_business(business):
         raise ValueError(f'A business with the VAT \'{business["vat"]}\' already exists!')
 
 
-def pull_single_business(vat):
+def pull_single_business(searchable):
     """
-    Pulls a single business from MongoDB
+    Pulls a single business from MongoDB from VAT-parameter
+    TODO explain this further
+    TODO make the entire business searchable. Good idea? Just name and VAT?
 
-    :param vat:
-    :return:
+    :param searchable:
+    :type searchable:
+    :raises ValueError:
+    :return: The queried business
+    :rtype: dictionary
     """
-    result = db.find_one({'vat': vat})
-    if type(result) is dict:
-        # convert timestamp to a human-readable timestring
+    if searchable.isdigit():
+        searchable = int(searchable)
+    result = db.find_one({"$or": [{"vat": searchable}, {"name": searchable}]})
+    if type(result) == dict:
+        # converts timestamp to a human-readable timestring
         result['timeadded'] = result['timeadded'].strftime("%d-%m-%y %H:%M")
-    return result
+        return result
+    else:
+        raise ValueError(f'No business found in DB with VAT or name: "{searchable}"')
+
+
+def pull_all_businesses(sorted_by="name"):
+    """
+    This functions pulls all businesses in MongoDB and returns a list of businesses as output.
+
+    TODO expand this
+
+    :param sorted_by:
+    :type sorted_by:
+    :return: A list of all businesses located in the database.
+    :rtype: list
+    """
+    result = list(db.find({}).sort(sorted_by, 1))
+    output = []
+    for business in result:
+        output.append({'name': business['name'], 'vat': business['vat']})
+    for business in output:
+        print(f"{business['name']}\t{business['vat']}")
+    return output
+
+
+def delete_business(searchable):
+    """
+    This function aims to delete a business from the MongoDB, if it exists. It starts off checking whether the queried
+    business exists in the DB. If 'result' returns a dictionary, the business exists, and utilizes the built-in pymongo
+    "delete_one"-method to delete the business-document from the DB. The function then returns the deleted business,
+    for further handling and presentation to the end-user.
+
+    :param searchable:
+    :type searchable:
+    :raises ValueError:
+    :return: The business which has just been deleted
+    :rtype: dictionary
+    """
+    if searchable.isdigit():
+        searchable = int(searchable)
+    result = db.find_one({"$or": [{"vat": searchable}, {"name": searchable}]})
+    if type(result) == dict:
+        db.delete_one({"$or": [{"vat": searchable}, {"name": searchable}]})
+        return result
+    else:
+        raise ValueError(f'No business found in DB with VAT or name: {searchable}')
 
 
 def test(testarg):
     """
     A function solely to test code written so far, will change over time
     """
+    # deletes the business in mongodb if it exists
+    try:
+        delete_business(testarg)
+        print('Deleted business')
+    except ValueError as err:
+        print(f"Business didn't exist: {err.args[0]}")
     # attempt to grab a business
     try:
         business = business_from_api(testarg)
     except ValueError as err:
-        print("ERROR: " + err.args[0])
+        print("API ERROR: " + err.args[0])
         return None  # breaks function
     # attempt to fetch coordinates
     try:
         business = attach_coords(business)
     except ValueError as err:
-        print("ERROR: " + err.args[0])
-        return None
+        print("COORDS ERROR: " + err.args[0])
+        return None  # breaks function
     # attempt to insert the business to mongodb
     try:
         insert_business(business)
-        return business
+        # return business  # to end function
     except ValueError as err:
-        print("ERROR: " + err.args[0])
-        return None
+        print("INSERT ERROR: " + err.args[0])
+        return None  # breaks function
+    # Testing of pull_single_business
+    try:
+        print(pull_single_business(testarg))
+    except ValueError as err:
+        print("PULL ERROR: " + err.args[0])
+        return None  # breaks function
 
 
-test("38158686")
+test("Transdesign.dk")
+
+#print("38158686".isdigit())
