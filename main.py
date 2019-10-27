@@ -4,6 +4,9 @@ from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from config import *
 
+# MongoDB initial setup
+db = MongoClient(mongoclientstring).travellingcvr.businesses  # mongoclientstring hidden in config.py
+
 
 def business_from_api(vat_or_name, country='dk'):
     """
@@ -20,6 +23,7 @@ def business_from_api(vat_or_name, country='dk'):
     The object "response" return True if it recieves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses
 
     TODO add comments in code to the docstring
+    TODO tell the user if 'protected' is true, as it is then illegal to contact the business, ask if want to continue
 
     :param vat_or_name: The name or VAT (8 digits) of the company searched for, must be an exact match
     :type vat_or_name: int or str
@@ -48,14 +52,12 @@ def business_from_api(vat_or_name, country='dk'):
         business.update({"status": 0})
         # We add a note-key, defaulting to an empty string, that the user can write whatever in
         business.update({"note": ""})
-        print(business)  # delete me at some point
         return business
     else:
-        print("CVR API Error response: " + str(response))
-        raise ValueError("Business doesn't exist")
+        raise ValueError("Business doesn't exist, API response: " + str(response))
 
 
-def fetch_coords(business):
+def attach_coords(business):
     """
     This function starts off by creating a string being the address of the business, derived from the original
     dictionary served from the API. It does so by utilizing formatted strings, creating a single string from values
@@ -63,7 +65,7 @@ def fetch_coords(business):
     This function then queries the MapQuest Geocoding API with an address formatted in a string, and if successful,
     returns a JSON-formatted response including quality, latitude and longtitude. The function then checks the reported
     quality of the response and only if the quality is perfect (=P1AAA), the function will read off the response's
-    latitude and longtitude, and save them in a list, which is in the end returned.
+    latitude and longtitude, then save them in a list, which is in the end attached to the business which is returned.
     In the event of MapQuest returning a less-than-perfect quality, the function will raise a ValueError.
 
     TODO Expand error-handling to report which part of the given address-string is unsure about (lists and stuff)
@@ -72,8 +74,8 @@ def fetch_coords(business):
     :param business: A dictinary that contains address-, zipcode- and city-key/value-pairs.
     :type business: dictionary
     :raises ValueError:
-    :returns: a set of coordinates in a list
-    :rtype: list
+    :returns: the business with coordinates attached
+    :rtype: dictionary
     """
     address = f"{business.get('address')},{business.get('zipcode')},{business.get('city')},DK"
     if "aa" in address or "oe" in address or "aa" in address:
@@ -86,18 +88,68 @@ def fetch_coords(business):
     if response_quality == "P1AAA":  # Checks if mapquest is certain
         lat_lng = response.json()['results'][0]['locations'][0]['latLng']
         coords = list(lat_lng.values())
-        return coords
+        business.update({"location": coords})
+        return business
     else:
-        print(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
+
+
+def insert_business(business):
+    """
+    This function inserts a business into the mongodb.
+    TODO explain this further
+
+    :param business:
+    :type business:
+    :raises ValueError:
+    :return:
+    :rtype:
+    """
+    try:
+        result = db.insert_one(business)
+        print(f"Inserted business with the id: {result.inserted_id}")
+        return True
+    except DuplicateKeyError:
+        raise ValueError(f'A business with the VAT \'{business["vat"]}\' already exists!')
+
+
+def pull_single_business(vat):
+    """
+    Pulls a single business from MongoDB
+
+    :param vat:
+    :return:
+    """
+    result = db.find_one({'vat': vat})
+    if type(result) is dict:
+        # convert timestamp to a human-readable timestring
+        result['timeadded'] = result['timeadded'].strftime("%d-%m-%y %H:%M")
+    return result
 
 
 def test(testarg):
     """
     A function solely to test code written so far, will change over time
     """
-    business = business_from_api(testarg)
-    print(fetch_coords(business))
+    # attempt to grab a business
+    try:
+        business = business_from_api(testarg)
+    except ValueError as err:
+        print("ERROR: " + err.args[0])
+        return None  # breaks function
+    # attempt to fetch coordinates
+    try:
+        business = attach_coords(business)
+    except ValueError as err:
+        print("ERROR: " + err.args[0])
+        return None
+    # attempt to insert the business to mongodb
+    try:
+        insert_business(business)
+        return business
+    except ValueError as err:
+        print("ERROR: " + err.args[0])
+        return None
 
 
-test("34709912")
+test("38158686")
