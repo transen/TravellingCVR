@@ -178,7 +178,6 @@ def delete_business(searchable):
         searchable = int(searchable)
     result = db.find_one({"$or": [{"vat": searchable}, {"name": searchable}]})
     if type(result) == dict:
-        # regx = bson.regex.Regex(f'/.*{searchable}.*/')
         db.delete_one({"$or": [{"vat": searchable}, {"name": searchable}]})
         return result
     else:
@@ -223,3 +222,7 @@ def test(testarg):
 
 
 test("38158686")
+
+
+
+
