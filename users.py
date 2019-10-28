@@ -3,18 +3,23 @@ from datetime import datetime
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from config import *
-import hashlib, binascii, os
+import hashlib
+import binascii
+import os
 
+# MongoDB initial setup
+db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
+
+# A runtime-specific array of user-details, which is populated at login
 logged_in_user = []
 
 # https://www.vitoshacademy.com/hashing-passwords-in-python/ -kilde
 
 
 def hash_password(password):
-    """Hash a password for storing."""
+    """Hash a password for storing in mongodb"""
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
-    pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'),
-                                  salt, 100000)
+    pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
     pwdhash = binascii.hexlify(pwdhash)
     return (salt + pwdhash).decode('ascii')
 
@@ -23,16 +28,9 @@ def verify_password(stored_password, provided_password):
     """Verify a stored password against one provided by user"""
     salt = stored_password[:64]
     stored_password = stored_password[64:]
-    pwdhash = hashlib.pbkdf2_hmac('sha512',
-                                  provided_password.encode('utf-8'),
-                                  salt.encode('ascii'),
-                                  100000)
+    pwdhash = hashlib.pbkdf2_hmac('sha512', provided_password.encode('utf-8'), salt.encode('ascii'), 100000)
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
     return pwdhash == stored_password
-
-
-# MongoDB initial setup
-db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
 
 
 def add_user(username, email, password, address, isadmin):
@@ -69,6 +67,7 @@ def login(username, password):
 
 
 while True:
+    """The infinite loop initiated to perform the CLI-portion"""
     print('What action would you like to perform?')
     print('1: Add user')
     print('2: Log in')
@@ -78,7 +77,7 @@ while True:
         chosen_email = input("Input email: ")
         chosen_password = input("Input password: ")
         chosen_address = input("Input address: ")
-        isAdmin = False
+        isAdmin = False  # needed?
         try:
             add_user(chosen_username, chosen_email, chosen_password, chosen_address, isAdmin)
         except ValueError as err:
