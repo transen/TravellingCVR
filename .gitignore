@@ -129,3 +129,4 @@ dmypy.json
 config.py
 
 .idea/
+.vscode/settings.json
