@@ -66,8 +66,8 @@ def pull_all_businesses(sorted_by="name"):
     output = []
     for business in result:
         output.append({'name': business['name'], 'vat': business['vat']})
-    for business in output:
-        print(f"{business['name']}\t{business['vat']}")
+    # for business in output:
+    #     print(f"{business['name']}\t{business['vat']}")
     return output
 
 
