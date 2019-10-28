@@ -3,7 +3,7 @@ from cvrapi import *
 from mapquestapi import *
 
 
-def test(testarg):
+def test(testarg="37158686"):
     """
     A function solely to test code written so far, will change over time
     """
@@ -40,8 +40,18 @@ def test(testarg):
         return None  # breaks function
 
 
-test("38158686")
+# test("38158686")
 
 
-
-
+def test2(testarg="38158686"):
+    """
+    A function solely to test code written so far, will change over time
+    """
+    # deletes the business in mongodb if it exists
+    delete_business(testarg)
+    # attempt to grab a business
+    business = business_from_api(testarg)
+    business = attach_coords(business)
+    insert_business(business)
+    # return business  # to end function
+    print(pull_single_business(testarg))
