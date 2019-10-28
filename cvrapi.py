@@ -1,5 +1,7 @@
 import requests
 from datetime import datetime
+from config import *
+
 
 def business_from_api(vat_or_name, country='dk'):
     """
