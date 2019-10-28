@@ -118,7 +118,7 @@ def insert_business(business):
 
 def pull_single_business(searchable):
     """
-    Pulls a single business from MongoDB from VAT-parameter
+    Pulls a single business from MongoDB from VAT-parameter or name of business
     TODO explain this further
     TODO make the entire business searchable. Good idea? Just name and VAT?
 
@@ -222,4 +222,4 @@ def test(testarg):
         return None  # breaks function
 
 
-test("38158686")
+test("11562639")
