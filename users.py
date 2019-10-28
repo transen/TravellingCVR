@@ -51,7 +51,8 @@ def add_user(username, email, password, address, isadmin):
         print(f"Inserted user with the id: {result.inserted_id}")
         return result
     except DuplicateKeyError:
-        raise ValueError(f'A user with specified username \'{user["username"]}\' or email \'{user["email"]}\' already exists!')
+        raise ValueError(f'A user with specified username \'{user["username"]}\' or email'
+                         f' \'{user["email"]}\' already exists!')
 
 
 def login(username, password):
@@ -59,6 +60,7 @@ def login(username, password):
     if type(result) == dict:
         if verify_password(result["password"], password):
             print("*login*")
+            global logged_in_user
             logged_in_user = [username, result["email"], result["address"]]
         else:
             print("Wrong password")
