@@ -32,15 +32,16 @@ db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hid
 
 
 def add_user(username, email, password, address, isadmin):
-
     hashed_password = hash_password(password)
-
+    timeadded = datetime.now()
     user = {
         "username": username,
         "email": email,
         "password": hashed_password,
         "address": address,
         "isAdmin": isadmin,
+        "Time added": timeadded,
+        "Last login": timeadded,
     }
 
     try:
@@ -51,20 +52,45 @@ def add_user(username, email, password, address, isadmin):
         raise ValueError(f'A user with specified username \'{user["username"]}\' or email \'{user["email"]}\' already exists!')
 
 
-# try:
-#     add_user("Martin", "Martin@broholttrans.dk", "lolpassword", "Langelandsgade 210 st tv, 8200, Aarhus N, DK", True)
-# except ValueError as err:
-#     print("ERROR", err.args[0])
-
 def login(username, password):
     result = db.find_one({'username': username})
-    if verify_password(result["password"], password):
-        print("YOUR'RE IN")
+    if type(result) == dict:
+        if verify_password(result["password"], password):
+            print("*login*")
+        else:
+            print("Wrong password")
     else:
-        print("FUCK OFF")
+        print("Username not found!")
 
 
-login("Martin", "lolPassword")
-
-
-
+while True:
+    print('What action would you like to perform?')
+    print('1: Add user')
+    print('2: Log in')
+    wanted_action = int(input('Choose between 1-2: '))
+    if wanted_action == 1:
+        chosen_username = input("Input username: ")
+        chosen_email = input("Input email: ")
+        chosen_password = input("Input password: ")
+        chosen_address = input("Input address: ")
+        isAdmin = False
+        try:
+            add_user(chosen_username, chosen_email, chosen_password, chosen_address, isAdmin)
+        except ValueError as err:
+            print("ERROR", err.args[0])
+        want_again = input("Want to do another operation? Y/N")
+        if want_again == 'y' or want_again == 'Y':
+            continue
+        else:
+            break
+    elif wanted_action == 2:
+        try_username = input("Input username: ")
+        try_password = input("Input password: ")
+        login(try_username, try_password)
+        want_again = input("Want to do another operation? Y/N")
+        if want_again == 'y' or want_again == 'Y':
+            continue
+        else:
+            break
+    else:
+        print("Not understood, try again.")
