@@ -111,14 +111,14 @@ def insert_business(business):
     try:
         result = db.insert_one(business)
         print(f"Inserted business with the id: {result.inserted_id}")
-        return True
+        return result
     except DuplicateKeyError:
         raise ValueError(f'A business with the VAT \'{business["vat"]}\' already exists!')
 
 
 def pull_single_business(searchable):
     """
-    Pulls a single business from MongoDB from VAT-parameter
+    Pulls a single business from MongoDB from VAT or name-parameter
     TODO explain this further
     TODO make the entire business searchable. Good idea? Just name and VAT?
 
@@ -222,4 +222,6 @@ def test(testarg):
         return None  # breaks function
 
 
-test("38158686")
+# test("39835770")
+
+
