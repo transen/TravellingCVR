@@ -20,7 +20,7 @@ def business_from_api(vat_or_name, country='dk'):
     decode the JSON response to a dictionary. If the HTTP-request returns a valid response, the function
     will return the business-info as a dictionary. If not, the function will print the response-error to the console
     and raise a ValueError.
-    The object "response" return True if it recieves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses
+    The object "response" return True if it reciErhvervsSalg.com IVSeves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses
 
     TODO add comments in code to the docstring
     TODO tell the user if 'protected' is true, as it is then illegal to contact the business, ask if want to continue
@@ -128,7 +128,7 @@ def pull_single_business(searchable):
     :return: The queried business
     :rtype: dictionary
     """
-    if searchable.isdigit():
+    if type(searchable) == str and searchable.isdigit():
         searchable = int(searchable)
     result = db.find_one({"$or": [{"vat": searchable}, {"name": searchable}]})
     if type(result) == dict:
@@ -166,16 +166,19 @@ def delete_business(searchable):
     "delete_one"-method to delete the business-document from the DB. The function then returns the deleted business,
     for further handling and presentation to the end-user.
 
+    TODO Perhaps make it a regex to achieve partial match - is that even what we want?
+
     :param searchable:
     :type searchable:
     :raises ValueError:
     :return: The business which has just been deleted
     :rtype: dictionary
     """
-    if searchable.isdigit():
+    if type(searchable) == str and searchable.isdigit():
         searchable = int(searchable)
     result = db.find_one({"$or": [{"vat": searchable}, {"name": searchable}]})
     if type(result) == dict:
+        # regx = bson.regex.Regex(f'/.*{searchable}.*/')
         db.delete_one({"$or": [{"vat": searchable}, {"name": searchable}]})
         return result
     else:
@@ -191,7 +194,7 @@ def test(testarg):
         delete_business(testarg)
         print('Deleted business')
     except ValueError as err:
-        print(f"Business didn't exist: {err.args[0]}")
+        print(f'Business didn\'t exist: "{err.args[0]}"')
     # attempt to grab a business
     try:
         business = business_from_api(testarg)
@@ -219,6 +222,4 @@ def test(testarg):
         return None  # breaks function
 
 
-test("Transdesign.dk")
-
-#print("38158686".isdigit())
+test("38158686")
