@@ -7,6 +7,9 @@ import hashlib, binascii, os
 
 logged_in_user = []
 
+# https://www.vitoshacademy.com/hashing-passwords-in-python/ -kilde
+
+
 def hash_password(password):
     """Hash a password for storing."""
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
@@ -58,9 +61,7 @@ def login(username, password):
     if type(result) == dict:
         if verify_password(result["password"], password):
             print("*login*")
-            
             logged_in_user = [username, result["email"], result["address"]]
-            
         else:
             print("Wrong password")
     else:
