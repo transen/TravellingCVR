@@ -50,4 +50,4 @@ def test_add_user():
 
 
 def test_login_user():
-    assert type(login("Martin", "test123")) == list
+    assert type(login("Martin", "test123")) == dict

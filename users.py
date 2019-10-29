@@ -7,25 +7,25 @@ from password_hashing import *
 # MongoDB initial setup
 db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
 
-# A runtime-specific array of user-details, which is populated at login
-logged_in_user = []
+# A runtime-specific dict of user-details, which is populated at login
+logged_in_user = {}
 
 
-def add_user(username, email, password, address, isadmin):
+def add_user(username, email, password, address, isadmin=False):
     """
     This functions creates a user-dictionary from the below-described parameters, and tries to insert it into the db.
 
     TODO expand this
 
-    :param username: The wanted username
+    :param username: The chosen username
     :type username: str
-    :param email:
+    :param email: The chosen email
     :type email: str
-    :param password:
+    :param password: The chosen password
     :type password: str
-    :param address:
+    :param address: The chosen address
     :type address: str
-    :param isadmin:
+    :param isadmin: Whether the user is an admin, defaults to False
     :type isadmin: bool
     :return: The inputted user
     :rtype: dict
@@ -53,12 +53,13 @@ def add_user(username, email, password, address, isadmin):
 
 def login(username, password):
     """
-
+    This function allows a user to login, if the username exists, and the password matches the hashed password located
+    in MongoDB
     TODO expand + create User-class for the logged-in user!
 
-    :param username:
+    :param username: the username which the user tries to log in with
     :type username: str
-    :param password:
+    :param password: the password which the user tries to log in with
     :type password: str
     :return:
     :rtype:
@@ -66,14 +67,13 @@ def login(username, password):
     result = db.find_one({'username': username})
     if type(result) == dict:
         if verify_password(result["password"], password):
-            print("*login*")
             global logged_in_user
-            logged_in_user = [username, result["email"], result["address"], result['location']]
+            logged_in_user = result
             return logged_in_user
         else:
-            print("Wrong password")
+            raise ValueError("Password doesn't match username")
     else:
-        print("Username not found!")
+        raise ValueError(f"Username '{username}' doesn\'t exist")
 
 
 def delete_user(username):

@@ -1,8 +1,7 @@
-from mongofunctions import *
-from cvrapi import *
-from mapquestapi import *
-from users import *
 import getpass
+from cvrapi import *
+from mongofunctions import *
+from users import *
 
 
 def test(testarg):
