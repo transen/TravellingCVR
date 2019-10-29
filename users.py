@@ -8,7 +8,7 @@ from password_hashing import *
 db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
 
 # A runtime-specific dict of user-details, which is populated at login
-logged_in_user = {}
+logged_in_user = None
 
 
 def add_user(username, email, password, address, isadmin=False):
@@ -74,6 +74,11 @@ def login(username, password):
             raise ValueError("Password doesn't match username")
     else:
         raise ValueError(f"Username '{username}' doesn\'t exist")
+
+
+def logout():
+    global logged_in_user
+    logged_in_user = None
 
 
 def delete_user(username):
