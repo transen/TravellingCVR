@@ -21,8 +21,7 @@ def insert_business(business):
     :rtype:
     """
     try:
-        result = db.insert_one(business)
-        print(f"Inserted business with the id: {result.inserted_id}")
+        db.insert_one(business)
         return business
     except DuplicateKeyError:
         raise ValueError(f'A business with the VAT \'{business["vat"]}\' already exists!')

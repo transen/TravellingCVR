@@ -2,10 +2,10 @@ from datetime import datetime
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from config import *
+from mapquestapi import *
 import hashlib
 import binascii
 import os
-import getpass
 
 # MongoDB initial setup
 db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
@@ -80,13 +80,13 @@ def add_user(username, email, password, address, isadmin):
         "password": hashed_password,
         "address": address,
         "isAdmin": isadmin,
+        "location": fetch_coords_from_string(address),
         "Time added": timeadded,
         "Last login": timeadded,
     }
 
     try:
-        result = db.insert_one(user)
-        print(f"Inserted user with the id: {result.inserted_id}")
+        db.insert_one(user)
         return user
     except DuplicateKeyError:
         raise ValueError(f'A user with specified username \'{user["username"]}\' or email'
