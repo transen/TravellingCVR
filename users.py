@@ -68,7 +68,7 @@ def login(username, password):
         if verify_password(result["password"], password):
             print("*login*")
             global logged_in_user
-            logged_in_user = [username, result["email"], result["address"]]
+            logged_in_user = [username, result["email"], result["address"], result['location']]
             return logged_in_user
         else:
             print("Wrong password")
