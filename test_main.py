@@ -1,6 +1,7 @@
 from mongofunctions import *
 from cvrapi import *
 from mapquestapi import *
+from users import *
 from datetime import datetime
 
 
@@ -15,7 +16,7 @@ testbusiness = {'vat': 38158686, 'name': 'Transdesign.dk', 'address': 'Langeland
                 'status': 0, 'note': ''}
 
 
-def test_delete():
+def test_delete_business():
     delete_business(testarg)
 
 
@@ -37,3 +38,16 @@ def test_pull_one():
 
 def test_pull_all():
     assert {'name': 'Transdesign.dk', 'vat': 38158686} in pull_all_businesses()
+
+
+def test_delete_user():
+    assert type(delete_user("Martin")) == dict
+
+
+def test_add_user():
+    assert type(add_user("Martin", "martin@broholttrans.dk", "test123",
+                         "Langelandsgade 210 st tv, 8200 Aarhus N, DK", True)) == dict
+
+
+def test_login_user():
+    assert type(login("Martin", "test123")) == list
