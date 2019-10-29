@@ -31,11 +31,20 @@ while True:
     """The infinite loop initiated to perform the CLI-portion"""
     if not logged_in_user:
         """Prompts a user to log in"""
-        print('What action would you like to perform?')
-        print('1: Add user')
-        print('2: Log in')
+        print('Welcome! Please either log in, or create a user if you don\'t have one already')
+        print('1: Log in')
+        print('2: Create user')
         wanted_action = int(input('Choose between 1-2: '))
         if wanted_action == 1:
+            try_username = input("Input username: ")
+            try_password = getpass.getpass()
+            try:
+                result = login(try_username, try_password)
+                logged_in_user = result
+            except ValueError as err:
+                print("Login error: " + err.args[0])
+                continue
+        elif wanted_action == 2:
             chosen_username = input("Input username: ")
             chosen_email = input("Input email: ")
             chosen_password = getpass.getpass()
@@ -49,15 +58,6 @@ while True:
                 continue
             else:
                 break
-        elif wanted_action == 2:
-            try_username = input("Input username: ")
-            try_password = getpass.getpass()
-            try:
-                result = login(try_username, try_password)
-                logged_in_user = result
-            except ValueError as err:
-                print("Login error: " + err.args[0])
-                continue
         else:
             print("Not understood, try again.")
     else:
@@ -68,7 +68,8 @@ while True:
         print('3: Show all businesses')
         print('4: Delete a business')
         print('5: Log out')
-        print('6: End program')
+        print('6: Delete user')
+        print('7: End program')
         wanted_action = int(input('Choose between 1-6: '))
         if wanted_action == 1:
             business = input("Input name or VAT of business to be added: ")
@@ -80,9 +81,11 @@ while True:
             else:
                 break
         elif wanted_action == 2:
-            business = input("Input name or VAT of business to be added: ")
+            business = input("Input name or VAT of business you want to find: ")
             try:
-                print(pull_single_business(business))
+                business = pull_single_business(business)
+                for key in business:
+                    print(f"{key}: \t {business[key]}")
             except ValueError as err:
                 print("PULL ERROR: " + err.args[0])
             want_again = input("Want to do another operation? Y/N")
@@ -101,13 +104,37 @@ while True:
             else:
                 businesses = pull_all_businesses()
                 for business in businesses:
-                    print(f"{business['name']}\t{business['vat']}")
+                    print(f"{business['name']}\t{business['vat']}")  #TODO use pprint?
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
                 continue
             else:
                 break
         elif wanted_action == 4:
+            business = input("Input name or VAT of business you want to delete: ")
+            try:
+                delete_business(business)
+                print('Deleted business')
+            except ValueError as err:
+                print(f'Business didn\'t exist: "{err.args[0]}"')
+            want_again = input("Want to do another operation? Y/N")
+            if want_again == 'y' or want_again == 'Y':
+                continue
+            else:
+                break
+        elif wanted_action == 5:
+            logout()  # Doesn't do anything atm... A problem with altering variables from modules?
+            logged_in_user = None
+            continue
+        elif wanted_action == 6:
+            certain = input(f"Are you sure you want to delete user '{logged_in_user['name']}'? y/n:")
+            if certain == "y" or certain == "Y":
+                delete_user(logged_in_user["username"])
+                print(f"User '{logged_in_user['username']}' deleted!")
+                logout()
+                logged_in_user = None
+                break
+        elif wanted_action == 7:
             break
         else:
             print("Not understood, try again.")
