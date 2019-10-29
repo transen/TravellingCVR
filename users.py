@@ -135,4 +135,4 @@ def delete_user(username):
         db.delete_one({"username": username})
         return found_user
     else:
-        raise ValueError(f'A user with specified username \'{username}\' does not exists!')
+        raise ValueError(f'A user with specified username \'{username}\' does not exist!')
