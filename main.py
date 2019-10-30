@@ -104,7 +104,7 @@ while True:
             else:
                 businesses = pull_all_businesses()
                 for business in businesses:
-                    print(f"{business['name']}\t{business['vat']}")  #TODO use pprint?
+                    print(f"{business['name']}\t{business['vat']}")  # TODO use pprint?
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
                 continue
