@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from config import *
+from mapquestapi import *
+from cvrapi import *
 
 # MongoDB initial setup
 db = MongoClient(mongoclientstring).travellingcvr.businesses  # mongoclientstring hidden in config.py
@@ -21,8 +23,7 @@ def insert_business(business):
     :rtype:
     """
     try:
-        result = db.insert_one(business)
-        print(f"Inserted business with the id: {result.inserted_id}")
+        db.insert_one(business)
         return business
     except DuplicateKeyError:
         raise ValueError(f'A business with the VAT \'{business["vat"]}\' already exists!')
@@ -94,3 +95,26 @@ def delete_business(searchable):
         return result
     else:
         raise ValueError(f'No business found in DB with VAT or name: {searchable}')
+
+
+def add_business(business):
+    # attempt to grab a business
+    try:
+        business = business_from_api(business)
+    except ValueError as err:
+        print("API ERROR: " + err.args[0])
+        return None  # breaks function
+    # attempt to fetch coordinates
+    try:
+        business = attach_coords(business)
+    except ValueError as err:
+        print("COORDS ERROR: " + err.args[0])
+        return None  # breaks function
+    # attempt to insert the business to mongodb
+    try:
+        insert_business(business)
+        # return business  # to end function
+    except ValueError as err:
+        print("INSERT ERROR: " + err.args[0])
+        return None  # breaks function
+

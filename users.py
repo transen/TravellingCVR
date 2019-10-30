@@ -1,39 +1,35 @@
-import requests
 from datetime import datetime
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
-from config import *
-import hashlib
-import binascii
-import os
+from mapquestapi import *
+from password_hashing import *
 
 # MongoDB initial setup
 db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
 
-# A runtime-specific array of user-details, which is populated at login
-logged_in_user = []
-
-# https://www.vitoshacademy.com/hashing-passwords-in-python/ -kilde
+# A runtime-specific dict of user-details, which is populated at login
+logged_in_user = None
 
 
-def hash_password(password):
-    """Hash a password for storing in mongodb"""
-    salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
-    pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
-    pwdhash = binascii.hexlify(pwdhash)
-    return (salt + pwdhash).decode('ascii')
+def add_user(username, email, password, address, isadmin=False):
+    """
+    This functions creates a user-dictionary from the below-described parameters, and tries to insert it into the db.
 
+    TODO expand this
 
-def verify_password(stored_password, provided_password):
-    """Verify a stored password against one provided by user"""
-    salt = stored_password[:64]
-    stored_password = stored_password[64:]
-    pwdhash = hashlib.pbkdf2_hmac('sha512', provided_password.encode('utf-8'), salt.encode('ascii'), 100000)
-    pwdhash = binascii.hexlify(pwdhash).decode('ascii')
-    return pwdhash == stored_password
-
-
-def add_user(username, email, password, address, isadmin):
+    :param username: The chosen username
+    :type username: str
+    :param email: The chosen email
+    :type email: str
+    :param password: The chosen password
+    :type password: str
+    :param address: The chosen address
+    :type address: str
+    :param isadmin: Whether the user is an admin, defaults to False
+    :type isadmin: bool
+    :return: The inputted user
+    :rtype: dict
+    """
     hashed_password = hash_password(password)
     timeadded = datetime.now()
     user = {
@@ -42,59 +38,64 @@ def add_user(username, email, password, address, isadmin):
         "password": hashed_password,
         "address": address,
         "isAdmin": isadmin,
+        "location": fetch_coords_from_string(address),
         "Time added": timeadded,
         "Last login": timeadded,
     }
 
     try:
-        result = db.insert_one(user)
-        print(f"Inserted user with the id: {result.inserted_id}")
-        return result
+        db.insert_one(user)
+        return user
     except DuplicateKeyError:
-        raise ValueError(f'A user with specified username \'{user["username"]}\' or email \'{user["email"]}\' already exists!')
+        raise ValueError(f'A user with specified username \'{user["username"]}\' or email'
+                         f' \'{user["email"]}\' already exists!')
 
 
 def login(username, password):
+    """
+    This function allows a user to login, if the username exists, and the password matches the hashed password located
+    in MongoDB
+    TODO expand + create User-class for the logged-in user!
+
+    :param username: the username which the user tries to log in with
+    :type username: str
+    :param password: the password which the user tries to log in with
+    :type password: str
+    :return:
+    :rtype:
+    """
     result = db.find_one({'username': username})
     if type(result) == dict:
         if verify_password(result["password"], password):
-            print("*login*")
-            logged_in_user = [username, result["email"], result["address"]]
+            global logged_in_user
+            logged_in_user = result
+            return logged_in_user
         else:
-            print("Wrong password")
+            raise ValueError("Password doesn't match username")
     else:
-        print("Username not found!")
+        raise ValueError(f"Username '{username}' doesn\'t exist")
 
 
-while True:
-    """The infinite loop initiated to perform the CLI-portion"""
-    print('What action would you like to perform?')
-    print('1: Add user')
-    print('2: Log in')
-    wanted_action = int(input('Choose between 1-2: '))
-    if wanted_action == 1:
-        chosen_username = input("Input username: ")
-        chosen_email = input("Input email: ")
-        chosen_password = input("Input password: ")
-        chosen_address = input("Input address: ")
-        isAdmin = False  # needed?
-        try:
-            add_user(chosen_username, chosen_email, chosen_password, chosen_address, isAdmin)
-        except ValueError as err:
-            print("ERROR", err.args[0])
-        want_again = input("Want to do another operation? Y/N")
-        if want_again == 'y' or want_again == 'Y':
-            continue
-        else:
-            break
-    elif wanted_action == 2:
-        try_username = input("Input username: ")
-        try_password = input("Input password: ")
-        login(try_username, try_password)
-        want_again = input("Want to do another operation? Y/N")
-        if want_again == 'y' or want_again == 'Y':
-            continue
-        else:
-            break
+def logout():
+    global logged_in_user
+    logged_in_user = None
+
+
+def delete_user(username):
+    """
+    This function deletes an user from mongoDB
+
+    TODO expand this
+
+    :param username:
+    :type username: str
+    :raises ValueError:
+    :return:
+    :rtype: dict
+    """
+    found_user = db.find_one({"username": username})
+    if type(found_user) == dict:
+        db.delete_one({"username": username})
+        return found_user
     else:
-        print("Not understood, try again.")
+        raise ValueError(f'A user with specified username \'{username}\' does not exist!')

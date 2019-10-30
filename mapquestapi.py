@@ -38,3 +38,23 @@ def attach_coords(business):
     else:
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
 
+
+def fetch_coords_from_string(address_string):
+    """
+
+    TODO split the above instead?
+
+    :param address_string:
+    :return:
+    """
+    response = requests.get(
+        url='https://www.mapquestapi.com/geocoding/v1/address',
+        params={'key': api_mapkey, 'location': address_string, 'maxResults': 1},
+    )
+    response_quality = response.json()['results'][0]['locations'][0]['geocodeQualityCode']
+    if response_quality == "P1AAA":  # Checks if mapquest is certain
+        lat_lng = response.json()['results'][0]['locations'][0]['latLng']
+        coords = list(lat_lng.values())
+        return coords
+    else:
+        raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
