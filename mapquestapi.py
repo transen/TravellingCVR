@@ -34,6 +34,7 @@ def attach_coords(business):
         lat_lng = response.json()['results'][0]['locations'][0]['latLng']
         coords = list(lat_lng.values())
         business.update({"location": coords})
+        business.update({"map url": build_map_url(coords)})
         return business
     else:
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
@@ -58,3 +59,17 @@ def fetch_coords_from_string(address_string):
         return coords
     else:
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
+
+
+def build_map_url(coords):
+    """
+    This functions builds a, basic, Google Maps URL from a set of coordinates. Quite janky.
+    TODO reduce jankyness
+
+    :param coords: a 2-dimensional list of longtitude/latitude coordinates
+    :type coords: list
+    :return: A Google Maps URL
+    :rtype: str
+    """
+    url = f"https://www.google.dk/maps/place/{coords[0]},{coords[1]}"
+    return url

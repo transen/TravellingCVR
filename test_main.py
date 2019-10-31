@@ -13,7 +13,7 @@ testbusiness = {'vat': 38158686, 'name': 'Transdesign.dk', 'address': 'Langeland
                 'industrycode': 620100, 'industrydesc': 'Computerprogrammering', 'companycode': 10,
                 'companydesc': 'Enkeltmandsvirksomhed', 'creditbankrupt': False,
                 'owners': [{'name': 'Martin Broholt Trans'}], 'timeadded': datetime(2019, 10, 28, 22, 23, 34, 760576),
-                'status': 0, 'note': ''}
+                'status': 0, 'note': '', 'map url': 'https://www.google.dk/maps/place/56.17339,10.20188'}
 
 
 def test_delete_business():
@@ -37,7 +37,7 @@ def test_pull_one():
 
 
 def test_pull_all():
-    assert {'name': 'Transdesign.dk', 'vat': 38158686} in pull_all_businesses("zipcode")
+    assert  type(pull_all_businesses("zipcode")[0]) == dict
 
 
 def test_delete_user():

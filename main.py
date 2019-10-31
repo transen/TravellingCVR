@@ -1,10 +1,16 @@
 import getpass
+import subprocess
 from cvrapi import *
 from mongofunctions import *
 from users import *
 from prettytable import PrettyTable
 
 logged_in_user = None
+
+
+# Clears the terminal-window
+def clear_interface():
+    subprocess.call('clear', shell=True)
 
 
 def test(testarg):
@@ -31,12 +37,19 @@ def test(testarg):
 while True:
     """The infinite loop initiated to perform the CLI-portion"""
     if not logged_in_user:
+        clear_interface()
         """Prompts a user to log in"""
         print('Welcome! Please either log in, or create a user if you don\'t have one already')
         print('1: Log in')
         print('2: Create user')
-        wanted_action = int(input('Choose between 1-2: '))
+        try:
+            wanted_action = int(input('Choose between 1-2: '))
+        except ValueError:
+            clear_interface()
+            print("Please type a number.")
+            continue
         if wanted_action == 1:
+            clear_interface()
             try_username = input("Input username: ")
             try_password = getpass.getpass()
             try:
@@ -46,6 +59,7 @@ while True:
                 print("Login error: " + err.args[0])
                 continue
         elif wanted_action == 2:
+            clear_interface()
             chosen_username = input("Input username: ")
             chosen_email = input("Input email: ")
             chosen_password = getpass.getpass()
@@ -60,8 +74,10 @@ while True:
             else:
                 break
         else:
+            clear_interface()
             print("Not understood, try again.")
     else:
+        clear_interface()
         print(f"Welcome back {logged_in_user['username']}!")
         print('What action would you like to perform?')
         print('1: Add a new business')
@@ -71,8 +87,14 @@ while True:
         print('5: Log out')
         print('6: Delete user')
         print('7: End program')
-        wanted_action = int(input('Choose between 1-6: '))
+        try:
+            wanted_action = int(input('Choose between 1-7: '))
+        except ValueError:
+            clear_interface()
+            print("Please type a number.")
+            continue
         if wanted_action == 1:
+            clear_interface()
             business = input("Input name or VAT of business to be added: ")
             add_business(business)
             print("Business added!")
@@ -82,6 +104,7 @@ while True:
             else:
                 break
         elif wanted_action == 2:
+            clear_interface()
             business = input("Input name or VAT of business you want to find: ")
             try:
                 business = pull_single_business(business)
@@ -97,6 +120,7 @@ while True:
             else:
                 break
         elif wanted_action == 3:
+            clear_interface()
             print('You can sort the businesses by either [name] [zipcode] [vat]. Default is [name].')
             sorting = input("How would you like to sort the businesses? ")
             if sorting is not "":
@@ -118,6 +142,7 @@ while True:
             else:
                 break
         elif wanted_action == 4:
+            clear_interface()
             business = input("Input name or VAT of business you want to delete: ")
             try:
                 delete_business(business)
@@ -130,10 +155,12 @@ while True:
             else:
                 break
         elif wanted_action == 5:
+            clear_interface()
             logout()  # Doesn't do anything atm... A problem with altering variables from modules?
             logged_in_user = None
             continue
         elif wanted_action == 6:
+            clear_interface()
             certain = input(f"Are you sure you want to delete user '{logged_in_user['name']}'? y/n:")
             if certain == "y" or certain == "Y":
                 delete_user(logged_in_user["username"])
