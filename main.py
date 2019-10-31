@@ -1,8 +1,3 @@
-import getpass
-from cvrapi import *
-from mongofunctions import *
-from users import *
-from prettytable import PrettyTable
 from cli_functions import *
 
 logged_in_user = None
