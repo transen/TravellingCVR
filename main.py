@@ -2,6 +2,7 @@ import getpass
 from cvrapi import *
 from mongofunctions import *
 from users import *
+from prettytable import PrettyTable
 
 logged_in_user = None
 
@@ -84,8 +85,10 @@ while True:
             business = input("Input name or VAT of business you want to find: ")
             try:
                 business = pull_single_business(business)
+                t = PrettyTable(["Key", "Value"])
                 for key in business:
-                    print(f"{key}: \t {business[key]}")
+                    t.add_row([key, business[key]])
+                print(t)
             except ValueError as err:
                 print("PULL ERROR: " + err.args[0])
             want_again = input("Want to do another operation? Y/N")
@@ -98,7 +101,11 @@ while True:
             sorting = input("How would you like to sort the businesses? ")
             if sorting is not "":
                 try:
-                    pull_all_businesses(sorting)
+                    businesses = pull_all_businesses(sorting)
+                    t = PrettyTable(['Name', 'VAT', 'Zipcode'])
+                    for business in businesses:
+                        t.add_row([business['name'], business['vat'], business['zipcode']])
+                    print(t)
                 except ValueError as err:
                     print("PULL ERROR: " + err.args[0])
             else:

@@ -37,7 +37,7 @@ def test_pull_one():
 
 
 def test_pull_all():
-    assert {'name': 'Transdesign.dk', 'vat': 38158686} in pull_all_businesses()
+    assert {'name': 'Transdesign.dk', 'vat': 38158686} in pull_all_businesses("zipcode")
 
 
 def test_delete_user():
