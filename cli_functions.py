@@ -99,3 +99,16 @@ def cli_change_note():
         print(f"Note for '{result['name']}' changed from '{result['note']} to '{note}'")
     except ValueError as err:
         print("STATUS-CHANGE ERROR: " + err.args[0])
+
+
+def cli_present_options():
+    print('What action would you like to perform?')
+    print('1: Add a new business')
+    print('2: Show a single business')
+    print('3: Show all businesses')
+    print('4: Delete a business')
+    print('5: Change status of a business')
+    print('6: Change note of a business')
+    print('7: Log out')
+    print('8: Delete user')
+    print('9: End program')

@@ -8,29 +8,6 @@ from cli_functions import *
 logged_in_user = None
 
 
-
-
-def test(testarg):
-    """
-    A function solely to test code written so far, will change over time
-    """
-    # deletes the business in mongodb if it exists
-    try:
-        delete_business(testarg)
-        print('Deleted business')
-    except ValueError as err:
-        print(f'Business didn\'t exist: "{err.args[0]}"')
-    # Testing of pull_single_business
-    try:
-        print(pull_single_business(testarg))
-    except ValueError as err:
-        print("PULL ERROR: " + err.args[0])
-        return None  # breaks function
-
-
-# test("38158686")
-
-
 while True:
     """The infinite loop initiated to perform the CLI-portion"""
     if not logged_in_user:
@@ -52,6 +29,7 @@ while True:
             try:
                 result = login(try_username, try_password)
                 logged_in_user = result
+                clear_interface()
             except ValueError as err:
                 print("Login error: " + err.args[0])
                 continue
@@ -67,18 +45,8 @@ while True:
             clear_interface()
             print("Not understood, try again.")
     else:
-        clear_interface()
         print(f"Welcome back {logged_in_user['username']}!")
-        print('What action would you like to perform?')
-        print('1: Add a new business')
-        print('2: Show a single business')
-        print('3: Show all businesses')
-        print('4: Delete a business')
-        print('5: Change status of a business')
-        print('6: Change note of a business')
-        print('7: Log out')
-        print('8: Delete user')
-        print('9: End program')
+        cli_present_options()
         try:
             wanted_action = int(input('Choose between 1-9: '))
         except ValueError:
@@ -92,6 +60,7 @@ while True:
             print("Business added!")
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
+                clear_interface()
                 continue
             else:
                 break
@@ -100,6 +69,7 @@ while True:
             cli_pull_single_business()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
+                clear_interface()
                 continue
             else:
                 break
@@ -108,6 +78,7 @@ while True:
             cli_pull_all_businesses()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
+                clear_interface()
                 continue
             else:
                 break
@@ -116,6 +87,7 @@ while True:
             cli_delete_business()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
+                clear_interface()
                 continue
             else:
                 break
@@ -124,6 +96,7 @@ while True:
             cli_change_status()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
+                clear_interface()
                 continue
             else:
                 break
@@ -132,6 +105,7 @@ while True:
             cli_change_note()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
+                clear_interface()
                 continue
             else:
                 break
