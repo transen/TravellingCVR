@@ -1,16 +1,13 @@
 import getpass
-import subprocess
 from cvrapi import *
 from mongofunctions import *
 from users import *
 from prettytable import PrettyTable
+from cli_functions import *
 
 logged_in_user = None
 
 
-# Clears the terminal-window
-def clear_interface():
-    subprocess.call('clear', shell=True)
 
 
 def test(testarg):
@@ -50,7 +47,7 @@ while True:
             continue
         if wanted_action == 1:
             clear_interface()
-            try_username = input("Input username: ")
+            try_username = input("Username: ")
             try_password = getpass.getpass()
             try:
                 result = login(try_username, try_password)
@@ -60,14 +57,7 @@ while True:
                 continue
         elif wanted_action == 2:
             clear_interface()
-            chosen_username = input("Input username: ")
-            chosen_email = input("Input email: ")
-            chosen_password = getpass.getpass()
-            chosen_address = input("Input address: ")
-            try:
-                add_user(chosen_username, chosen_email, chosen_password, chosen_address)
-            except ValueError as err:
-                print("ERROR", err.args[0])
+            cli_add_user()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
                 continue
@@ -84,11 +74,13 @@ while True:
         print('2: Show a single business')
         print('3: Show all businesses')
         print('4: Delete a business')
-        print('5: Log out')
-        print('6: Delete user')
-        print('7: End program')
+        print('5: Change status of a business')
+        print('6: Change note of a business')
+        print('7: Log out')
+        print('8: Delete user')
+        print('9: End program')
         try:
-            wanted_action = int(input('Choose between 1-7: '))
+            wanted_action = int(input('Choose between 1-9: '))
         except ValueError:
             clear_interface()
             print("Please type a number.")
@@ -96,7 +88,7 @@ while True:
         if wanted_action == 1:
             clear_interface()
             business = input("Input name or VAT of business to be added: ")
-            add_business(business)
+            cli_add_business(business)
             print("Business added!")
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
@@ -105,15 +97,7 @@ while True:
                 break
         elif wanted_action == 2:
             clear_interface()
-            business = input("Input name or VAT of business you want to find: ")
-            try:
-                business = pull_single_business(business)
-                t = PrettyTable(["Key", "Value"])
-                for key in business:
-                    t.add_row([key, business[key]])
-                print(t)
-            except ValueError as err:
-                print("PULL ERROR: " + err.args[0])
+            cli_pull_single_business()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
                 continue
@@ -121,21 +105,7 @@ while True:
                 break
         elif wanted_action == 3:
             clear_interface()
-            print('You can sort the businesses by either [name] [zipcode] [vat]. Default is [name].')
-            sorting = input("How would you like to sort the businesses? ")
-            if sorting is not "":
-                try:
-                    businesses = pull_all_businesses(sorting)
-                    t = PrettyTable(['Name', 'VAT', 'Zipcode'])
-                    for business in businesses:
-                        t.add_row([business['name'], business['vat'], business['zipcode']])
-                    print(t)
-                except ValueError as err:
-                    print("PULL ERROR: " + err.args[0])
-            else:
-                businesses = pull_all_businesses()
-                for business in businesses:
-                    print(f"{business['name']}\t{business['vat']}")  # TODO use pprint?
+            cli_pull_all_businesses()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
                 continue
@@ -143,12 +113,7 @@ while True:
                 break
         elif wanted_action == 4:
             clear_interface()
-            business = input("Input name or VAT of business you want to delete: ")
-            try:
-                delete_business(business)
-                print('Deleted business')
-            except ValueError as err:
-                print(f'Business didn\'t exist: "{err.args[0]}"')
+            cli_delete_business()
             want_again = input("Want to do another operation? Y/N")
             if want_again == 'y' or want_again == 'Y':
                 continue
@@ -156,19 +121,35 @@ while True:
                 break
         elif wanted_action == 5:
             clear_interface()
+            cli_change_status()
+            want_again = input("Want to do another operation? Y/N")
+            if want_again == 'y' or want_again == 'Y':
+                continue
+            else:
+                break
+        elif wanted_action == 6:
+            clear_interface()
+            cli_change_note()
+            want_again = input("Want to do another operation? Y/N")
+            if want_again == 'y' or want_again == 'Y':
+                continue
+            else:
+                break
+        elif wanted_action == 7:
+            clear_interface()
             logout()  # Doesn't do anything atm... A problem with altering variables from modules?
             logged_in_user = None
             continue
-        elif wanted_action == 6:
+        elif wanted_action == 8:
             clear_interface()
-            certain = input(f"Are you sure you want to delete user '{logged_in_user['name']}'? y/n:")
+            certain = input(f"Are you sure you want to delete user '{logged_in_user['username']}'? y/n:")
             if certain == "y" or certain == "Y":
                 delete_user(logged_in_user["username"])
                 print(f"User '{logged_in_user['username']}' deleted!")
                 logout()
                 logged_in_user = None
                 break
-        elif wanted_action == 7:
+        elif wanted_action == 9:
             break
         else:
             print("Not understood, try again.")

@@ -51,3 +51,12 @@ def test_add_user():
 
 def test_login_user():
     assert type(login("Martin", "test123")) == dict
+
+
+def test_change_status():
+    assert type(change_status("Transdesign.dk", 2)) == dict
+
+
+def test_change_note():
+    assert type(change_note("Transdesign.dk", "Test note")) == dict
+

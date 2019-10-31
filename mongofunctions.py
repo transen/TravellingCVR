@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, ReturnDocument
 from pymongo.errors import DuplicateKeyError
 from config import *
 from mapquestapi import *
@@ -102,24 +102,53 @@ def delete_business(searchable):
         raise ValueError(f'No business found in DB with VAT or name: {searchable}')
 
 
-def add_business(business):
-    # attempt to grab a business
-    try:
-        business = business_from_api(business)
-    except ValueError as err:
-        print("API ERROR: " + err.args[0])
-        return None  # breaks function
-    # attempt to fetch coordinates
-    try:
-        business = attach_coords(business)
-    except ValueError as err:
-        print("COORDS ERROR: " + err.args[0])
-        return None  # breaks function
-    # attempt to insert the business to mongodb
-    try:
-        insert_business(business)
-        # return business  # to end function
-    except ValueError as err:
-        print("INSERT ERROR: " + err.args[0])
-        return None  # breaks function
+def change_status(searchable, wanted_status):
+    """
+    This function changes the status of a business in the mongodb.
 
+    :param searchable:
+    :type searchable: str or int
+    :param wanted_status:
+    :type wanted_status: int
+    :return: The updated business
+    :rtype: dict
+    """
+    if type(searchable) == str and searchable.isdigit():
+        searchable = int(searchable)
+    business = db.find_one({"$or": [{"vat": searchable}, {"name": searchable}]})
+    if business:
+        business_id = business['_id']
+        result = db.find_one_and_update(
+            {"_id": business_id},
+            {"$set":
+                {"status": wanted_status}
+             }, return_document=ReturnDocument.AFTER)
+        return result
+    else:
+        raise ValueError("Business doesn't exist.")
+
+
+def change_note(searchable, wanted_note):
+    """
+    This function changes the note of a business in the mongodb.
+
+    :param searchable:
+    :type searchable: str or int
+    :param wanted_note:
+    :type wanted_note: str
+    :return: The updated business
+    :rtype: dict
+    """
+    if type(searchable) == str and searchable.isdigit():
+        searchable = int(searchable)
+    business = db.find_one({"$or": [{"vat": searchable}, {"name": searchable}]})
+    if business:
+        business_id = business['_id']
+        result = db.find_one_and_update(
+            {"_id": business_id},
+            {"$set":
+                {"note": wanted_note}
+             })
+        return result
+    else:
+        raise ValueError("Business doesn't exist.")
