@@ -3,6 +3,8 @@ from cli_functions import *
 logged_in_user = None
 
 
+# TODO Go from if-sentences to loop-selection-states?
+
 while True:
     """The infinite loop initiated to perform the CLI-portion"""
     if not logged_in_user:
