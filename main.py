@@ -3,6 +3,8 @@ import users
 
 # TODO Go from if-sentences to loop-selection-states?
 
+# TODO group menus together to have sub-menus
+
 current_selection = []
 
 
@@ -24,16 +26,11 @@ def main():
                 cli_login()
             elif wanted_action == 2:
                 cli_add_user()
-                want_again = input("Want to do another operation? Y/N")
-                if want_again == 'y' or want_again == 'Y':
-                    continue
-                else:
-                    break
             elif wanted_action == 3:
                 break
             else:
                 clear_interface()
-                print("Not understood, try again.")
+                print("Not understood, did you write a single number between 1 and 3?.")
         else:
             cli_present_main_menu_options()
             try:
@@ -44,61 +41,27 @@ def main():
                 continue
             if wanted_action == 1:
                 cli_add_business()
-                want_again = input("Want to do another operation? Y/N")
-                if want_again == 'y' or want_again == 'Y':
-                    clear_interface()
-                    continue
-                else:
-                    break
             elif wanted_action == 2:
                 cli_pull_single_business()
-                want_again = input("Want to do another operation? Y/N")
-                if want_again == 'y' or want_again == 'Y':
-                    clear_interface()
-                    continue
-                else:
-                    break
             elif wanted_action == 3:
                 cli_pull_all_businesses()
-                want_again = input("Want to do another operation? Y/N")
-                if want_again == 'y' or want_again == 'Y':
-                    clear_interface()
-                    continue
-                else:
-                    break
             elif wanted_action == 4:
                 cli_delete_business()
-                want_again = input("Want to do another operation? Y/N")
-                if want_again == 'y' or want_again == 'Y':
-                    clear_interface()
-                    continue
-                else:
-                    break
             elif wanted_action == 5:
                 cli_change_status()
-                want_again = input("Want to do another operation? Y/N")
-                if want_again == 'y' or want_again == 'Y':
-                    clear_interface()
-                    continue
-                else:
-                    break
             elif wanted_action == 6:
                 cli_change_note()
-                want_again = input("Want to do another operation? Y/N")
-                if want_again == 'y' or want_again == 'Y':
-                    clear_interface()
-                    continue
-                else:
-                    break
             elif wanted_action == 7:
                 cli_logout()
-                continue
+                continue  # back to login-menu
             elif wanted_action == 8:
                 cli_delete_user()
             elif wanted_action == 9:
+                cli_save_to_selection()
+            elif wanted_action == 0:
                 break
             else:
-                print("Not understood, try again.")
+                print("Not understood, did you write a single number between 1 and 9?.")
 
 
 # executes if main.py is executed from CLI, but not if executed as a module during imports
