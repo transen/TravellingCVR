@@ -1,7 +1,6 @@
-from mongofunctions import *
-from cvrapi import *
-from mapquestapi import *
-from users import *
+from db_helper.mongofunctions import *
+from api_helpers.cvrapi import *
+from user_helpers.users import *
 from datetime import datetime
 
 

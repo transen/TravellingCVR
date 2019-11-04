@@ -1,5 +1,5 @@
-from cli_functions import *
-import users
+from cli_helpers.cli_functions import *
+from user_helpers import users
 
 # TODO Go from if-sentences to loop-selection-states?
 
@@ -66,6 +66,6 @@ def main():
                 print("Not understood, did you write a number between 1 and 10?.")
 
 
-# executes if main.py is executed from CLI, but not if executed as a module during imports
+# executes if cli_main.py is executed from CLI, but not if executed as a module during imports
 if __name__ == "__main__":
     main()

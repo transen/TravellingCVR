@@ -1,8 +1,8 @@
 from datetime import datetime
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
-from mapquestapi import *
-from password_hashing import *
+from api_helpers.mapquestapi import *
+from user_helpers.password_hashing import *
 
 # MongoDB initial setup
 db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py

@@ -1,11 +1,9 @@
 import subprocess
 import getpass
-from cvrapi import *
-from mapquestapi import *
-from mongofunctions import *
+from db_helper.mongofunctions import *
 from prettytable import PrettyTable
-import users
-import main
+from user_helpers import users
+import cli_main
 
 
 # Clears the terminal-window
@@ -180,7 +178,7 @@ def cli_save_to_selection():  # TODO IMPLEMENT
     clear_interface()
     business_to_add = input("Enter VAT: ")
     if business_exists_in_db(business_to_add):
-        main.current_selection.append(business_to_add)
+        cli_main.current_selection.append(business_to_add)
         print(f"{business_to_add} added to selection!")
     else:
         print("Business doesn't exist in db. Try again!")
@@ -190,7 +188,7 @@ def cli_save_to_selection():  # TODO IMPLEMENT
 def cli_show_selection():  # TODO IMPLEMENT
     clear_interface()
     print("Your current selection:")
-    print(*main.current_selection)
+    print(*cli_main.current_selection)
     cli_return_to_main_menu()
 
 
