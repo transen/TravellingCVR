@@ -73,3 +73,6 @@ def build_map_url(coords):
     """
     url = f"https://www.google.dk/maps/place/{coords[0]},{coords[1]}"
     return url
+
+
+

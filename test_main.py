@@ -37,7 +37,7 @@ def test_pull_one():
 
 
 def test_pull_all():
-    assert  type(pull_all_businesses("zipcode")[0]) == dict
+    assert type(pull_all_businesses("zipcode")[0]) == dict
 
 
 def test_delete_user():

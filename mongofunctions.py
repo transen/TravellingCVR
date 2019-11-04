@@ -68,10 +68,7 @@ def pull_all_businesses(sorted_by="name"):
     if type(result) == list:
         output = []
         for business in result:
-            # output.append({'name': business['name'], 'vat': business['vat']})
             output.append(business)
-        # for business in output:
-        #     print(f"{business['name']}\t{business['vat']}")
         return output
     else:
         raise ValueError("Something went wrong")

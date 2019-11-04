@@ -13,7 +13,7 @@ def business_from_api(vat_or_name, country='dk'):
     See documentation here: https://cvrapi.dk/documentation (only in Danish, however).
     The function relies on the module 'requests', which handles HTTP for python, and we utilize the .json()-method, to
     decode the JSON response to a dictionary. If the HTTP-request returns a valid response, the function
-    will return the business-info as a dictionary. If not, the function will print the response-error to the console
+    will return the business-info as a dictionary. If not, the function will raise the response-error to the console
     and raise a ValueError.
     The object "response" return True if it reciErhvervsSalg.com IVSeves a 200- or 301-response. Defaults to False for
     4xx- or 5xx-responses
@@ -44,7 +44,7 @@ def business_from_api(vat_or_name, country='dk'):
         now = datetime.now()
         addedtime = {'timeadded': now}
         business.update(addedtime)
-        # We add a status-key (scheme must be defined at a later stage)
+        # We add a status-key (scheme must be defined at a later stage) TODO
         business.update({"status": 0})
         # We add a note-key, defaulting to an empty string, that the user can write whatever in
         business.update({"note": ""})
