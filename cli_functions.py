@@ -144,6 +144,7 @@ def cli_present_main_menu_options():
     print('7: Log out')
     print('8: Delete user')
     print('9: Add a business to your current selection')
+    print('10: Show your current selection')
     print('0: End program')
 
 
@@ -176,16 +177,23 @@ def cli_delete_user():
 
 
 def cli_save_to_selection():  # TODO IMPLEMENT
-    want_to_add = input("Want to add a business to the selection? Y/N ")
-    if want_to_add == "y" or want_to_add == "Y":
-        business_to_add = input("Enter VAT: ")
+    clear_interface()
+    business_to_add = input("Enter VAT: ")
+    if business_exists_in_db(business_to_add):
         main.current_selection.append(business_to_add)
+        print(f"{business_to_add} added to selection!")
+    else:
+        print("Business doesn't exist in db. Try again!")
+    cli_return_to_main_menu()
 
 
 def cli_show_selection():  # TODO IMPLEMENT
-    print(main.current_selection)
+    clear_interface()
+    print("Your current selection:")
+    print(*main.current_selection)
+    cli_return_to_main_menu()
 
 
 def cli_return_to_main_menu():
-    input("Press a button to continue to main menu")
+    input("Press [ENTER] to continue to main menu")
     clear_interface()
