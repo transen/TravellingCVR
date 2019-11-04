@@ -1,5 +1,5 @@
-from cli_functions import *
-import users
+from cli_helpers.cli_functions import *
+from user_helpers import users
 
 # TODO Go from if-sentences to loop-selection-states?
 
@@ -34,7 +34,7 @@ def main():
         else:
             cli_present_main_menu_options()
             try:
-                wanted_action = int(input('Choose between 1-9: '))
+                wanted_action = int(input('Choose between 1-10: '))
             except ValueError:
                 clear_interface()
                 print("Please type a number.")
@@ -58,12 +58,14 @@ def main():
                 cli_delete_user()
             elif wanted_action == 9:
                 cli_save_to_selection()
+            elif wanted_action == 10:
+                cli_show_selection()
             elif wanted_action == 0:
                 break
             else:
-                print("Not understood, did you write a single number between 1 and 9?.")
+                print("Not understood, did you write a number between 1 and 10?.")
 
 
-# executes if main.py is executed from CLI, but not if executed as a module during imports
+# executes if cli_main.py is executed from CLI, but not if executed as a module during imports
 if __name__ == "__main__":
     main()

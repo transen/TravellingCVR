@@ -1,8 +1,6 @@
 from pymongo import MongoClient, ReturnDocument
 from pymongo.errors import DuplicateKeyError
-from config import *
-from mapquestapi import *
-from cvrapi import *
+from api_helpers.cvrapi import *
 
 # MongoDB initial setup
 db = MongoClient(mongoclientstring).travellingcvr.businesses  # mongoclientstring hidden in config.py
@@ -149,3 +147,20 @@ def change_note(searchable, wanted_note):
         return result
     else:
         raise ValueError("Business doesn't exist.")
+
+
+def business_exists_in_db(searchable):
+    """
+    This function checks the DB for the existance of the business being passed as an argument
+    :param searchable: An unique identifier for the business that need check for existence
+    :type searchable: int or str
+    :return: True or false
+    :rtype: bool
+    """
+    if type(searchable) == str and searchable.isdigit():
+        searchable = int(searchable)
+    result = db.find_one({"$or": [{"vat": searchable}, {"name": searchable}]})
+    if type(result) == dict:
+        return True
+    else:
+        return False
