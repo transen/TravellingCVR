@@ -15,7 +15,7 @@
     <div class="sticky-top">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-            <a class="navbar-brand" href="/">CVR-API-DB</a>
+            <a class="navbar-brand" href="/">Travelling CVR</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,23 +23,23 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/">Hjem</a>
+                        <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/allevirksomheder/">Vis alle virksomheder</a>
+                        <a class="nav-link" href="/allevirksomheder/">Show all businesses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/visvirksomhed/">Vis en virksomhed</a>
+                        <a class="nav-link" href="/visvirksomhed/">Show a single business</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/sletvirksomhed/">Slet en virksomhed</a>
+                        <a class="nav-link" href="/sletvirksomhed/">Delete a business</a>
                     </li>
                 </ul>
                 <form class="form-inline" method="get" action="/visvirksomhed/">
-                    <input class="form-control mr-sm-2" aria-label="Search" type="text" name="CVR" required
-                           placeholder="Indtast CVR-nummer" pattern="^[0-9]{8,8}" title="8 tal"
-                           oninvalid="alert('CVR består af 8 tal...')">
-                    <button class="btn  btn-outline-primary my-2 my-sm-0" type="submit">Søg virksomhed</button>
+                    <input class="form-control mr-sm-2" aria-label="Search" type="text" name="VAT" required
+                           placeholder="VAT" pattern="^[0-9]{8,8}" title="8 digits"
+                           oninvalid="alert('A VAT consists of 8 digits...')">
+                    <button class="btn  btn-outline-primary my-2 my-sm-0" type="submit">Search for business</button>
                 </form>
             </div>
         </div>
@@ -52,7 +52,7 @@
 <footer class="footer fixed-bottom blue mt-auto py-3 bg-light">
 <div class="container">
     {% block footer %}
-        &copy; Copyright 2019 by <a href="https://broholttrans.dk/">Transen</a>.
+        &copy; Copyright 2019 by <a href="https://broholttrans.dk/">The knights who say PY</a>.
     {% endblock %}
 </div>
 </footer>

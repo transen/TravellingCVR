@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}All businesses{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>All businesses:</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <td scope="col">VAT</td>
+        <td scope="col">Business name</td>
+        <td scope="col">Zipcode</td>
+    </tr>
+    </thead>
+    {% for business in result %}
+        <tr>
+            <td><a href="/business/?CVR={{ business['vat'] }}"> {{ business['vat'] }}</a></td>
+            <td>{{ business['name'] }}</td>
+            <td>{{ business['zipcode'] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<a href="/">
+    <button>Back to the front page?</button>
+</a>
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}
+
+
+
+
