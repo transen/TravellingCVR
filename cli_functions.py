@@ -15,7 +15,7 @@ def clear_interface():
 
 def cli_add_business():
     clear_interface()
-    business = input("Input name or VAT of business to be added: ")
+    business = input("Input name or VAT of business to be added: ")  # TODO check input for valid 8-digit if only digits
     # attempt to grab a business
     try:
         business = business_from_api(business)
@@ -27,12 +27,14 @@ def cli_add_business():
                 return None
     except ValueError as err:
         print("API ERROR: " + err.args[0])
+        cli_return_to_main_menu()
         return None  # breaks function
     # attempt to fetch coordinates
     try:
         business = attach_coords(business)
     except ValueError as err:
         print("COORDS ERROR: " + err.args[0])
+        cli_return_to_main_menu()
         return None  # breaks function
     # attempt to insert the business to mongodb
     try:
@@ -41,6 +43,7 @@ def cli_add_business():
     except ValueError as err:
         print("INSERT ERROR: " + err.args[0])
         return None  # breaks function
+    cli_return_to_main_menu()
 
 
 def cli_pull_single_business():
@@ -54,6 +57,7 @@ def cli_pull_single_business():
         print(t)
     except ValueError as err:
         print("PULL ERROR: " + err.args[0])
+    cli_return_to_main_menu()
 
 
 def cli_pull_all_businesses():
@@ -72,6 +76,7 @@ def cli_pull_all_businesses():
         print(t)
     except ValueError as err:
         print("PULL ERROR: " + err.args[0])
+    cli_return_to_main_menu()
 
 
 def cli_delete_business():
@@ -82,6 +87,7 @@ def cli_delete_business():
         print('Deleted business')
     except ValueError as err:
         print(f'Business didn\'t exist: "{err.args[0]}"')
+    cli_return_to_main_menu()
 
 
 def cli_add_user():
@@ -94,6 +100,7 @@ def cli_add_user():
         users.add_user(chosen_username, chosen_email, chosen_password, chosen_address)
     except ValueError as err:
         print("ERROR", err.args[0])
+    cli_return_to_main_menu()
 
 
 def cli_change_status():
@@ -105,6 +112,7 @@ def cli_change_status():
         print(f"Status of '{result['name']}' changed to '{result['status']}'!")
     except ValueError as err:
         print("STATUS-CHANGE ERROR: " + err.args[0])
+    cli_return_to_main_menu()
 
 
 def cli_change_note():
@@ -116,13 +124,7 @@ def cli_change_note():
         print(f"Note for '{result['name']}' changed from '{result['note']}' to '{note}'")
     except ValueError as err:
         print("STATUS-CHANGE ERROR: " + err.args[0])
-
-
-def cli_save_to_selection():
-    want_to_add = input("Want to add a business to the selection? Y/N ")
-    if want_to_add == "y" or want_to_add == "Y":
-        business_to_add = input("Enter VAT: ")
-        main.current_selection.append(business_to_add)
+    cli_return_to_main_menu()
 
 
 def cli_present_login_menu_options():
@@ -132,7 +134,6 @@ def cli_present_login_menu_options():
 
 
 def cli_present_main_menu_options():
-    print(f"Welcome back {users.logged_in_user['username']}!")
     print('What action would you like to perform?')
     print('1: Add a new business')
     print('2: Show a single business')
@@ -142,7 +143,8 @@ def cli_present_main_menu_options():
     print('6: Change note of a business')
     print('7: Log out')
     print('8: Delete user')
-    print('9: End program')
+    print('9: Add a business to your current selection')
+    print('0: End program')
 
 
 def cli_login():
@@ -153,6 +155,7 @@ def cli_login():
         result = users.login(try_username, try_password)
         users.logged_in_user = result
         clear_interface()
+        print(f"Welcome back {users.logged_in_user['username']}!")
     except ValueError as err:
         clear_interface()
         print("Login error: " + err.args[0])
@@ -172,5 +175,17 @@ def cli_delete_user():
         users.logout()
 
 
-def cli_show_selection():
+def cli_save_to_selection():  # TODO IMPLEMENT
+    want_to_add = input("Want to add a business to the selection? Y/N ")
+    if want_to_add == "y" or want_to_add == "Y":
+        business_to_add = input("Enter VAT: ")
+        main.current_selection.append(business_to_add)
+
+
+def cli_show_selection():  # TODO IMPLEMENT
     print(main.current_selection)
+
+
+def cli_return_to_main_menu():
+    input("Press a button to continue to main menu")
+    clear_interface()
