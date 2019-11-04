@@ -2,7 +2,11 @@ import requests
 from config import *
 
 def map_from_api(coords):
-    response = requests.get("http://www.mapquestapi.com/directions/v2/optimizedroute")
+    parameters = {
+        
+    }
+    response = requests.get("http://www.mapquestapi.com/directions/v2/optimizedroute", params=parameters)
+    
 
 def attach_coords(business):
     """
