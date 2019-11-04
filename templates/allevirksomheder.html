@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Alle virksomheder{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Alle virksomheder:</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <td scope="col">CVR</td>
+        <td scope="col">Virksomhedsnavn</td>
+        <td scope="col">Postnummer</td>
+    </tr>
+    </thead>
+    {% for virk in result %}
+        <tr>
+            <td><a href="/visvirksomhed/?CVR={{ virk['vat'] }}"> {{ virk['vat'] }}</a></td>
+            <td>{{ virk['name'] }}</td>
+            <td>{{ virk['zipcode'] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<a href="/">
+    <button>Tilbage til forsiden?</button>
+</a>
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}
+
+
+
+

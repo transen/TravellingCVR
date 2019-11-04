@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Tak{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+{% if virk.vat is defined %}
+    <h1>Tak!</h1>
+    <a href="/visvirksomhed/?CVR={{ virk['vat'] }}"> <button>Se virksomheden med CVR-nummeret {{ virk['vat'] }}</button></a>
+    <br />
+    <a href="/"> <button>Tilbage til forsiden?</button></a>
+{% elif virk == 2 %}
+    <h1>CVR-nummeret eksisterer allerede i systemet!</h1>
+    <a href="/"> <button>Tilbage til forsiden?</button></a>
+{% elif virk == 1 %}
+    <h1>CVR-nummeret eksisterer ikke!</h1>
+    <a href="/"> <button>Tilbage til forsiden?</button></a>
+{% else %}
+    <h1>Noget gik desværre galt...</h1>
+    <a href="/"> <button>Tilbage til forsiden?</button></a>
+{% endif %}
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}

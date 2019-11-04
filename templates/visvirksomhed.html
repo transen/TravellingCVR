@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Vis virksomhed{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+{% if result.name is defined %}
+    <div class="container">
+        <h1>Virksomhed med CVR-nummer "{{ result['vat'] }}" fundet!</h1>
+        <div class="table-responsive-sm">
+            <table class="table table-bordered table-hover">
+                {% for key in result %}
+                    {% if key == 'location' or key == 'productionunits' or key == '_id' %}
+                        {% continue %}
+                    {% endif %}
+                    {% if key == 'owners' %}
+                        {% if result[key] is not none %}
+                            <tr>
+                                <td>{{ key|capitalize }}</td>
+                                <td>
+                                    {% for owner in result[key] %}
+                                        {{ owner.name }} &emsp;
+                                    {% endfor %}
+                                </td>
+                            </tr>
+
+                            {% continue %}
+                        {% else %}
+                            {% continue %}
+                        {% endif %}
+                    {% endif %}
+                    <tr>
+                        <td>{{ key|capitalize }}</td>
+                        <td>{{ result[key] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    <div class="btn-group btn-group-lg" role="group" aria-label="...">
+        <a href="https://www.google.com/maps/search/?api=1&query={{ result['location']['coordinates'][1] }},{{ result['location']['coordinates'][0] }}"
+           target="_blank">
+            <button>Se på kort</button>
+        </a>
+        <form action="/sletvirksomhed/" method="post"
+              onsubmit="return confirm('Er du sikker på at du vil slette virksomheden?')">
+            <input type="hidden" name="CVR" value="{{ result.vat }}"/>
+            <input type="submit" name="CVR" value="Slet virksomhed">
+        </form>
+        <a href="/allevirksomheder/">
+            <button>Vis alle virksomheder</button>
+        </a>
+         <br/>
+        <a href="/">
+            <button>Tilbage til forsiden?</button>
+        </a>
+    </div>
+    </div>
+{% elif result == 'search' %}
+    <h1>Søg virksomhed:</h1>
+    <form method="get" action="/visvirksomhed/">
+        <input type="text" name="CVR" required placeholder="Indtast CVR-nummer"/>
+        <input type="submit">
+    </form>
+{% else %}
+    <h1>Virksomhed ikke fundet! </h1>
+    <p>Søg virksomhed:</p>
+    <form method="get" action="/visvirksomhed/">
+        <input type="text" name="CVR" required placeholder="Indtast CVR-nummer"/>
+        <input type="submit">
+    </form>
+    <br/>
+    <a href="/">
+        <button>Tilbage til forsiden?</button>
+    </a>
+{% endif %}
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}
