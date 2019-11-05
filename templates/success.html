@@ -7,9 +7,9 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-{% if virk.vat is defined %}
-    <h1>Tak!</h1>
-    <a href="/business/?CVR={{ virk['vat'] }}"> <button>Find the business with the VAT {{ virk['vat'] }}</button></a>
+{% if business.vat is defined %}
+    <h1>Success!</h1>
+    <a href="/business/?VAT={{ business['vat'] }}"> <button>Explore the business with the VAT {{ business['vat'] }}</button></a>
     <br />
     <a href="/"> <button>Back to the front page?</button></a>
 {% elif virk == 2 %}

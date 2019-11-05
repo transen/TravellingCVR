@@ -1,7 +1,7 @@
 from flask import Flask, flash, escape, session, redirect, request, render_template, url_for
 from flask_pymongo import PyMongo
-from config import *
 from db_helper.mongofunctions import *
+from app_helpers.appfunctions import *
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = mongoclientstring  # located in config.py
@@ -15,37 +15,43 @@ env.add_extension("jinja2.ext.loopcontrols")
 app.secret_key = secret_app_key  # located in config.py
 
 
-# @app.route('/')
-# def visform():
-#     return render_template('home.html')
-
 @app.route('/')
 def front_page():
     return render_template('home.html')
 
 
-@app.route('/traekdatacvr/', methods=['GET', 'POST'])
-def traekvirk():
-    cvr = request.form.get('CVR')
-    virk = faerdig_fra_cvr(cvr)
-    return render_template('success.html', virk=virk)
+@app.route('/new_business/', methods=['GET', 'POST'])
+def add_business():
+    vat = request.form.get('VAT')
+    try:
+        business = app_add_business(vat)
+        return render_template('success.html', business=business)
+    except ValueError as err:
+        print(err.args[0])
+        return render_template('success.html', err=err.args[0])
 
 
 @app.route('/business/', methods=['GET', 'POST'])
 def show_business():
-    if 'CVR' in request.args:
-        vat = int(request.args.get('CVR', ''))
-        result = pull_single_business(vat)
-        return render_template('business.html', result=result)
+    if 'VAT' in request.args:
+        searchable = request.args.get('VAT', '')
+        if type(searchable) == str and searchable.isdigit():
+            searchable = int(searchable)
+        try:
+            business = pull_single_business(searchable)
+            return render_template('business.html', business=business)
+        except ValueError as err:
+            print(err.args[0])
+            return render_template('business.html', err=err.args[0])
     else:
         return render_template('business.html', result="search")
 
 
 @app.route('/delete_business/', methods=['GET', 'POST'])
-def sletvirksomhed():
-    if 'CVR' in request.form:
-        cvr = int(request.form.get('CVR'))
-        result = delete_business(cvr)
+def delete_business():
+    if 'VAT' in request.form:
+        vat = int(request.form.get('VAT'))
+        result = delete_business(vat)
         if type(result) is dict:
             return render_template('delete_business.html', result=result)
         if result is None:
@@ -56,8 +62,12 @@ def sletvirksomhed():
 
 @app.route('/all_businesses/', methods=['GET', 'POST'])
 def show_all_businesses():
-    result = pull_all_businesses()
-    return render_template('all_businesses.html', result=result)
+    try:
+        businesses = pull_all_businesses()
+        return render_template('all_businesses.html', businesses=businesses)
+    except ValueError as err:
+        print(err.args[0])
+        return render_template('all_businesses.html', err=err)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,7 @@
 import subprocess
 import getpass
+
+from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
 from prettytable import PrettyTable
 from user_helpers import users

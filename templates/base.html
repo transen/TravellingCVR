@@ -26,18 +26,18 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/allevirksomheder/">Show all businesses</a>
+                        <a class="nav-link" href="/all_businesses/">Show all businesses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/visvirksomhed/">Show a single business</a>
+                        <a class="nav-link" href="/business/">Show a single business</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/sletvirksomhed/">Delete a business</a>
+                        <a class="nav-link" href="/delete_business/">Delete a business</a>
                     </li>
                 </ul>
-                <form class="form-inline" method="get" action="/visvirksomhed/">
+                <form class="form-inline" method="get" action="/business/">
                     <input class="form-control mr-sm-2" aria-label="Search" type="text" name="VAT" required
-                           placeholder="VAT" pattern="^[0-9]{8,8}" title="8 digits"
+                           placeholder="Enter VAT" pattern="^[0-9]{8,8}" title="8 digits"
                            oninvalid="alert('A VAT consists of 8 digits...')">
                     <button class="btn  btn-outline-primary my-2 my-sm-0" type="submit">Search for business</button>
                 </form>
