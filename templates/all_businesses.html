@@ -15,6 +15,9 @@
             <td scope="col">VAT</td>
             <td scope="col">Business name</td>
             <td scope="col">Zipcode</td>
+            <td scope="col">Status</td>
+            <td scope="col">Note</td>
+            <td scope="col">Map</td>
         </tr>
         </thead>
         {% for business in businesses %}
@@ -22,11 +25,15 @@
                 <td><a href="/business/?VAT={{ business['vat'] }}"> {{ business['vat'] }}</a></td>
                 <td>{{ business['name'] }}</td>
                 <td>{{ business['zipcode'] }}</td>
+                <td>{{ business['status'] }}</td>
+                <td>{{ business['note'] }}</td>
+                <td><a href="{{ business['map url'] }}" target="_blank">Show on map</a></td>
+
             </tr>
         {% endfor %}
     </table>
 {% elif err is defined %}
-    <h1>Error</h1>
+    <h1>No business found</h1>
     <p>{{ err }}</p>
 {% else %}
     <h1 style="color: red">Something went horribly wrong, please tell us!</h1>

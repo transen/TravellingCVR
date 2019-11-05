@@ -9,12 +9,12 @@
 {% block content %}
 <h1>Add a new business:</h1>
   <form method="post" action="/new_business/" >
-    <input type="text" name="VAT" required autofocus placeholder="Enter VAT" pattern="^[0-9]{8,8}" title="8 digits" oninvalid="alert('VAT consists of 8 digits...')" />
+    <input type="text" name="VAT" required autofocus placeholder="VAT or name" />
     <input type="submit" value="Add">
   </form>
     <h1>Search for a business:</h1>
-  <form method="get" action="/business/">
-    <input type="text" name="VAT" required  placeholder="Enter VAT" pattern="^[0-9]{8,8}" title="8 digits" oninvalid="alert('VAT consists of 8 digits...')" />
+  <form method="get" action="/search/">
+    <input type="text" name="search" required placeholder="Seach for..."/>
     <input type="submit" value="Search">
   </form>
     <h1>Delete a business:</h1>

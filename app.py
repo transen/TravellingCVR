@@ -48,7 +48,7 @@ def show_business():
 
 
 @app.route('/delete_business/', methods=['GET', 'POST'])
-def delete_business():
+def app_delete_business():
     if 'VAT' in request.form:
         vat = int(request.form.get('VAT'))
         result = delete_business(vat)
@@ -68,6 +68,26 @@ def show_all_businesses():
     except ValueError as err:
         print(err.args[0])
         return render_template('all_businesses.html', err=err)
+
+
+@app.route('/search/', methods=['GET', 'POST'])
+def search_business():
+    if 'search' in request.args:
+        search = request.args.get('search')
+        try:
+            results = search_businesses(search)
+            return render_template('search.html', results=results, search=search)
+        except ValueError as err:
+            print(err.args[0])
+            return render_template('search.html', err=err)
+    else:
+        return render_template('search.html', results="search")
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    print(e)
+    return render_template("404.html")
 
 
 if __name__ == '__main__':

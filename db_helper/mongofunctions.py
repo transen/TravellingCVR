@@ -97,6 +97,21 @@ def delete_business(searchable):
         raise ValueError(f'No business found in DB with VAT or name: {searchable}')
 
 
+def search_businesses(searchable):
+    if type(searchable) == str and searchable.isdigit() and len(searchable) == 8:
+        searchable = int(searchable)
+        results = list(db.find({"vat": searchable}))
+    else:
+        results = list(db.find({"$text": {"$search": searchable}}))
+    if len(results) != 0:
+        for result in results:
+            # converts timestamp to a human-readable timestring
+            result['timeadded'] = result['timeadded'].strftime("%d-%m-%y %H:%M")
+        return results
+    else:
+        raise ValueError(f'No business found in DB when searching for: "{searchable}"')
+
+
 def change_status(searchable, wanted_status):
     """
     This function changes the status of a business in the mongodb.
