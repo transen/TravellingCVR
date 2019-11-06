@@ -20,6 +20,21 @@ def front_page():
     return render_template('home.html')
 
 
+@app.route('/login/', methods=['GET', 'POST'])
+def show_login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    if username is None or password is None:
+        return render_template('login.html')
+    else:
+        try:
+            app_login(username, password)
+            return render_template('login.html', result="Success!")
+        except ValueError as err:
+            print(err.args[0])
+            return render_template('login.html', result=err.args[0])
+
+
 @app.route('/new_business/', methods=['GET', 'POST'])
 def add_business():
     vat = request.form.get('VAT')

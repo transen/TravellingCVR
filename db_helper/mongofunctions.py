@@ -79,8 +79,6 @@ def delete_business(searchable):
     "delete_one"-method to delete the business-document from the DB. The function then returns the deleted business,
     for further handling and presentation to the end-user.
 
-    TODO Perhaps make it a regex to achieve partial match - is that even what we want?
-
     :param searchable:
     :type searchable:
     :raises ValueError:
@@ -98,7 +96,21 @@ def delete_business(searchable):
 
 
 def search_businesses(searchable):
+    """
+    This functions runs a $search query on mongodb, through a $text-index, and returns a list of dictionaries,
+    which are the individual businesses queried by the searchable. The searchable is checked whether it is supposed
+    to be a VAT (if it's a string, only digits and lenght is 8), and is then handled as and converted to int, querying
+    the mongodb only for VAT-fields. If the result is empty (len = 0) a ValueError is raised, which is handled later on
+    by either front-end (Flask or CLI). Otherwise the result is pakced into a list and returned.
+
+    :param searchable: The search-term inputted by the end-user
+    :type searchable: str
+    :raises ValueError: When result is empty
+    :return: A list of businesses in dict-form
+    :rtype: list
+    """
     if type(searchable) == str and searchable.isdigit() and len(searchable) == 8:
+        # if searchable matches above, it is a VAT
         searchable = int(searchable)
         results = list(db.find({"vat": searchable}))
     else:
