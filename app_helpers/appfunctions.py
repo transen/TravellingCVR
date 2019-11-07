@@ -76,3 +76,13 @@ def app_create_user(username, email, password, address):
         return username
     except ValueError as err:
         raise ValueError(err.args[0])
+
+
+def app_delete_user(username):
+    try:
+        users.delete_user(username)
+        print(f"User '{username}' deleted!")
+        return username
+    except ValueError as err:
+        print(err.args[0])
+        raise ValueError(err.args[0])

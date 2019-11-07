@@ -4,6 +4,7 @@ from db_helper.mongofunctions import *
 from app_helpers.appfunctions import *
 from app_helpers.models import *
 from user_helpers import users
+from user_helpers.users import update_user_last_login
 
 app = Flask(__name__)
 
@@ -46,8 +47,10 @@ def login():
         if user and User.validate_login(password, user['password']):
             user_obj = User(user['username'])
             login_user(user_obj)
-            print("Logged in successfully!")
-            print(request.args.get("next"))
+            try:
+                update_user_last_login(username)
+            except ValueError as err:
+                print(err.args[0])
             return redirect(request.args.get("next") or "/")
         elif user:
             return render_template('login.html', result="Password is incorrect")
@@ -80,6 +83,21 @@ def signup():
             return render_template('signup.html', result=err.args[0])
     else:
         return render_template('signup.html')
+
+
+@app.route('/delete_user/', methods=['GET', 'POST'])
+@login_required
+def app_delete_current_user():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        try:
+            app_delete_user(username)
+            logout_user()
+            return render_template('login.html', result=f"Deletion of user '{username}' successful!")
+        except ValueError as err:
+            return render_template('login.html', result=err.args[0])
+    else:
+        return redirect(url_for('front_page'))
 
 
 @app.route('/login-test/', methods=['GET', 'POST'])
