@@ -59,3 +59,6 @@ def test_change_status():
 def test_change_note():
     assert type(change_note("Transdesign.dk", "Test note")) == dict
 
+
+def test_db_search():
+    assert len(search_businesses("trans")) == 1

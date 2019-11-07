@@ -8,7 +8,7 @@ from user_helpers.password_hashing import *
 db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
 
 # A runtime-specific dict of user-details, which is populated at login
-logged_in_user = None
+logged_in_user = None  # TODO move this + references to cli_functions
 
 
 def add_user(username, email, password, address, isadmin=False):
@@ -66,7 +66,7 @@ def login(username, password):
     """
     result = db.find_one({'username': username})
     if type(result) == dict:
-        if verify_password(result["password"], password):
+        if verify_password(result["password"], password):  # Move code below to CLI-helper as well + return true/false
             global logged_in_user
             logged_in_user = result
             return logged_in_user

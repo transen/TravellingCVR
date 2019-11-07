@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Search results{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+{% if results is defined %}
+    <div class="container">
+        <h1>Search results for "{{ search }}"</h1>
+        <table class="table">
+                <thead>
+                <tr>
+                    <td scope="col">VAT</td>
+                    <td scope="col">Business name</td>
+                    <td scope="col">Zipcode</td>
+                </tr>
+                </thead>
+        {% for result in results %}
+                <tr>
+                    <td><a href="/business/?VAT={{ result['vat'] }}"> {{ result['vat'] }}</a></td>
+                    <td>{{ result['name'] }}</td>
+                    <td>{{ result['zipcode'] }}</td>
+                </tr>
+
+        {% endfor %}
+        </table>
+        <a href="/">
+            <button>Back to the front page?</button>
+        </a>
+    </div>
+    </div>
+{% elif results == 'search' %}
+    <h1>Search for a business:</h1>
+    <form method="get" action="/business/">
+        <input type="text" name="VAT" required placeholder="VAT"/>
+        <input type="submit" value="Search">
+    </form>
+{% elif err is defined %}
+    <h1>Nothing found</h1>
+    <p>{{ err }}</p>
+    <a href="/all_businesses/">
+        <button>Show all businesses</button>
+    </a>
+    <a href="/">
+        <button>Back to front page?</button>
+    </a>
+{% else %}
+    <h1>Search for a business! </h1>
+    <p>Search for a business:</p>
+    <form method="get" action="/business/">
+        <input type="text" name="VAT" required placeholder="VAT"/>
+        <input type="submit" value="Search">
+    </form>
+    <br/>
+    <a href="/">
+        <button>Back to front page?</button>
+    </a>
+{% endif %}
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}

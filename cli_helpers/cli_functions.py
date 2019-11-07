@@ -1,5 +1,7 @@
 import subprocess
 import getpass
+
+from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
 from prettytable import PrettyTable
 from user_helpers import users
@@ -93,9 +95,10 @@ def cli_add_user():
     chosen_username = input("Input username: ")
     chosen_email = input("Input email: ")
     chosen_password = getpass.getpass()
-    chosen_address = input("Input address: ")
+    chosen_address = input("Input address (Format: <streetname> <housenumber>, <zipcode> <city>, <countrycode>):\n")
     try:
         users.add_user(chosen_username, chosen_email, chosen_password, chosen_address)
+        print("User created successfully!")
     except ValueError as err:
         print("ERROR", err.args[0])
     cli_return_to_main_menu()
