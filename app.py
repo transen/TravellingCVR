@@ -63,6 +63,25 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/signup/', methods=['GET', 'POST'])
+def signup():
+    if current_user.is_authenticated:
+        return redirect("/")
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        address = f"{request.form.get('address')}, {request.form.get('zipcode')}" \
+                  f" {request.form.get('city')}, {request.form.get('country')}"
+        try:
+            app_create_user(username, email, password, address)
+            return render_template('login.html', result="Signup successful!")
+        except ValueError as err:
+            return render_template('signup.html', result=err.args[0])
+    else:
+        return render_template('signup.html')
+
+
 @app.route('/login-test/', methods=['GET', 'POST'])
 def show_login():  # old login-system, perhaps reusable?
     username = request.form.get('username')

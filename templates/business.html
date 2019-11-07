@@ -9,7 +9,7 @@
 {% block content %}
 {% if business.vat is defined %}
     <div class="container">
-        <h1>{{ business['name'] }} | VAT: {{ business['vat'] }}:</h1>
+        <h1>{{ business['name'] }}</h1>
         <div class="table-responsive-sm">
             <table class="table table-bordered table-hover">
                 {% for key in business %}

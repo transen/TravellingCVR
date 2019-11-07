@@ -1,7 +1,8 @@
+import getpass
 from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
-from user_helpers.users import *
-from user_helpers.password_hashing import *
+from user_helpers import users, password_hashing
+
 
 
 def app_add_business(business):
@@ -65,4 +66,13 @@ def app_change_note(business, new_note):
         return result
     except ValueError as err:
         print("STATUS-CHANGE ERROR: " + err.args[0])
+        raise ValueError(err.args[0])
+
+
+def app_create_user(username, email, password, address):
+    try:
+        users.add_user(username, email, password, address)
+        print(f'User "{username}" created successfully!')
+        return username
+    except ValueError as err:
         raise ValueError(err.args[0])
