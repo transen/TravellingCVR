@@ -50,7 +50,7 @@ def login():
             print(request.args.get("next"))
             return redirect(request.args.get("next") or "/")
         elif user:
-            return render_template('login.html', result="Password doesn't match")
+            return render_template('login.html', result="Password is incorrect")
 
         else:
             return render_template('login.html', result=f"Username '{username}' doesn\'t exist")
