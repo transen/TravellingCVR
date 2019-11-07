@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Error 404!{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>404 - Not found</h1>
+    <p>Whoopies, this page doesn't seem to exist.</p>
+    <br />
+    <a href="/">
+        <button>Back to the front page?</button>
+    </a>
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}

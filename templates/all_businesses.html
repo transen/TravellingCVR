@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}All businesses{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+{% if businesses is defined %}
+    <h1>All businesses:</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <td scope="col">VAT</td>
+            <td scope="col">Business name</td>
+            <td scope="col">Zipcode</td>
+            <td scope="col">Status</td>
+            <td scope="col">Note</td>
+            <td scope="col">Map</td>
+        </tr>
+        </thead>
+        {% for business in businesses %}
+            <tr>
+                <td><a href="/business/?VAT={{ business['vat'] }}"> {{ business['vat'] }}</a></td>
+                <td>{{ business['name'] }}</td>
+                <td>{{ business['zipcode'] }}</td>
+                <td>{{ business['status'] }}</td>
+                <td>{{ business['note'] }}</td>
+                <td><a href="{{ business['map url'] }}" target="_blank">Show on map</a></td>
+
+            </tr>
+        {% endfor %}
+    </table>
+{% elif err is defined %}
+    <h1>No business found</h1>
+    <p>{{ err }}</p>
+{% else %}
+    <h1 style="color: red">Something went horribly wrong, please tell us!</h1>
+{% endif %}
+<a href="/">
+    <button>Back to the front page?</button>
+</a>
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}
+
+
+
+
