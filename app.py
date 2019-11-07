@@ -1,11 +1,12 @@
 from flask import Flask, flash, escape, session, redirect, request, render_template, url_for
-from flask_pymongo import PyMongo
+from flask_login import LoginManager, login_user, logout_user, login_required
 from db_helper.mongofunctions import *
 from app_helpers.appfunctions import *
+from app_helpers.models import *
+from user_helpers import users
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = mongoclientstring  # located in config.py
-mongo = PyMongo(app)
+
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['EXPLAIN_TEMPLATE_LOADING'] = True
@@ -14,6 +15,18 @@ env.add_extension("jinja2.ext.loopcontrols")
 
 app.secret_key = secret_app_key  # located in config.py
 
+login_manager = LoginManager()
+login_manager.login_view = "login"
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(username):
+    u = users.db.find_one({"username": username})
+    if not u:
+        return None
+    return User(u['username'])
+
 
 @app.route('/')
 def front_page():
@@ -21,6 +34,35 @@ def front_page():
 
 
 @app.route('/login/', methods=['GET', 'POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    if username is None or password is None:
+        return render_template('login.html')
+    else:
+        user = users.db.find_one({"username": username})
+        if user and User.validate_login(password, user['password']):
+            user_obj = User(user['username'])
+            login_user(user_obj)
+            print("Logged in successfully!")
+            return redirect("/")
+        else:
+            return render_template('login.html', result=f"Username '{username}' doesn\'t exist")
+
+
+@app.route('/login-required/', methods=['GET', 'POST'])
+@login_required
+def login_is_required():
+    return "Success!"
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
+@app.route('/login-test/', methods=['GET', 'POST'])
 def show_login():
     username = request.form.get('username')
     password = request.form.get('password')
