@@ -99,3 +99,17 @@ def delete_user(username):
         return found_user
     else:
         raise ValueError(f'A user with specified username \'{username}\' does not exist!')
+
+
+def update_user_last_login(username):
+    user = db.find_one({"username": username})
+    if user:
+        last_login = datetime.now()
+        result = db.find_one_and_update(
+            {"username": username},
+            {"$set":
+             {"Last login": last_login}
+             })
+        return result
+    else:
+        raise ValueError("User doesn't exist.")

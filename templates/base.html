@@ -8,6 +8,7 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
               crossorigin="anonymous">
         <title>{% block title %}{% endblock %}</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     {% endblock %}
 </head>
 <body>
@@ -15,33 +16,41 @@
     <div class="sticky-top">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-            <a class="navbar-brand" href="/">Travelling CVR</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/all_businesses/">Show all businesses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/business/">Show a single business</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/delete_business/">Delete a business</a>
-                    </li>
-                </ul>
-                <form class="form-inline" method="get" action="/search/">
-                    <input class="form-control mr-sm-2" aria-label="Search" type="text" name="search" required
-                           placeholder="Search for..." title="8 digits">
-                    <button class="btn  btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-                </form>
+                <a class="navbar-brand" href="/">Travelling CVR</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/all_businesses/">Show all businesses</a>
+                        </li>
+                    </ul>
+                    {% if current_user.is_authenticated %}
+                        <a class="nav-link" href="/logout/">
+                            <button class="btn  btn-outline-primary my-2 my-sm-0">
+                                Log out
+                            </button>
+                        </a>
+                    {% else %}
+                        <a class="nav-link" href="/login/">
+                            <button class="btn  btn-outline-primary my-2 my-sm-0">
+                                Log in
+                            </button>
+                        </a>
+                    {% endif %}
+                    <form class="form-inline" method="get" action="/search/">
+                        <input class="form-control mr-sm-2" aria-label="Search" type="text" name="search" required
+                               placeholder="Search..." title="8 digits">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
             </div>
-        </div>
         </nav>
     </div>
 {% endblock %}
@@ -49,11 +58,23 @@
     {% block content %}{% endblock %}
 </div>
 <footer class="footer fixed-bottom blue mt-auto py-3 bg-light">
-<div class="container">
-    {% block footer %}
-        &copy; Copyright 2019 by <a href="https://broholttrans.dk/">The knights who say PY</a>.
-    {% endblock %}
-</div>
+    <div class="container">
+        {% block footer %}
+            <span>&copy; Copyright 2019 by <a href="https://broholttrans.dk/">The knights who say PY</a></span>
+            {% if current_user.is_authenticated %}
+{#                <span style="float: right">Logged ind as "<a href="/delete-user?username={{ current_user.username }}" onclick="return confirm('Are you sure you want to delete your account?')">{{ current_user.username }}</a>"</span>#}
+                <span style="float: right">Logged ind as "{{ current_user.username }}"
+                    <form style="display: inline" action="/delete_user/" method="post"
+              onsubmit="return confirm('Are you sure you want to delete your account?')">
+            <input type="hidden" name="username" value="{{ current_user.username }}"/>
+                    <button type="submit" class="btn btn-outline-primary btn-sm">Delete account</button>
+                </form>
+                </span>
+            {% else %}
+                <span style="float: right">Not logged in</span>
+            {% endif %}
+        {% endblock %}
+    </div>
 </footer>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

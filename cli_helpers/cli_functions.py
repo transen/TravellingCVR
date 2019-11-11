@@ -6,6 +6,7 @@ from db_helper.mongofunctions import *
 from prettytable import PrettyTable
 from user_helpers import users
 import cli_main
+from user_helpers.users import update_user_last_login
 
 
 # Clears the terminal-window
@@ -157,6 +158,7 @@ def cli_login():
         result = users.login(try_username, try_password)
         users.logged_in_user = result
         clear_interface()
+        update_user_last_login(try_username)
         print(f"Welcome back {users.logged_in_user['username']}!")
     except ValueError as err:
         clear_interface()

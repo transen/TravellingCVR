@@ -7,20 +7,20 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-{% if business.vat is defined %}
+{% if business is defined %}
     <h1>Success!</h1>
-    <a href="/business/?VAT={{ business['vat'] }}"> <button>Explore the business with the VAT {{ business['vat'] }}</button></a>
+    <a href="/business/?VAT={{ business['vat'] }}"> <button class="btn btn-outline-primary my-2 my-sm-0">Explore the business</button></a>
     <br />
-    <a href="/"> <button>Back to the front page?</button></a>
-{% elif virk == 2 %}
-    <h1>The business already exists in the system!</h1>
-    <a href="/"> <button>Back to the front page?</button></a>
-{% elif virk == 1 %}
-    <h1>The business doesn't exist!</h1>
-    <a href="/"> <button>Back to the front page?</button></a>
+    <br />
+    <a href="/"> <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page?</button></a>
+{% elif err is defined %}
+    <h1>An error occured:</h1>
+    <p>{{ err }}</p>
+    <a href="/"> <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page?</button></a>
 {% else %}
-    <h1>Something went wrong......</h1>
-    <a href="/"> <button>Back to the front page?</button></a>
+    <h1>Something went wrong...</h1>
+    <p>Please contact us about it!</p>
+    <a href="/"> <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page?</button></a>
 {% endif %}
 {% endblock %}
 {% block footer %}

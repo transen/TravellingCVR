@@ -1,7 +1,8 @@
+import getpass
 from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
-from user_helpers.users import *
-from user_helpers.password_hashing import *
+from user_helpers import users, password_hashing
+
 
 
 def app_add_business(business):
@@ -16,13 +17,13 @@ def app_add_business(business):
         #         return None
     except ValueError as err:
         print("API ERROR: " + err.args[0])
-        return ValueError  # breaks function and bubbles error to front-end
+        raise ValueError("Business doesn't exist.")  # breaks function and bubbles error to front-end
     # attempt to fetch coordinates
     try:
         business = attach_coords(business)
     except ValueError as err:
         print("COORDS ERROR: " + err.args[0])
-        return ValueError  # breaks function and bubbles error to front-end
+        raise ValueError("The businesses' address couldn't be determined")  # breaks function and bubbles error to front-end
     # attempt to insert the business to mongodb
     try:
         business = insert_business(business)
@@ -30,7 +31,7 @@ def app_add_business(business):
         return business
     except ValueError as err:
         print("INSERT ERROR: " + err.args[0])
-        return ValueError  # breaks function and bubbles error to front-end
+        raise ValueError("That business already exists in the system!")  # breaks function and bubbles error to front-end
 
 
 def app_login(username, password):
@@ -42,3 +43,46 @@ def app_login(username, password):
             raise ValueError("Password doesn't match username")
     else:
         raise ValueError(f"Username '{username}' doesn\'t exist")
+
+
+def app_change_status(business, new_status):
+    try:
+        new_status = int(new_status)
+        try:
+            result = change_status(business, new_status)
+            print(f"Status of '{result['name']}' changed to '{result['status']}'!")
+            return result
+        except ValueError as err:
+            print("STATUS-CHANGE ERROR: " + err.args[0])
+            raise ValueError(err.args[0])
+    except ValueError:
+        raise ValueError("Status can only be a number between 1-5")
+
+
+def app_change_note(business, new_note):
+    try:
+        result = change_note(business, new_note)
+        print(f"Note for '{result['name']}' changed from '{result['note']}' to '{new_note}'")
+        return result
+    except ValueError as err:
+        print("STATUS-CHANGE ERROR: " + err.args[0])
+        raise ValueError(err.args[0])
+
+
+def app_create_user(username, email, password, address):
+    try:
+        users.add_user(username, email, password, address)
+        print(f'User "{username}" created successfully!')
+        return username
+    except ValueError as err:
+        raise ValueError(err.args[0])
+
+
+def app_delete_user(username):
+    try:
+        users.delete_user(username)
+        print(f"User '{username}' deleted!")
+        return username
+    except ValueError as err:
+        print(err.args[0])
+        raise ValueError(err.args[0])
