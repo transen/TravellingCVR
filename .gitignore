@@ -125,8 +125,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Passwords etc.
-config.py
 
 .idea/
 .vscode/settings.json
+!/config.py
+
