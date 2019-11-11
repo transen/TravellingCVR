@@ -62,7 +62,7 @@
     <div>
         <form class="form-inline" action="/update_status/" method="post">
             <input type="hidden" name="VAT" value="{{ business.vat }}"/>
-            <input type="text" name="status" class="form-control w-25 mr-sm-2" placeholder="Number between 1-5"/>
+            <input type="text" name="status" class="form-control w-25 mr-sm-2" placeholder="Number between 1-5" maxlength="1"/>
             <button type="submit" class="btn  btn-outline-primary my-2 my-sm-0">Update status</button>
         </form>
     </div>
@@ -70,7 +70,7 @@
     <div>
         <form class="form-inline" action="/update_note/" method="post">
             <input type="hidden" name="VAT" value="{{ business.vat }}"/>
-            <input type="text" name="note" class="form-control w-25 mr-sm-2" placeholder="New note..."/>
+            <input type="text" name="note" class="form-control w-25 mr-sm-2" placeholder="New note..." maxlength="50"/>
             <button type="submit" class="btn  btn-outline-primary my-2 my-sm-0">Update note</button>
         </form>
     </div>
