@@ -64,7 +64,8 @@ def fetch_coords_from_string(address_string):
         coords = list(lat_lng.values())
         return coords
     else:
-        raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
+        print(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
+        raise ValueError(f"Reliable coordinates could not be fetched from given address.")
 
 
 def build_map_url(coords):

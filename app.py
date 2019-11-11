@@ -1,9 +1,10 @@
 from flask import Flask, flash, escape, session, redirect, request, render_template, url_for
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from db_helper.mongofunctions import *
 from app_helpers.appfunctions import *
 from app_helpers.models import *
 from user_helpers import users
+from user_helpers.users import update_user_last_login
 
 app = Flask(__name__)
 
@@ -35,6 +36,8 @@ def front_page():
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect("/")
     username = request.form.get('username')
     password = request.form.get('password')
     if username is None or password is None:
@@ -44,26 +47,61 @@ def login():
         if user and User.validate_login(password, user['password']):
             user_obj = User(user['username'])
             login_user(user_obj)
-            print("Logged in successfully!")
-            return redirect("/")
+            try:
+                update_user_last_login(username)
+            except ValueError as err:
+                print(err.args[0])
+            return redirect(request.args.get("next") or "/")
+        elif user:
+            return render_template('login.html', result="Password is incorrect")
+
         else:
             return render_template('login.html', result=f"Username '{username}' doesn\'t exist")
 
 
-@app.route('/login-required/', methods=['GET', 'POST'])
+@app.route('/logout/')
 @login_required
-def login_is_required():
-    return "Success!"
-
-
-@app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
 
+@app.route('/signup/', methods=['GET', 'POST'])
+def signup():
+    if current_user.is_authenticated:
+        return redirect("/")
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        address = f"{request.form.get('address')}, {request.form.get('zipcode')}" \
+                  f" {request.form.get('city')}, {request.form.get('country')}"
+        try:
+            app_create_user(username, email, password, address)
+            return render_template('login.html', result="Signup successful!")
+        except ValueError as err:
+            return render_template('signup.html', result=err.args[0])
+    else:
+        return render_template('signup.html')
+
+
+@app.route('/delete_user/', methods=['GET', 'POST'])
+@login_required
+def app_delete_current_user():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        try:
+            app_delete_user(username)
+            logout_user()
+            return render_template('login.html', result=f"Deletion of user '{username}' successful!")
+        except ValueError as err:
+            return render_template('login.html', result=err.args[0])
+    else:
+        return redirect(url_for('front_page'))
+
+
 @app.route('/login-test/', methods=['GET', 'POST'])
-def show_login():
+def show_login():  # old login-system, perhaps reusable?
     username = request.form.get('username')
     password = request.form.get('password')
     if username is None or password is None:
@@ -78,6 +116,7 @@ def show_login():
 
 
 @app.route('/new_business/', methods=['GET', 'POST'])
+@login_required
 def add_business():
     vat = request.form.get('VAT')
     try:
@@ -88,7 +127,34 @@ def add_business():
         return render_template('success.html', err=err.args[0])
 
 
+@app.route('/update_status/', methods=['GET', 'POST'])
+@login_required
+def update_business_status():
+    vat = request.form.get('VAT')
+    new_status = request.form.get('status')
+    try:
+        business = app_change_status(vat, new_status)
+        return render_template('success.html', business=business)
+    except ValueError as err:
+        print(err.args[0])
+        return render_template('success.html', err=err.args[0])
+
+
+@app.route('/update_note/', methods=['GET', 'POST'])
+@login_required
+def update_business_note():
+    vat = request.form.get('VAT')
+    new_note = request.form.get('note')
+    try:
+        business = app_change_note(vat, new_note)
+        return render_template('success.html', business=business)
+    except ValueError as err:
+        print(err.args[0])
+        return render_template('success.html', err=err.args[0])
+
+
 @app.route('/business/', methods=['GET', 'POST'])
+@login_required
 def show_business():
     if 'VAT' in request.args:
         searchable = request.args.get('VAT', '')
@@ -105,6 +171,7 @@ def show_business():
 
 
 @app.route('/delete_business/', methods=['GET', 'POST'])
+@login_required
 def app_delete_business():
     if 'VAT' in request.form:
         vat = int(request.form.get('VAT'))
@@ -118,6 +185,7 @@ def app_delete_business():
 
 
 @app.route('/all_businesses/', methods=['GET', 'POST'])
+@login_required
 def show_all_businesses():
     try:
         businesses = pull_all_businesses()
@@ -128,6 +196,7 @@ def show_all_businesses():
 
 
 @app.route('/search/', methods=['GET', 'POST'])
+@login_required
 def search_business():
     if 'search' in request.args:
         search = request.args.get('search')
