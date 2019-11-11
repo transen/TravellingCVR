@@ -2,7 +2,7 @@ import getpass
 from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
 from user_helpers import users, password_hashing
-
+from user_helpers.password_hashing import verify_password
 
 
 def app_add_business(business):
