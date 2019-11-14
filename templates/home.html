@@ -23,7 +23,15 @@
     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Delete</button>
   </form>
     <br />
-    <a href="/all_businesses/"><button class="btn btn-outline-primary my-2 my-sm-0">See all businesses</button></a>
+  <form action="/all_businesses">
+    <select name="sort" id="sort" class="">
+        <option selected="" value="name">Name</option>
+        <option value="zipcode">Zipcode</option>
+        <option value="status">Status</option>
+        <option value="vat">VAT</option>
+    </select>
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">See all businesses</button>
+    </form>
 {% endblock %}
 {% block footer %}
     {{ super() }}
