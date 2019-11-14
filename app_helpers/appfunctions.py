@@ -34,6 +34,10 @@ def app_add_business(business):
         raise ValueError("That business already exists in the system!")  # breaks function and bubbles error to front-end
 
 
+# def app_show_business():
+
+
+
 def app_login(username, password):
     result = db.find_one({'username': username})
     if type(result) == dict:
