@@ -187,12 +187,21 @@ def app_delete_business():
 @app.route('/all_businesses/', methods=['GET', 'POST'])
 @login_required
 def show_all_businesses():
-    try:
-        businesses = pull_all_businesses()
-        return render_template('all_businesses.html', businesses=businesses)
-    except ValueError as err:
-        print(err.args[0])
-        return render_template('all_businesses.html', err=err)
+    if 'sort' not in request.args:
+        try:
+            businesses = pull_all_businesses()
+            return render_template('all_businesses.html', businesses=businesses)
+        except ValueError as err:
+            print(err.args[0])
+            return render_template('all_businesses.html', err=err)
+    else:
+        sort = request.args.get('sort', '')
+        try:
+            businesses = pull_all_businesses(sort)
+            return render_template('all_businesses.html', businesses=businesses)
+        except ValueError as err:
+            print(err.args[0])
+            return render_template('all_businesses.html', err=err)
 
 
 @app.route('/search/', methods=['GET', 'POST'])
