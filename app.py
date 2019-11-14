@@ -1,12 +1,14 @@
 from flask import Flask, flash, escape, session, redirect, request, render_template, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from db_helper.mongofunctions import *
+from flask_sslify import SSLify
 from app_helpers.appfunctions import *
 from app_helpers.models import *
 from user_helpers import users
 from user_helpers.users import update_user_last_login
 
 app = Flask(__name__)
+sslify = SSLify(app)
 
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
