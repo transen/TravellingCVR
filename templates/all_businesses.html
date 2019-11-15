@@ -9,6 +9,18 @@
 {% block content %}
 {% if businesses is defined %}
     <h1>All businesses:</h1>
+    <form style="display: inline" action="/all_businesses" method="get">
+    <p style="display: inline">Change sorting:</p>
+    <select class="form-control mr-sm-2" style="display: inline-block; width: 100px" name="sort" id="sort" class="">
+        <option selected="" value="name">Name</option>
+        <option value="zipcode">Zipcode</option>
+        <option value="status">Status</option>
+        <option value="vat">VAT</option>
+    </select>
+    <button style="display: inline-block" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Sort</button>
+    </form>
+    <br />
+    <br />
     <table class="table">
         <thead>
         <tr>

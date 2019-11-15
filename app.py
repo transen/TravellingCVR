@@ -218,7 +218,7 @@ def search_business():
             print(err.args[0])
             return render_template('search.html', err=err)
     else:
-        return render_template('search.html', results="search")
+        return render_template('search.html')
 
 
 @app.errorhandler(404)
