@@ -28,7 +28,7 @@
         {% endfor %}
         </table>
         <a href="/">
-            <button>Back to the front page?</button>
+            <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
         </a>
     </div>
     </div>
@@ -41,22 +41,35 @@
 {% elif err is defined %}
     <h1>Nothing found</h1>
     <p>{{ err }}</p>
-    <a href="/all_businesses/">
-        <button>Show all businesses</button>
-    </a>
+    <h2>Search for a business:</h2>
+    <form class="form-inline" method="get" action="/search/">
+    <input class="form-control w-25 mr-sm-2" type="text" name="search" required placeholder="Seach for..."/>
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+  </form>
+    <br/>
+      <form action="/all_businesses" method="get">
+      <h1>Show all businesses:</h1>
+    <select class="form-control w-25 mr-sm-2" style="display: inline-block" name="sort" id="sort" class="">
+        <option selected="" value="name">Name</option>
+        <option value="zipcode">Zipcode</option>
+        <option value="status">Status</option>
+        <option value="vat">VAT</option>
+    </select>
+    <button style="display: inline-block" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Show all businesses</button>
+    </form>
+    <br />
     <a href="/">
-        <button>Back to front page?</button>
+        <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
     </a>
 {% else %}
-    <h1>Search for a business! </h1>
-    <p>Search for a business:</p>
-    <form method="get" action="/business/">
-        <input type="text" name="VAT" required placeholder="VAT"/>
-        <input type="submit" value="Search">
-    </form>
-    <br/>
+    <h1>Search for a business:</h1>
+    <form class="form-inline" method="get" action="/search/">
+    <input class="form-control w-25 mr-sm-2" type="text" name="search" required placeholder="Seach for..."/>
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+  </form>
+    <br />
     <a href="/">
-        <button>Back to front page?</button>
+        <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
     </a>
 {% endif %}
 {% endblock %}
