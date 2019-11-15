@@ -7,89 +7,94 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-{% if business is defined %}
-    <div class="container">
-        <h1>{{ business['name'] }}</h1>
-        <div class="table-responsive-sm">
-            <table class="table table-bordered table-hover">
-                {% for key in business %}
-                    {% if key == 'location' or key == 'productionunits' or key == '_id' or key == 'map url' %}
-                        {% continue %}
-                    {% endif %}
-                    {% if key == 'owners' %}
-                        {% if business[key] is not none %}
-                            <tr>
-                                <td>{{ key|capitalize }}</td>
-                                <td>
-                                    {% for owner in business[key] %}
-                                        {{ owner.name }} &emsp;
-                                    {% endfor %}
-                                </td>
-                            </tr>
-
-                            {% continue %}
-                        {% else %}
+    {% if business is defined %}
+        <div class="container">
+            <h1>{{ business['name'] }}</h1>
+            <div class="table-responsive-sm">
+                <table class="table table-bordered table-hover">
+                    {% for key in business %}
+                        {% if key == 'location' or key == 'productionunits' or key == '_id' or key == 'map url' %}
                             {% continue %}
                         {% endif %}
-                    {% endif %}
-                    <tr>
-                        <td>{{ key|capitalize }}</td>
-                        <td>{{ business[key] }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
+                        {% if key == 'owners' %}
+                            {% if business[key] is not none %}
+                                <tr>
+                                    <td>{{ key|capitalize }}</td>
+                                    <td>
+                                        {% for owner in business[key] %}
+                                            {{ owner.name }} &emsp;
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                                {% continue %}
+                            {% else %}
+                                {% continue %}
+                            {% endif %}
+                        {% endif %}
+                        <tr>
+                            <td>{{ key|capitalize }}</td>
+                            <td>{{ business[key] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="btn-group btn-group-lg" role="group" aria-label="...">
+                <a href="{{ business['map url'] }}"
+                   target="_blank">
+                    <button class="btn  btn-outline-primary my-2 my-sm-0">Find on map</button>
+                </a>
+                <form action="/delete_business/" method="post"
+                      onsubmit="return confirm('Are you sure you want to delete this business?')">
+                    <input type="hidden" name="VAT" value="{{ business.vat }}"/>
+                    <button type="submit" class="btn  btn-outline-primary my-2 my-sm-0">Delete Business</button>
+                </form>
+                <a href="/all_businesses/">
+                    <button class="btn  btn-outline-primary my-2 my-sm-0">Show all businesses</button>
+                </a>
+                <br/>
+                <a href="/">
+                    <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
+                </a>
+            </div>
+            <br/>
+            <br/>
+            <div>
+                <form class="form-inline" action="/update_status/" method="post">
+                    <input type="hidden" name="VAT" value="{{ business.vat }}"/>
+                    <input type="text" name="status" class="form-control w-25 mr-sm-2" placeholder="Number between 1-5"
+                           maxlength="1"/>
+                    <button type="submit" class="btn  btn-outline-primary my-2 my-sm-0">Update status</button>
+                </form>
+            </div>
+            <br/>
+            <div>
+                <form class="form-inline" action="/update_note/" method="post">
+                    <input type="hidden" name="VAT" value="{{ business.vat }}"/>
+                    <input type="text" name="note" class="form-control w-25 mr-sm-2" placeholder="New note..."
+                           maxlength="50"/>
+                    <button type="submit" class="btn  btn-outline-primary my-2 my-sm-0">Update note</button>
+                </form>
+            </div>
         </div>
-    <div class="btn-group btn-group-lg" role="group" aria-label="...">
-        <a href="{{ business['map url'] }}"
-           target="_blank">
-            <button class="btn  btn-outline-primary my-2 my-sm-0">Find on map</button>
-        </a>
-        <form action="/delete_business/" method="post"
-              onsubmit="return confirm('Are you sure you want to delete this business?')">
-            <input type="hidden" name="VAT" value="{{ business.vat }}"/>
-            <button type="submit" class="btn  btn-outline-primary my-2 my-sm-0">Delete Business</button>
+    {% elif err is defined %}
+        <h1>Error</h1>
+        <p>{{ err }}</p>
+        <br/>
+        <form class="form-inline" method="get" action="/search/">
+            <input class="form-control w-25 mr-sm-2" type="text" name="search" required placeholder="Seach for..."/>
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
-        <a href="/all_businesses/">
-            <button class="btn  btn-outline-primary my-2 my-sm-0">Show all businesses</button>
-        </a>
-         <br/>
+    {% else %}
+        <h1>Search for a business:</h1>
+        <form class="form-inline" method="get" action="/search/">
+            <input class="form-control w-25 mr-sm-2" type="text" name="search" required placeholder="Seach for..."/>
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <br/>
         <a href="/">
             <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
         </a>
-        </div>
-    <br />
-    <br />
-    <div>
-        <form class="form-inline" action="/update_status/" method="post">
-            <input type="hidden" name="VAT" value="{{ business.vat }}"/>
-            <input type="text" name="status" class="form-control w-25 mr-sm-2" placeholder="Number between 1-5" maxlength="1"/>
-            <button type="submit" class="btn  btn-outline-primary my-2 my-sm-0">Update status</button>
-        </form>
-    </div>
-    <br />
-    <div>
-        <form class="form-inline" action="/update_note/" method="post">
-            <input type="hidden" name="VAT" value="{{ business.vat }}"/>
-            <input type="text" name="note" class="form-control w-25 mr-sm-2" placeholder="New note..." maxlength="50"/>
-            <button type="submit" class="btn  btn-outline-primary my-2 my-sm-0">Update note</button>
-        </form>
-    </div>
-    </div>
-{% elif err is defined %}
-    <h1>Error</h1>
-    <p>{{ err }}</p>
-{% else %}
-    <h1>Business not found! </h1>
-    <p>Search for a business:</p>
-    <form method="get" action="/business/">
-        <input type="text" name="VAT" required placeholder="VAT"/>
-        <input type="submit" value="Search">
-    </form>
-    <br/>
-    <a href="/">
-        <button>Back to front page?</button>
-    </a>
-{% endif %}
+    {% endif %}
 {% endblock %}
 {% block footer %}
     {{ super() }}
