@@ -9,7 +9,7 @@
 {% block content %}
 {% if result is defined %}
     <div class="row justify-content-center">
-        <div class="alert alert-warning" style="text-align: center">
+        <div class="alert {{ alert }}" style="text-align: center">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <span>{{ result }}</span>
         </div>
