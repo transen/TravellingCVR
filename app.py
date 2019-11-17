@@ -48,7 +48,9 @@ def load_user(username):
 """
 '@app.route()'s are triggered when the app encounters a request for the given page. ('/'), for example, is the root of 
 the site and executes the corresponding 'front_page()' function, and '/business/' executes the 'show_businesses()' 
-function. This, put very simply, coubles the frontend to the backend.
+function. This, put very simply, is the coubling between the frontend and the backend.
+The '@login_required' decorator makes sure that only logged-in visitors may access the corresponding page, and the 
+visitor will be redirected to the login-page, with the originally requested page stored in a GET-parameter.
 """
 @app.route('/')
 def front_page():
@@ -165,7 +167,7 @@ def app_delete_current_user():
 @login_required
 def add_business():
     """
-
+    Tries to
     """
     vat = request.form.get('VAT')
     try:
@@ -225,24 +227,25 @@ def show_business():
             print(err.args[0])
             return render_template('business.html', err=err.args[0])
     else:
-        return render_template('business.html', result="search")
+        return render_template('business.html')
 
 
 @app.route('/delete_business/', methods=['GET', 'POST'])
 @login_required
 def app_delete_business():
     """
-    TODO tidy thise results up, it's weird
+    TODO tidy these results up, it's weird... It needs to try / except instead...
     """
     if 'VAT' in request.form:
         vat = int(request.form.get('VAT'))
-        result = delete_business(vat)
-        if type(result) is dict:
+        try:
+            result = delete_business(vat)
             return render_template('delete_business.html', result=result)
-        if result is None:
-            return render_template('delete_business.html', result=1)
+        except ValueError as err:
+            print(err.args[0])
+            return render_template('delete_business.html', err=err.args[0])
     else:
-        return render_template('delete_business.html', result=False)
+        return render_template('delete_business.html')
 
 
 @app.route('/all_businesses/', methods=['GET', 'POST'])
@@ -291,7 +294,7 @@ def page_not_found(e):
     """
     Catches 404-errors, prints error to console (for later debugging), and renders a custom 404-page.
 
-    :param e: The HTTP-error raised by Flask when encountering a 404-error
+    :param e: The default HTTP-error raised by Flask when encountering a 404-error
     """
     print(e)
     return render_template("404.html")

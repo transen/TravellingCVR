@@ -7,21 +7,34 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-{% if result.vat is defined %}
-    <p>The business "{{ result['name'] }}" with the VAT "{{ result['vat'] }}" has successfully been deleted!</p>
-    <a href="/"><button>Back to the front page?</button></a>
-{% elif result == 1 %}
-    <p>No business found with that VAT!</p>
-    <a href="/"><button>Back to the front page?</button></a>
-{% else %}
-    <h1>Enter VAT for deletion:</h1>
-    <form method="post" action="/sletvirksomhed/" onsubmit="return confirm('Are you sure you want to delete this business??')">
-    <input type="text" name="VAT" required placeholder="Enter VAT" pattern="^[0-9]{8,8}" title="8 digits" oninvalid="alert('VAT consists of 8 digits...')" />
-    <input type="submit" value="Delete">
-  </form>
-    <br />
-    <a href="/"><button>Back to the front page?</button></a>
-{% endif %}
+    {% if result is defined %}
+        <h1>Success</h1>
+        <p>The business "{{ result['name'] }}" with the VAT "{{ result['vat'] }}" has successfully been deleted!</p>
+        <a href="/">
+            <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
+        </a>
+    {% elif err is defined %}
+        <h1>An error has occured:</h1>
+        <p>{{ err }}</p>
+        <a href="/">
+            <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
+        </a>
+    {% else %}
+        <h1>Enter VAT for deletion:</h1>
+        </form>
+        <h1>Delete a business:</h1>
+        <form class="form-inline" method="post" action="/delete_business/"
+              onsubmit="return confirm('Are you sure you want to delete this business??')">
+            <input class="form-control w-25 mr-sm-2" type="text" name="VAT" required placeholder="Enter VAT"
+                   pattern="^[0-9]{8,8}" title="8 digits" oninvalid="alert('VAT consists of 8 digits...')"/>
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Delete</button>
+        </form>
+        </form>
+        <br/>
+        <a href="/">
+            <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
+        </a>
+    {% endif %}
 {% endblock %}
 {% block footer %}
     {{ super() }}
