@@ -9,7 +9,7 @@
 {% block content %}
 {% if result is defined %}
     <div class="row justify-content-center">
-        <div class="alert alert-warning" style="text-align: center">
+        <div class="alert {{ alert }}" style="text-align: center">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <span>{{ result }}</span>
         </div>
@@ -50,7 +50,7 @@
 		<div class="form-group col-md-6">
 		  <label>Country</label>
 		  <select name="country" id="inputState" class="form-control">
-            <option selected="">DK</option>
+            <option selected="" value="DK">Denmark</option>
 		  </select>
 		</div> <!-- form-group end.// -->
 	</div> <!-- form-row.// -->
