@@ -113,3 +113,11 @@ def update_user_last_login(username):
         return result
     else:
         raise ValueError("User doesn't exist.")
+
+
+def pull_user(username):
+    user = db.find_one({"username": username})
+    if user:
+        return user
+    else:
+        raise ValueError("User doesn't exist.")
