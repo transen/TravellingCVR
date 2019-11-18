@@ -13,6 +13,10 @@
     <br />
     <br />
     <a href="/"> <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page?</button></a>
+{% elif link is defined %}
+    <h1>Your route is ready!</h1>
+    <br />
+    <a href="{{ link }}" target="_blank"> <button class="btn  btn-outline-primary my-2 my-sm-0">See your route</button></a>
 {% elif err is defined %}
     <h1>An error occured:</h1>
     <p>{{ err }}</p>
