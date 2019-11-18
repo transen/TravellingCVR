@@ -2,7 +2,7 @@ import getpass
 from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
 from user_helpers import users, password_hashing
-
+from user_helpers.password_hashing import verify_password
 
 
 def app_add_business(business):
@@ -32,6 +32,10 @@ def app_add_business(business):
     except ValueError as err:
         print("INSERT ERROR: " + err.args[0])
         raise ValueError("That business already exists in the system!")  # breaks function and bubbles error to front-end
+
+
+# def app_show_business():
+
 
 
 def app_login(username, password):
