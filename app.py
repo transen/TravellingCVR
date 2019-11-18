@@ -288,6 +288,29 @@ def search_business():
         return render_template('search.html')
 
 
+@app.route('/optimized_route/', methods=['GET', 'POST'])
+@login_required
+def optimize_route():
+    """
+    Logs out the current user; destroys the logged-in session. Handled by flask-login. Redirects to login-page.
+    """
+    if request.method == 'POST':
+        list_of_vats = request.form.getlist('VATS')
+        username = current_user.username
+        if len(list_of_vats) > 1:
+            try:
+                link = app_create_optimized_route(list_of_vats, username)
+                return render_template('success.html', link=link)
+            except ValueError as err:
+                print(err.args[0])
+                return render_template('all_businesses.html', err=err)
+        else:
+            return render_template('all_businesses.html', err="You must check 2 or more businesses "
+                                                              "to generate an optimized route")
+    else:
+        return redirect(url_for('show_all_businesses'))
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     """
