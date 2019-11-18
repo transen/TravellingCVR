@@ -22,8 +22,17 @@
     <input class="form-control w-25 mr-sm-2" type="text" name="VAT" required placeholder="Enter VAT" pattern="^[0-9]{8,8}" title="8 digits" oninvalid="alert('VAT consists of 8 digits...')" />
     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Delete</button>
   </form>
-    <br />
-    <a href="/all_businesses/"><button class="btn btn-outline-primary my-2 my-sm-0">See all businesses</button></a>
+  <form action="/all_businesses" method="get">
+      <h1>Show all businesses:</h1>
+    <select class="form-control w-25 mr-sm-2" style="display: inline-block" name="sort" id="sort">
+        <option disabled selected value>Sort by</option>
+        <option value="name">Name</option>
+        <option value="zipcode">Zipcode</option>
+        <option value="status">Status</option>
+        <option value="vat">VAT</option>
+    </select>
+    <button style="display: inline-block" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Show all businesses</button>
+    </form>
 {% endblock %}
 {% block footer %}
     {{ super() }}
