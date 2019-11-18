@@ -9,7 +9,7 @@
 {% block content %}
 {% if businesses is defined %}
     <h1>All businesses:</h1>
-    <form style="display: inline" action="/all_businesses" method="get">
+    <form style="display: inline" action="/all_businesses/" method="get">
     <p style="display: inline">Change sorting:</p>
     <select class="form-control mr-sm-2" style="display: inline-block; width: 100px" name="sort" id="sort" class="">
         <option selected="" value="name">Name</option>
@@ -21,9 +21,11 @@
     </form>
     <br />
     <br />
+    <form method="POST" action="/optimized_route/">
     <table class="table">
         <thead>
         <tr>
+            <td scope="col"></td>
             <td scope="col">VAT</td>
             <td scope="col">Business name</td>
             <td scope="col">Zipcode</td>
@@ -34,21 +36,25 @@
         </thead>
         {% for business in businesses %}
             <tr>
+                <td style="text-align: center;"><input type="checkbox" name="VATS" value="{{ business['vat'] }}"></td>
                 <td><a href="/business/?VAT={{ business['vat'] }}"> {{ business['vat'] }}</a></td>
                 <td>{{ business['name'] }}</td>
                 <td>{{ business['zipcode'] }}</td>
                 <td>{{ business['status'] }}</td>
                 <td>{{ business['note'] }}</td>
-                <td><a href="{{ business['map url'] }}" target="_blank">Show on map</a></td>
-
+                <td><a href="{{ business['map url'] }}" target="_blank">Map</a></td>
             </tr>
         {% endfor %}
     </table>
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Generate optimized route!</button>
+    </form>
+    <br />
 {% elif err is defined %}
-    <h1>No business found</h1>
+    <h1>An error has occured...</h1>
     <p>{{ err }}</p>
 {% else %}
     <h1 style="color: red">Something went horribly wrong, please tell us!</h1>
+
 {% endif %}
 <a href="/">
     <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page</button>
