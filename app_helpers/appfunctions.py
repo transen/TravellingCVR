@@ -3,6 +3,7 @@ from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
 from user_helpers import users, password_hashing
 from user_helpers.password_hashing import verify_password
+from user_helpers.users import pull_user
 
 
 def app_add_business(business):
@@ -35,7 +36,6 @@ def app_add_business(business):
 
 
 # def app_show_business():
-
 
 
 def app_login(username, password):
@@ -87,6 +87,34 @@ def app_delete_user(username):
         users.delete_user(username)
         print(f"User '{username}' deleted!")
         return username
+    except ValueError as err:
+        print(err.args[0])
+        raise ValueError(err.args[0])
+
+
+def app_create_optimized_route(list_of_vat, username):
+    try:
+        list_of_coords = vat_to_coords(list_of_vat)
+    except ValueError as err:
+        print(err.args[0])
+        raise ValueError(err.args[0])
+    try:
+        user_coords = f"{pull_user(username)['location'][0]},{pull_user(username)['location'][1]}"
+    except ValueError as err:
+        print(err.args[0])
+        raise ValueError(err.args[0])
+
+    list_of_coords.insert(0, user_coords)
+    list_of_coords.append(user_coords)
+
+    try:
+        optimized_list = optimize_order(list_of_coords)
+    except ValueError as err:
+        print(err.args[0])
+        raise ValueError(err.args[0])
+    try:
+        optimized_url = create_optimized_url(optimized_list)
+        return optimized_url
     except ValueError as err:
         print(err.args[0])
         raise ValueError(err.args[0])
