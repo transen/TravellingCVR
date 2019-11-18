@@ -174,7 +174,6 @@ def add_business():
         business = app_add_business(vat)
         return render_template('success.html', business=business)
     except ValueError as err:
-        print(err.args[0])
         return render_template('success.html', err=err.args[0])
 
 
