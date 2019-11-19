@@ -1,4 +1,5 @@
 import requests
+import json
 from config import *
 
 def map_from_api(coords):
@@ -82,4 +83,56 @@ def build_map_url(coords):
     return url
 
 
+def optimize_order(coords_list):
+    """
 
+    :param coords_list:
+    :type coords_list: list
+    :return:
+    :rtype: list
+    """
+    json_input = {"locations": coords_list, "options": {"narrativeType": "none", "doReverseGeocode": "false"}}
+
+    coords_json = json.dumps(json_input)
+
+    response = requests.get(
+        url='https://www.mapquestapi.com/directions/v2/optimizedroute',
+        params={'key': api_mapkey, 'json': coords_json},
+    )
+
+    if response.json()["info"]["statuscode"] == 0:
+        optimized_order = response.json()["route"]["locationSequence"]
+        optimized_list = []
+        for x in optimized_order:
+            optimized_list.append(coords_list[x])
+        return optimized_list
+    else:
+        raise ValueError(f'Error from mapquest: "{response.json()["info"]["messages"][0]}"')
+
+
+def create_optimized_url(optimized_coords_list):
+    """
+
+    :param optimized_coords_list:
+    :type optimized_coords_list: list
+    :return:
+    :rtype: str
+    """
+    waypoints_coords = []
+
+    for x in range(1, len(optimized_coords_list) - 1):
+        waypoints_coords.append(str(optimized_coords_list[x]))
+
+    waypoints_string = "|"
+    waypoints_string = waypoints_string.join(waypoints_coords)
+
+    req = requests.Request('get',
+                           url="https://www.google.com/maps/dir/",
+                           params={"api": "1",
+                                   "origin": optimized_coords_list[0],
+                                   "destination": optimized_coords_list[0],
+                                   "travelmode": "driving",
+                                   "waypoints": waypoints_string}
+                           )
+    optimized_url = req.prepare().url
+    return optimized_url

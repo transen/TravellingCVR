@@ -14,6 +14,11 @@ testbusiness = {'vat': 38158686, 'name': 'Transdesign.dk', 'address': 'Langeland
                 'owners': [{'name': 'Martin Broholt Trans'}], 'timeadded': datetime(2019, 10, 28, 22, 23, 34, 760576),
                 'status': 0, 'note': '', 'map url': 'https://www.google.dk/maps/place/56.17339,10.20188'}
 
+test_list_vats = [34709912, 27746802, 35898743, 39387786]
+
+test_coords_list = ['56.17339,10.20188', '57.04825,9.94738', '55.85552,9.65243',
+                    '56.17284,10.19938', '56.17339,10.20188']
+
 
 def test_delete_business():
     delete_business(testarg)
@@ -60,5 +65,26 @@ def test_change_note():
     assert type(change_note("Transdesign.dk", "Test note")) == dict
 
 
+def test_pull_user():
+    assert pull_user("Martin")["email"] == "martin@broholttrans.dk"
+
+
 def test_db_search():
     assert len(search_businesses("trans")) == 1
+
+
+def test_db_vat_to_coords():
+    assert len(vat_to_coords(test_list_vats)) == 4
+
+
+def test_optimize_order():
+    assert optimize_order(test_coords_list) == test_coords_list
+
+
+def test_create_optimized_url():
+    assert create_optimized_url(test_coords_list) == "https://www.google.com/maps/dir/?api=1&" \
+                                                     "origin=56.17339%2C10.20188&" \
+                                                     "destination=56.17339%2C10.20188&travelmode=driving&" \
+                                                     "waypoints=57.04825%2C9.94738%7C55.85552%2C9.65243%7C" \
+                                                     "56.17284%2C10.19938"
+
