@@ -191,3 +191,24 @@ def business_exists_in_db(searchable):
         return True
     else:
         return False
+
+
+def vat_to_coords(list_of_vat):
+    """
+
+    :param list_of_vat:
+    :type list_of_vat: list
+    :raises ValueError:
+    :return:
+    :rtype: list
+    """
+    coords_list = []
+    try:
+        for x in list_of_vat:
+            coord_set = f"{pull_single_business(x)['location'][0]}," \
+                        f"{pull_single_business(x)['location'][1]}"
+            coords_list.append(coord_set)
+        return coords_list
+    except ValueError as err:
+        print(err.args[0])
+        raise ValueError(err.args[0])
