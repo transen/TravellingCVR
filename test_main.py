@@ -66,7 +66,7 @@ def test_change_note():
 
 
 def test_pull_user():
-    assert pull_user("Martin")["email"] == "martin@broholttrans.dk"
+    assert pull_user("mArtin")["email"] == "martin@broholttrans.dk"
 
 
 def test_db_search():
