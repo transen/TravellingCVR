@@ -39,7 +39,7 @@ def load_user(username):
     :return: Constructs the user-object and passes
     :rtype: object
     """
-    u = users.db.find_one({"username": username})
+    u = users.db.find_one({"username": {'$regex': username, '$options': 'i'}})
     if not u:
         return None
     return User(u['username'])
@@ -83,7 +83,7 @@ def login():
     if username is None or password is None:
         return render_template('login.html')
     else:
-        user = users.db.find_one({"username": username})
+        user = users.db.find_one({"username": {'$regex': username, '$options': 'i'}})
         if user and User.validate_login(password, user['password']):
             user_obj = User(user['username'])
             login_user(user_obj)
@@ -96,6 +96,7 @@ def login():
             return render_template('login.html', result="Password is incorrect", alert="alert-warning")
 
         else:
+            print(f"Username '{username}' doesn't exist")
             return render_template('login.html', result=f"Username '{username}' doesn\'t exist", alert="alert-warning")
 
 
@@ -131,6 +132,7 @@ def signup():
             app_create_user(username, email, password, address)
             return render_template('login.html', result="Signup successful!", alert="alert-success")
         except ValueError as err:
+            print(err.args[0])
             return render_template('signup.html', result=err.args[0], alert="alert-warning")
     else:
         return render_template('signup.html')
