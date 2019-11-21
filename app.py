@@ -26,6 +26,8 @@ login_manager = LoginManager()
 login_manager.login_view = "login"
 #: Initialises logging in via login_manager
 login_manager.init_app(app)
+#: Sets the default login message category, to match styling with bootstrap-alert
+login_manager.login_message_category = "primary"
 
 
 @login_manager.user_loader
@@ -242,7 +244,7 @@ def show_business():
 @login_required
 def app_delete_business():
     """
-    TODO tidy these results up, it's weird... It needs to try / except instead...
+
     """
     if 'VAT' in request.form:
         vat = int(request.form.get('VAT'))
