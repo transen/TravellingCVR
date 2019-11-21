@@ -130,7 +130,7 @@ def signup():
                   f" {request.form.get('city')}, {request.form.get('country')}"
         try:
             app_create_user(username, email, password, address)
-            return render_template('login.html', result="Signup successful!", alert="alert-success")
+            return redirect(url_for('login', result="Signup successful!", alert="alert-success"))
         except ValueError as err:
             print(err.args[0])
             return render_template('signup.html', result=err.args[0], alert="alert-warning")
