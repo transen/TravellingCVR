@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, render_template, url_for
+from flask import Flask, redirect, request, flash, render_template, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_sslify import SSLify
 from app_helpers.appfunctions import *
@@ -93,11 +93,14 @@ def login():
                 print(err.args[0])
             return redirect(request.args.get("next") or "/")
         elif user:
-            return render_template('login.html', result="Password is incorrect", alert="alert-warning")
+            flash("Password is incorrect", "warning")
+            print(f"Wrong password tried for {username}")
+            return render_template('login.html')
 
         else:
+            flash(f"Username '{username}' doesn't exist", "warning")
             print(f"Username '{username}' doesn't exist")
-            return render_template('login.html', result=f"Username '{username}' doesn\'t exist", alert="alert-warning")
+            return render_template('login.html')
 
 
 @app.route('/logout/')
@@ -130,10 +133,11 @@ def signup():
                   f" {request.form.get('city')}, {request.form.get('country')}"
         try:
             app_create_user(username, email, password, address)
-            return redirect(url_for('login', result="Signup successful!", alert="alert-success"))
+            flash("Signup successful!", "success")
+            return redirect(url_for('login'))
         except ValueError as err:
-            print(err.args[0])
-            return render_template('signup.html', result=err.args[0], alert="alert-warning")
+            flash(err.args[0], "warning")
+            return render_template('signup.html')
     else:
         return render_template('signup.html')
 
@@ -152,15 +156,18 @@ def app_delete_current_user():
         if current_user.username == request.form.get('username'):
             username = request.form.get('username')
         else:
-            return render_template('login.html', result=f"You need to be logged in as the user you want to delete!",
-                                   alert="alert-danger")
+            flash("You need to be logged in as the user you want to delete!", "danger")
+            print(f"'{current_user}' tried to delete the user: '{request.form.get('username')}' but failed.")
+            return render_template('login.html')
         try:
             app_delete_user(username)
             logout_user()
-            return render_template('login.html', result=f"Successfully deleted user '{username}'!",
-                                   alert="alert-success")
+            flash(f"Successfully deleted user '{username}'!", "success")
+            return render_template('login.html')
         except ValueError as err:
-            return render_template('login.html', result=err.args[0], alert="alert-danger")
+            flash(err.args[0], "danger")
+            print(err.args[0])
+            return render_template('login.html')
     else:
         return redirect(url_for('front_page'))
 
@@ -322,6 +329,12 @@ def page_not_found(e):
     """
     print(e)
     return render_template("404.html")
+
+
+@app.errorhandler(500)
+def internal_error(e):
+    print(e)
+    return render_template("500.html")
 
 
 #: Executes if cli_main.py is executed from CLI, but not if loaded/executed as a module during imports

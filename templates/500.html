@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Error 500!{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>An unexpected error has occurred (error 500)</h1>
+    <p>Please notify the administrators, if you've done something that should've worked. Sorry for the inconvenience!</p>
+
+    <a href="/">
+        <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page?</button>
+    </a>
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}
