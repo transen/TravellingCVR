@@ -7,32 +7,84 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-<h1>Add a new business:</h1>
-  <form class="form-inline" method="post" action="/new_business/" >
-    <input class="form-control w-25 mr-sm-2" type="text" name="VAT" required autofocus placeholder="VAT or name" />
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Add</button>
-  </form>
-    <h1>Search for a business:</h1>
-  <form class="form-inline" method="get" action="/search/">
-    <input class="form-control w-25 mr-sm-2" type="text" name="search" required placeholder="Seach for..."/>
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-  </form>
-    <h1>Delete a business:</h1>
-    <form class="form-inline" method="post" action="/delete_business/" onsubmit="return confirm('Are you sure you want to delete this business??')">
-    <input class="form-control w-25 mr-sm-2" type="text" name="VAT" required placeholder="Enter VAT" pattern="^[0-9]{8,8}" title="8 digits" oninvalid="alert('VAT consists of 8 digits...')" />
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Delete</button>
-  </form>
-  <form action="/all_businesses" method="get">
-      <h1>Show all businesses:</h1>
-    <select class="form-control w-25 mr-sm-2" style="display: inline-block" name="sort" id="sort">
-        <option disabled selected value>Sort by</option>
-        <option value="name">Name</option>
-        <option value="zipcode">Zipcode</option>
-        <option value="status">Status</option>
-        <option value="vat">VAT</option>
-    </select>
-    <button style="display: inline-block" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Show all businesses</button>
-    </form>
+
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center" style="max-width: 700px;">
+  <h1 class="display-4">Welcome</h1>
+  <p class="lead">Your one-stop-shop to plan routes and keep track for travelling salesmen!</p>
+</div>
+    <div class="container" style="max-width: 1024px; margin-top: 5%">
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">New business</h4>
+            </div>
+            <div class="card-body">
+                <p>Add a new business to the system</p>
+                <form method="post" action="/new_business/">
+                    <div class="form-group">
+                        <input class="form-control w-100 mr-sm-2" type="text" name="VAT" required autofocus
+                               placeholder="VAT or name"/>
+                    </div>
+                    <button class="btn btn-lg btn-block btn-outline-primary" type="submit">Add</button>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Search</h4>
+            </div>
+            <div class="card-body">
+                <p>Search through businesses in the system</p>
+                <form method="get" action="/search/">
+                    <div class="form-group">
+                        <input class="form-control w-100 mr-sm-2" type="text" name="search" required
+                               placeholder="Seach for..."/>
+                    </div>
+                    <button class="btn btn-lg btn-block btn-outline-primary" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Delete</h4>
+            </div>
+            <div class="card-body">
+                <p>Delete a business in the system</p>
+                <form method="post" action="/delete_business/"
+                      onsubmit="return confirm('Are you sure you want to delete this business?')">
+                    <div class="form-group">
+                        <input class="form-control w-100 mr-sm-2" type="text" name="VAT" required
+                               placeholder="Enter VAT"
+                               pattern="^[0-9]{8,8}" title="8 digits" oninvalid="alert('VAT consists of 8 digits...')"/>
+                    </div>
+                    <button class="btn btn-lg btn-block btn-outline-primary" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Show all</h4>
+            </div>
+            <div class="card-body">
+                <p>Show all businesses in the system</p>
+                <form action="/all_businesses" method="get">
+                    <div class="form-group">
+                        <select class="form-control w-100 mr-sm-2" style="display: inline-block" name="sort" id="sort">
+                            <option disabled selected value>Sort by</option>
+                            <option value="name">Name</option>
+                            <option value="zipcode">Zipcode</option>
+                            <option value="status">Status</option>
+                            <option value="vat">VAT</option>
+                        </select>
+                    </div>
+                    <button style="display: inline-block" class="btn btn-lg btn-block btn-outline-primary" type="submit">Show
+                        all
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
 {% endblock %}
 {% block footer %}
     {{ super() }}
