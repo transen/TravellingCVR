@@ -2,6 +2,7 @@ import requests
 import json
 from config import *
 
+# TODO: Change quality check (accept P1AXA), and remove 'city' parameter for all geocodings, can we just not use 'city'?
 
 def attach_coords(business):
     """
@@ -40,6 +41,8 @@ def attach_coords(business):
     else:
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
 
+
+# TODO: Change quality check (accept P1AXA), and remove 'city' parameter for all geocodings, can we just not use 'city'?
 
 def fetch_coords_from_string(address_string):
     """
