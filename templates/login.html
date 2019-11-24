@@ -7,39 +7,43 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-{% if result is defined %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="row justify-content-center">
+                    <div class="alert alert-{{ category }}" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <span>{{ message }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <br/>
     <div class="row justify-content-center">
-        <div class="alert {{ alert }}" style="text-align: center">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <span>{{ result }}</span>
-        </div>
+        <div class="card">
+            <article class="card-body">
+                <a href="/signup/" class="float-right btn btn-outline-primary">Sign up</a>
+                <h4 class="card-title mb-4 mt-1">Sign in</h4>
+                <form method="post">
+                    <div class="form-group">
+                        <label>Your username</label>
+                        <input name="username" class="form-control" placeholder="Username" type="text" autofocus required>
+                    </div> <!-- form-group// -->
+                    <div class="form-group">
+                        {#    	<a class="float-right" href="#">Forgot?</a>#}
+                        <label>Your password</label>
+                        <input name="password" class="form-control" placeholder="******" type="password" required>
+                    </div> <!-- form-group// -->
+                    <div class="form-group">
+                    </div> <!-- form-group// -->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block"> Login</button>
+                    </div> <!-- form-group// -->
+                </form>
+            </article>
+        </div> <!-- card.// -->
     </div>
-{% endif %}
-<br />
-<div class="row justify-content-center">
-<div class="card" >
-<article class="card-body">
-<a href="/signup/" class="float-right btn btn-outline-primary">Sign up</a>
-<h4 class="card-title mb-4 mt-1">Sign in</h4>
-	 <form method="post">
-    <div class="form-group">
-    	<label>Your username</label>
-        <input name="username" class="form-control" placeholder="Username" type="text">
-    </div> <!-- form-group// -->
-    <div class="form-group">
-{#    	<a class="float-right" href="#">Forgot?</a>#}
-    	<label>Your password</label>
-        <input name="password" class="form-control" placeholder="******" type="password">
-    </div> <!-- form-group// -->
-    <div class="form-group">
-    </div> <!-- form-group// -->
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block"> Login  </button>
-    </div> <!-- form-group// -->
-</form>
-</article>
-</div> <!-- card.// -->
-</div>
 {% endblock %}
 {% block footer %}
     {{ super() }}
