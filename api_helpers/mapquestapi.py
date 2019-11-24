@@ -1,6 +1,8 @@
 import requests
 import json
 from config import *
+import re
+
 
 # TODO: Change quality check (accept P1AXA), and remove 'city' parameter for all geocodings, can we just not use 'city'?
 
@@ -24,7 +26,7 @@ def attach_coords(business):
     :returns: the business with coordinates attached
     :rtype: dictionary
     """
-    address = f"{business.get('address')},{business.get('zipcode')},{business.get('city')},DK"
+    address = f"{business.get('address')},{business.get('zipcode')},DK"
     if "aa" in address or "oe" in address or "aa" in address:
         address = address.replace("aa", "å").replace("ae", "æ").replace("oe", "ø")  # mapquest needs æ ø å
     response = requests.get(
@@ -32,7 +34,7 @@ def attach_coords(business):
         params={'key': api_mapkey, 'location': address, 'maxResults': 1},
         )
     response_quality = response.json()['results'][0]['locations'][0]['geocodeQualityCode']
-    if response_quality == "P1AAA":  # Checks if mapquest is certain
+    if re.match(r"P1A.A", response_quality) is not None:  # Checks if mapquest is certain
         lat_lng = response.json()['results'][0]['locations'][0]['latLng']
         coords = list(lat_lng.values())
         business.update({"location": coords})
@@ -57,7 +59,7 @@ def fetch_coords_from_string(address_string):
         params={'key': api_mapkey, 'location': address_string, 'maxResults': 1},
     )
     response_quality = response.json()['results'][0]['locations'][0]['geocodeQualityCode']
-    if response_quality == "P1AAA":  # Checks if mapquest is certain
+    if re.match(r"P1A.A", response_quality) is not None:  # Checks if mapquest is certain
         lat_lng = response.json()['results'][0]['locations'][0]['latLng']
         coords = list(lat_lng.values())
         return coords
