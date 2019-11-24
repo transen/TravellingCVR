@@ -33,8 +33,8 @@ def add_user(username, email, password, address, isadmin=False):
     hashed_password = hash_password(password)
     timeadded = datetime.now()
     user = {
-        "username": username,
-        "email": email,
+        "username": username.capitalize(),
+        "email": email.capitalize(),
         "password": hashed_password,
         "address": address,
         "isAdmin": isadmin,
@@ -55,7 +55,7 @@ def login(username, password):
     """
     This function allows a user to login, if the username exists, and the password matches the hashed password located
     in MongoDB
-    TODO expand + create User-class for the logged-in user!
+    TODO expand
 
     :param username: the username which the user tries to log in with
     :type username: str
@@ -64,7 +64,7 @@ def login(username, password):
     :return:
     :rtype:
     """
-    result = db.find_one({'username': username})
+    result = db.find_one({"username": {'$regex': username, '$options': 'i'}})
     if type(result) == dict:
         if verify_password(result["password"], password):  # Move code below to CLI-helper as well + return true/false
             global logged_in_user
@@ -93,7 +93,7 @@ def delete_user(username):
     :return:
     :rtype: dict
     """
-    found_user = db.find_one({"username": username})
+    found_user = db.find_one({"username": {'$regex': username, '$options': 'i'}})
     if type(found_user) == dict:
         db.delete_one({"username": username})
         return found_user
@@ -102,7 +102,7 @@ def delete_user(username):
 
 
 def update_user_last_login(username):
-    user = db.find_one({"username": username})
+    user = db.find_one({"username": {'$regex': username, '$options': 'i'}})
     if user:
         last_login = datetime.now()
         result = db.find_one_and_update(
@@ -116,7 +116,7 @@ def update_user_last_login(username):
 
 
 def pull_user(username):
-    user = db.find_one({"username": username})
+    user = db.find_one({"username": {'$regex': username, '$options': 'i'}})
     if user:
         return user
     else:
