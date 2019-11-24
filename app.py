@@ -131,8 +131,7 @@ def signup():
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
-        address = f"{request.form.get('address')}, {request.form.get('zipcode')}" \
-                  f" {request.form.get('city')}, {request.form.get('country')}"
+        address = f"{request.form.get('address')}, {request.form.get('zipcode')}, {request.form.get('country')}"
         try:
             app_create_user(username, email, password, address)
             flash("Signup successful!", "success")
