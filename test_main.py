@@ -50,7 +50,7 @@ def test_delete_user():
 
 def test_add_user():
     assert type(add_user("Martin", "martin@broholttrans.dk", "test123",
-                         "Langelandsgade 210 st tv, 8200 Aarhus N, DK", True)) == dict
+                         "Langelandsgade 210 st tv, 8200, DK", True)) == dict
 
 
 def test_login_user():
@@ -66,7 +66,7 @@ def test_change_note():
 
 
 def test_pull_user():
-    assert pull_user("Martin")["email"] == "martin@broholttrans.dk"
+    assert pull_user("mArtin")["email"] == "Martin@broholttrans.dk"
 
 
 def test_db_search():
