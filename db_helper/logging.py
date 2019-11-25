@@ -1,27 +1,24 @@
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from api_helpers.cvrapi import *
-import datetime
+from datetime import datetime
 
 
 db = MongoClient(mongoclientstring).travellingcvr  # mongoclientstring hidden in config.py
 
 
-def add_errorlog(actor, action, result):
+def add_errorlog(actor=None, action=None, error=None):
     now = datetime.now()
     error_element = {
         "now": now,
         "actor": actor,
         "action": action,
-        "result": result
+        "error": error
     }
-    try:
-        db.errorlog.insert_one(error_element)
-    except DuplicateKeyError as err:
-        raise ValueError(f"Something went wrong inserting error to log: {err}")
+    db.errorlog.insert_one(error_element)
 
 
-def add_applog(actor, action, result):
+def add_applog(actor=None, action=None, result=None):
     now = datetime.now()
     app_element = {
         "now": now,
@@ -29,7 +26,4 @@ def add_applog(actor, action, result):
         "action": action,
         "result": result
     }
-    try:
-        db.applog.insert_one(app_element)
-    except DuplicateKeyError as err:
-        raise ValueError(f"Something went wrong inserting action to applog: {err}")
+    db.applog.insert_one(app_element)
