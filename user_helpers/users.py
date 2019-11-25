@@ -102,6 +102,16 @@ def delete_user(username):
 
 
 def update_user_last_login(username):
+    """
+    This function updates the "last login" attribute in the db. It's executed everytime a user successfully logs in, via
+    the front-end app. It searches the
+
+    :param username: The username
+    :type username: str
+    :raises ValueError: if user can't be found
+    :return: the updated user-dict from DB
+    :rtype: dict
+    """
     user = db.find_one({"username": {'$regex': username, '$options': 'i'}})
     if user:
         last_login = datetime.now()
