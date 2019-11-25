@@ -112,7 +112,9 @@ def optimize_order(coords_list):
             optimized_list.append(coords_list[x])
         return optimized_list
     else:
-        raise ValueError(f'Error from mapquest: "{response.json()["info"]["messages"][0]}"')
+        raise ValueError(f'Error from mapquest while generating optimized route: '
+                         f'"{response.json()["info"]["messages"][0]}", statuscode: '
+                         f'{response.json()["info"]["statuscode"]}')
 
 
 def create_optimized_url(optimized_coords_list):
