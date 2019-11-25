@@ -4,7 +4,6 @@ from config import *
 import re
 
 
-
 def attach_coords(business):
     """
     This function starts off by creating a string being the address of the business, derived from the original
