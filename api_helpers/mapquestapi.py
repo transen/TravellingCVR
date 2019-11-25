@@ -76,8 +76,7 @@ def fetch_coords_from_string(address_string):
 
 def build_map_url(coords):
     """
-    This functions builds a, basic, Google Maps URL from a set of coordinates. Quite janky.
-    TODO reduce jankyness
+    This functions builds a, basic, Google Maps URL from a set of coordinates.
 
     :param coords: a 2-dimensional list of longtitude/latitude coordinates
     :type coords: list
@@ -90,10 +89,14 @@ def build_map_url(coords):
 
 def optimize_order(coords_list):
     """
+    This is the function that generates the optimized order for the locations for solving
+    "the travelling salesmen problem", it checks if the statuscode returned by mapquest
+    is = 0 and if it is it checks the locationSequence in in the returned JSON file.
+    The locationSequence is the order in which the points are placed for the optimized route.
 
-    :param coords_list:
+    :param coords_list: the coordinates required for generating the list
     :type coords_list: list
-    :return:
+    :return: returns a list of coordinates ordered in which route is optimized
     :rtype: list
     """
     json_input = {"locations": coords_list, "options": {"narrativeType": "none", "doReverseGeocode": "false"}}
@@ -119,10 +122,11 @@ def optimize_order(coords_list):
 
 def create_optimized_url(optimized_coords_list):
     """
+    This function constructs a google map url with the optimized route for the buisness selected
 
-    :param optimized_coords_list:
+    :param optimized_coords_list: list of the optimized coordinates for the route
     :type optimized_coords_list: list
-    :return:
+    :return: returns a google maps url with the provided coordinates set to driving
     :rtype: str
     """
     waypoints_coords = []
