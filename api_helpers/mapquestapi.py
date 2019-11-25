@@ -3,6 +3,12 @@ import json
 from config import *
 import re
 
+def map_from_api(coords):
+    parameters = {
+        
+    }
+    response = requests.get("http://www.mapquestapi.com/directions/v2/optimizedroute", params=parameters)
+    
 
 # TODO: Change quality check (accept P1AXA), and remove 'city' parameter for all geocodings, can we just not use 'city'?
 
