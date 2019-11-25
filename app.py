@@ -124,11 +124,11 @@ def logout():
 def signup():
     """
     Allows a visitor to sign up. If the user is already logged in, they will be redirected to the front-page. If the
-    request is a GET-request, the signup-HTML-template will be rendered. If it is a POST-request,  complete address will
-    be defined as a formatted string from the 'address', 'zipcode', 'city' and 'country' POST-parameters, and the
+    request is a GET-request, the signup-HTML-template will be rendered. If it is a POST-request, a complete address
+    will be defined as a formatted string from the 'address', 'zipcode' and 'country' POST-parameters, and the
     signup-credentials will be passed along to the the app_create_user-function in /app_helpers/appfunctions.py. If it
     raises an exception, that error will be presented to user to try again. If successful, the user will be redirected
-    to the login-page, with the flashed message "Signup successful!".
+    to the login-page, with the flashed (passed) message "Signup successful!".
     """
     if current_user.is_authenticated:
         return redirect("/")
@@ -343,7 +343,13 @@ def search_business():
 @login_required
 def optimize_route():
     """
-
+    Allows the user to create optimized routes from the front-end. If the request is not a POST-request, the user is
+    redirected to "/show_all_businesses"-page. If it is a POST-request, the function will determine the logged-in user's
+    username and the list of businesses (list_of_vats) the user wants to generate an optimized route for. If the list is
+    less than two, the user will be presented with the error "You must check 2 or more businesses to generate an
+    optimized route". Otherwise a URL will try to be built (see documentation for app_create_optimized_route()) and
+    presented to the user through the 'success'-template. If any errors occur, the user will be presented with it, and
+    it will be printed to the console and logged to the error-db.
     """
     if request.method == 'POST':
         list_of_vats = request.form.getlist('VATS')
