@@ -312,8 +312,8 @@ def optimize_route():
                 link = app_create_optimized_route(list_of_vats, username)
                 return render_template('success.html', link=link)
             except ValueError as err:
-                print(err.args[0])
-                return render_template('all_businesses.html', err=err)
+                return render_template('all_businesses.html', err="Something went wrong. Please try again, or contact "
+                                                                  "the system-administrator.")
         else:
             return render_template('all_businesses.html', err="You must check 2 or more businesses "
                                                               "to generate an optimized route")
@@ -334,6 +334,11 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def internal_error(e):
+    """
+    Catches 500-errors, prints error to console (for later debugging), and renders a custom 404-page.
+
+    :param e: The default HTTP-error raised by Flask when encountering a 404-error
+    """
     print(e)
     return render_template("500.html")
 
