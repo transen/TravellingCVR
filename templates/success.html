@@ -14,9 +14,11 @@
     <br />
     <a href="/"> <button class="btn  btn-outline-primary my-2 my-sm-0">Back to the front page?</button></a>
 {% elif link is defined %}
-    <h1>Your route is ready!</h1>
-    <br />
-    <a href="{{ link }}" target="_blank"> <button class="btn  btn-outline-primary my-2 my-sm-0">See your route</button></a>
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center" style="max-width: 700px;">
+        <h1 class="display-4">Your route is ready!</h1>
+        <br />
+        <a href="{{ link }}" target="_blank"> <button class="btn  btn-outline-primary my-2 my-sm-0">See your route</button></a>
+    </div>
 {% elif err is defined %}
     <h1>An error occured:</h1>
     <p>{{ err }}</p>
