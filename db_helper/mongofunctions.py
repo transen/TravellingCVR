@@ -12,13 +12,13 @@ def insert_business(business):
     and the hosted MongoDB-database. MongoDB is inherently noSQL, compared to a traditional relational SQL-database,
     which we are accustomed to, and used to work with. This has been an intentionally added challenge, in order to
     obtain more practical knowledge of noSQL-moddeled behaviour in regards to non-structured data.
-    TODO explain this further
+    
 
-    :param business:
-    :type business:
-    :raises ValueError:
-    :return:
-    :rtype:
+    :param business: it's a dictonary of a buisness with all the data included
+    :type business: dict
+    :raises ValueError: if a buisness with the the identifier (vat) already exists it raises a valueError
+    :return: returns the dictonary again so it can be presented to the user, much like a callback
+    :rtype: dictonary
     """
     try:
         db.insert_one(business)
@@ -30,12 +30,10 @@ def insert_business(business):
 def pull_single_business(searchable):
     """
     Pulls a single business from MongoDB from VAT-parameter or name of business
-    TODO explain this further
-    TODO make the entire business searchable. Good idea? Just name and VAT?
-
-    :param searchable:
-    :type searchable:
-    :raises ValueError:
+    
+    :param searchable: The search-term inputted by the end-user
+    :type searchable: str
+    :raises ValueError: if no business in DB found with that name or VAT
     :return: The queried business
     :rtype: dictionary
     """
@@ -53,11 +51,14 @@ def pull_single_business(searchable):
 def pull_all_businesses(sorted_by="name"):
     """
     This functions pulls all businesses in MongoDB and returns a list of businesses as output.
+    the list includes all data regarding the businesses, it's done by simply running a for loop through
+    all entries in the database and then appending it to a list one by one. This insures that everytime
+    a new buisness is created it will always get pulled with this function.
 
-    TODO expand this
 
-    :param sorted_by:
-    :type sorted_by:
+    :param sorted_by: just there to sort each buisness by the name
+    :type sorted_by: str
+    :raises ValueError:
     :return: A list of all businesses located in the database.
     :rtype: list
     """
@@ -79,9 +80,9 @@ def delete_business(searchable):
     "delete_one"-method to delete the business-document from the DB. The function then returns the deleted business,
     for further handling and presentation to the end-user.
 
-    :param searchable:
-    :type searchable:
-    :raises ValueError:
+    :param searchable: The search-term inputted by the end-user
+    :type searchable: str
+    :raises ValueError: If no buisness with the provided name or VAT is found
     :return: The business which has just been deleted
     :rtype: dictionary
     """
@@ -128,9 +129,9 @@ def change_status(searchable, wanted_status):
     """
     This function changes the status of a business in the mongodb.
 
-    :param searchable:
+    :param searchable: The search-term inputted by the end-user
     :type searchable: str or int
-    :param wanted_status:
+    :param wanted_status: number between 1-5
     :type wanted_status: int
     :return: The updated business
     :rtype: dict
@@ -154,9 +155,9 @@ def change_note(searchable, wanted_note):
     """
     This function changes the note of a business in the mongodb.
 
-    :param searchable:
+    :param searchable: The search-term inputted by the end-user
     :type searchable: str or int
-    :param wanted_note:
+    :param wanted_note: any note that the end-user wants to put to a single buisness
     :type wanted_note: str
     :return: The updated business
     :rtype: dict
@@ -195,11 +196,12 @@ def business_exists_in_db(searchable):
 
 def vat_to_coords(list_of_vat):
     """
+    This function takes 
 
-    :param list_of_vat:
+    :param list_of_vat: takes a list with vat numbers in it
     :type list_of_vat: list
     :raises ValueError:
-    :return:
+    :return: list of coordinates from a single business
     :rtype: list
     """
     coords_list = []
