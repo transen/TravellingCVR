@@ -10,8 +10,8 @@ db = MongoClient(mongoclientstring).travellingcvr  # mongoclientstring hidden in
 def add_errorlog(actor=None, action=None, error=None):
     now = datetime.now()
     error_element = {
-        "now": now,
-        "actor": actor,
+        "time": now,
+        "user": actor,
         "action": action,
         "error": error
     }
@@ -21,8 +21,8 @@ def add_errorlog(actor=None, action=None, error=None):
 def add_applog(actor=None, action=None, result=None):
     now = datetime.now()
     app_element = {
-        "now": now,
-        "actor": actor,
+        "time": now,
+        "user": actor,
         "action": action,
         "result": result
     }
