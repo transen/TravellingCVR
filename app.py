@@ -252,7 +252,7 @@ def show_business():
     if unsuccessful, the user will be presented with the error.
     """
     if 'VAT' in request.args:
-        searchable = request.args.get('VAT', '')
+        searchable = request.args.get('VAT', '') # if no value is set with the key, it defaults to an emtpy string
         if type(searchable) == str and searchable.isdigit():
             searchable = int(searchable)
         try:
@@ -270,7 +270,10 @@ def show_business():
 @login_required
 def app_delete_business():
     """
-
+    Allows a user to delete a business from the front-end. If a VAT-parameter isn't provided, a deletion HTML-form is
+    provided. If a VAT-parameter is passed, the function will try to delete the business from the db with the
+    VAT (see documentation for (delete_business()). If successful, the user will be presented to a success-page, and if
+    unsuccessful the user will be presented with the error, and errors will be logged both to the console and the DB.
     """
     if 'VAT' in request.form:
         vat = int(request.form.get('VAT'))
@@ -290,7 +293,10 @@ def app_delete_business():
 @login_required
 def show_all_businesses():
     """
-
+    Lists all business in the db in a HTML-table. If no "sort"-argument is provided, it simply tries to pull and present
+    the businesses with the default sorting (see documentation for pull_all_businesses()) and if it fails,
+    the user will be presented to the error which will also be logged. If a "sort"-argument is provided, it will pass
+    the sorting along to the pull_all_businesses()-function. If it fails, it does the same as with no sorting-parameter.
     """
     if 'sort' not in request.args:
         try:
@@ -301,7 +307,7 @@ def show_all_businesses():
             add_errorlog(current_user.username, "Show all businesses", err.args[0])
             return render_template('all_businesses.html', err=err.args[0])
     else:
-        sort = request.args.get('sort', '')
+        sort = request.args.get('sort', '')  # if no value is set with the key, it defaults to an emtpy string
         try:
             businesses = pull_all_businesses(sort)
             return render_template('all_businesses.html', businesses=businesses)
@@ -315,7 +321,10 @@ def show_all_businesses():
 @login_required
 def search_business():
     """
-
+    Allows the user to search the businesses from the front-end. If no 'search'-parameter is passed it will render a
+    HTML-form for searching. If a 'search'-parameter is passed, it will try to search the db (see documentation for
+    search_businesses()) and present the findings in a HTML-table. If it fails, the user will be presented with the
+    error, and it will be printed to the console and logged to the error-db.
     """
     if 'search' in request.args:
         search = request.args.get('search')
@@ -334,7 +343,7 @@ def search_business():
 @login_required
 def optimize_route():
     """
-    Logs out the current user; destroys the logged-in session. Handled by flask-login. Redirects to login-page.
+
     """
     if request.method == 'POST':
         list_of_vats = request.form.getlist('VATS')
@@ -360,23 +369,25 @@ def page_not_found(e):
     """
     Catches 404-errors, prints error to console (for later debugging), and renders a custom 404-page.
 
-    :param e: The default HTTP-error raised by Flask when encountering a 404-error
+    :param e: The default HTTP-exception raised by Flask when encountering a 404-error
+    :type e: object (<class 'werkzeug.exceptions.NotFound'>)
     """
     print(e)
-    add_errorlog("Someone", "404", e)
-    return render_template("404.html")
+    add_errorlog("Someone", "404", request.full_path)
+    return render_template("404.html"), 404
 
 
 @app.errorhandler(500)
 def internal_error(e):
     """
-    Catches 500-errors, prints error to console (for later debugging), and renders a custom 404-page.
+    Catches 500-errors, prints error to console (for later debugging), and renders a custom 500-page.
 
-    :param e: The default HTTP-error raised by Flask when encountering a 404-error
+    :param e: The default HTTP-exception raised by Flask when encountering a 500-error
+    :type e: object (<class 'werkzeug.exceptions.InternalServerError'>)
     """
     print(e)
-    add_errorlog("Someone", "500", e)
-    return render_template("500.html")
+    add_errorlog("Someone", "500", request.full_path)
+    return render_template("500.html"), 500
 
 
 #: Executes if cli_main.py is executed from CLI, but not if loaded/executed as a module during imports
