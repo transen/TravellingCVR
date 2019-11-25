@@ -4,10 +4,10 @@ from pymongo.errors import DuplicateKeyError
 from api_helpers.mapquestapi import *
 from user_helpers.password_hashing import *
 
-# MongoDB initial setup
+#: MongoDB initial setup
 db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
 
-# A runtime-specific dict of user-details, which is populated at login
+#: A runtime-specific dict of user-details, which is populated at login
 logged_in_user = None  # TODO move this + references to cli_functions
 
 
