@@ -180,6 +180,7 @@ def change_note(searchable, wanted_note):
 def business_exists_in_db(searchable):
     """
     This function checks the DB for the existance of the business being passed as an argument
+
     :param searchable: An unique identifier for the business that need check for existence
     :type searchable: int or str
     :return: True or false
@@ -196,11 +197,11 @@ def business_exists_in_db(searchable):
 
 def vat_to_coords(list_of_vat):
     """
-    This function takes 
+    This function takes a list of VAT numbers and pulls the coordinates from the mongoDB and returns them as a list
 
     :param list_of_vat: takes a list with vat numbers in it
     :type list_of_vat: list
-    :raises ValueError:
+    :raises ValueError: raises an value error if no buisness with that VAT exists
     :return: list of coordinates from a single business
     :rtype: list
     """
