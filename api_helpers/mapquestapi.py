@@ -4,8 +4,6 @@ from config import *
 import re
 
 
-# TODO: Change quality check (accept P1AXA), and remove 'city' parameter for all geocodings, can we just not use 'city'?
-
 def attach_coords(business):
     """
     This function starts off by creating a string being the address of the business, derived from the original
@@ -17,7 +15,6 @@ def attach_coords(business):
     latitude and longtitude, then save them in a list, which is in the end attached to the business which is returned.
     In the event of MapQuest returning a less-than-perfect quality, the function will raise a ValueError.
 
-    TODO Expand error-handling to report which part of the given address-string is unsure about (lists and stuff)
     TODO add comments in code to the docstring
 
     :param business: A dictinary that contains address-, zipcode- and city-key/value-pairs.
@@ -34,7 +31,7 @@ def attach_coords(business):
         params={'key': api_mapkey, 'location': address, 'maxResults': 1},
         )
     response_quality = response.json()['results'][0]['locations'][0]['geocodeQualityCode']
-    if re.match(r"P1A.A", response_quality) is not None:  # Checks if mapquest is certain
+    if re.match(r"P1A.A", response_quality) is not None:  # Checks if mapquest is certain, uses regex
         lat_lng = response.json()['results'][0]['locations'][0]['latLng']
         coords = list(lat_lng.values())
         business.update({"location": coords})
@@ -43,8 +40,6 @@ def attach_coords(business):
     else:
         raise ValueError(f"Reliable coordinates could not be fetched from given address, quality: {response_quality}")
 
-
-# TODO: Change quality check (accept P1AXA), and remove 'city' parameter for all geocodings, can we just not use 'city'?
 
 def fetch_coords_from_string(address_string):
     """
