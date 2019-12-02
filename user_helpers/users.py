@@ -4,10 +4,10 @@ from pymongo.errors import DuplicateKeyError
 from api_helpers.mapquestapi import *
 from user_helpers.password_hashing import *
 
-# MongoDB initial setup
+#: MongoDB initial setup
 db = MongoClient(mongoclientstring).travellingcvr.users  # mongoclientstring hidden in config.py
 
-# A runtime-specific dict of user-details, which is populated at login
+#: A runtime-specific dict of user-details, which is populated at login
 logged_in_user = None  # TODO move this + references to cli_functions
 
 
@@ -102,6 +102,16 @@ def delete_user(username):
 
 
 def update_user_last_login(username):
+    """
+    This function updates the "last login" attribute in the db. It's executed everytime a user successfully logs in, via
+    the front-end app. It searches the
+
+    :param username: The username
+    :type username: str
+    :raises ValueError: if user can't be found
+    :return: the updated user-dict from DB
+    :rtype: dict
+    """
     user = db.find_one({"username": {'$regex': username, '$options': 'i'}})
     if user:
         last_login = datetime.now()
