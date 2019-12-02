@@ -12,22 +12,13 @@ def insert_business(business):
     and the hosted MongoDB-database. MongoDB is inherently noSQL, compared to a traditional relational SQL-database,
     which we are accustomed to, and used to work with. This has been an intentionally added challenge, in order to
     obtain more practical knowledge of noSQL-moddeled behaviour in regards to non-structured data.
-<<<<<<< HEAD
-    
-
-=======
 
 
->>>>>>> 89438349a95081ac3cad07fea3bf39f3d6874523
     :param business: it's a dictonary of a buisness with all the data included
     :type business: dict
     :raises ValueError: if a buisness with the the identifier (vat) already exists it raises a valueError
     :return: returns the dictonary again so it can be presented to the user, much like a callback
-<<<<<<< HEAD
-    :rtype: dictonary
-=======
     :rtype: dict
->>>>>>> 89438349a95081ac3cad07fea3bf39f3d6874523
     """
     try:
         db.insert_one(business)
@@ -39,11 +30,7 @@ def insert_business(business):
 def pull_single_business(searchable):
     """
     Pulls a single business from MongoDB from VAT-parameter or name of business
-<<<<<<< HEAD
     
-=======
-
->>>>>>> 89438349a95081ac3cad07fea3bf39f3d6874523
     :param searchable: The search-term inputted by the end-user
     :type searchable: str
     :raises ValueError: if no business in DB found with that name or VAT
