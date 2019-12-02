@@ -1,7 +1,6 @@
 from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
 from user_helpers import users
-from user_helpers.password_hashing import verify_password
 from user_helpers.users import pull_user
 
 
