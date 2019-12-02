@@ -187,7 +187,7 @@ def app_delete_current_user():
 @login_required
 def add_business():
     """
-    Tries to insert a business into the DB (see app_add_business()-documentation), from a VAT-number provided by a
+    Tries to insert a business into the DB (see documentation for app_add_business()), from a VAT-number provided by a
     HTML-form. If successful, the user is directed to the success-page, and presented with a link to inspect the new
     business. If unsuccessful the user will be notified of the error.
     """

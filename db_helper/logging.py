@@ -21,6 +21,7 @@ def add_errorlog(actor=None, action=None, error=None):
     :param error: What error occurred
     :type error: str
     :return: True
+    :rtype: bool
     """
     now = datetime.now()
     error_element = {
@@ -47,6 +48,7 @@ def add_applog(actor=None, action=None, result=None):
     :param result: What has changed
     :type result: str
     :return: True
+    :rtype: bool
     """
     now = datetime.now()
     app_element = {
