@@ -21,15 +21,10 @@ def app_add_business(business):
     """
     try:
         business = business_from_api(business)
-        # if business["protected"]:  # TODO implement this somehow in front-end?
-        #     print("This business is protected against contacting them for ad-purposes.")
-        #     sure = input("Are you sure you want to add them to the database? Y/N ")
-        #     if sure == "n" or sure == "N":
-        #         print(f"'{business['name']}' not added because of protected-status")
-        #         return None
     except ValueError as err:
         print("API ERROR: " + err.args[0])
-        raise ValueError("Business doesn't exist.")  # breaks function and bubbles error to front-end
+        #: breaks function and bubbles error to front-end
+        raise ValueError("Business doesn't exist.")
     # Attempt to fetch coordinates
     try:
         business = attach_coords(business)
