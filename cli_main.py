@@ -1,10 +1,6 @@
 from cli_helpers.cli_functions import *
 from user_helpers import users
 
-# TODO Go from if-sentences to loop-selection-states?
-
-# TODO group menus together to have sub-menus
-
 current_selection = []
 
 

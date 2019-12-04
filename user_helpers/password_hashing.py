@@ -9,7 +9,7 @@ def hash_password(password):
     """
     Hashes a password for storing in mongodb, through SHA512, with a randomly generated salt.
 
-    TODO expand
+    TODO expand / tell where we've got it from?
 
     :param password:
     :type password: str
@@ -26,7 +26,7 @@ def verify_password(stored_password, provided_password):
     """
     Verify a stored password against one provided by user
 
-    TODO expand
+    TODO expand / tell where we've got it from?
 
     :param stored_password: The password-hash retrieved from MongoDB
     :type stored_password: ????
@@ -39,4 +39,4 @@ def verify_password(stored_password, provided_password):
     stored_password = stored_password[64:]
     pwdhash = hashlib.pbkdf2_hmac('sha512', provided_password.encode('utf-8'), salt.encode('ascii'), 100000)
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
-    return pwdhash == stored_password
+    return pwdhash == stored_password  # True or False
