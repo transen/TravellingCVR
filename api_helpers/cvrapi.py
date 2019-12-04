@@ -15,8 +15,7 @@ def business_from_api(vat_or_name, country='dk'):
     decode the JSON response to a dictionary. If the HTTP-request returns a valid response, the function
     will return the business-info as a dictionary. If not, the function will raise the response-error to the console
     and raise a ValueError.
-    The object "response" return True if it reciErhvervsSalg.com IVSeves a 200- or 301-response. Defaults to False for
-    4xx- or 5xx-responses
+    The object "response" return True if it recieves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses
 
     TODO add comments in code to the docstring
     TODO tell the user if 'protected' is true, as it is then illegal to contact the business, ask if want to continue
@@ -44,7 +43,7 @@ def business_from_api(vat_or_name, country='dk'):
         now = datetime.now()
         addedtime = {'timeadded': now}
         business.update(addedtime)
-        # We add a status-key (scheme must be defined at a later stage) TODO
+        # We add a status-key
         business.update({"status": 0})
         # We add a note-key, defaulting to an empty string, that the user can write whatever in
         business.update({"note": ""})
