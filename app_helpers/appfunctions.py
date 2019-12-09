@@ -1,6 +1,7 @@
 from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
 from user_helpers import users
+from user_helpers.password_hashing import verify_password
 from user_helpers.users import pull_user
 
 
@@ -23,8 +24,7 @@ def app_add_business(business):
         business = business_from_api(business)
     except ValueError as err:
         print("API ERROR: " + err.args[0])
-        #: breaks function and bubbles error to front-end
-        raise ValueError("Business doesn't exist.")
+        raise ValueError("Business doesn't exist.")  # breaks function and bubbles error to front-end
     # Attempt to fetch coordinates
     try:
         business = attach_coords(business)
@@ -46,12 +46,12 @@ def app_add_business(business):
 def app_change_status(business, new_status):
     """
 
-    :param business:
-    :type business:
-    :param new_status:
-    :raises: ValueError,
-    :return:
-    :rtype:
+    :param business: A name or VAT number of a buisness
+    :type business: str or int
+    :param new_status: the new status that replaces an old or non-existiting one
+    :raises: ValueError, if the status is not a number between 1-5
+    :return: new dictionary with the updated status
+    :rtype: dict
     """
     try:
         new_status = int(new_status)
