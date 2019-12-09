@@ -131,3 +131,6 @@ dmypy.json
 !/config.py
 
 /newvenv/
+
+#Launch.json for Visual Studio Code
+.vscode

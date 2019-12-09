@@ -8,13 +8,14 @@ import os
 def hash_password(password):
     """
     Hashes a password for storing in mongodb, through SHA512, with a randomly generated salt.
+    We're using the modules haslib and binascii which are used for hashing the passwords and binascii
+    for converting it from ascii to binary data and back again 
+    
 
-    TODO expand / tell where we've got it from?
-
-    :param password:
+    :param password: the password the user supplied during the sign up process
     :type password: str
     :return: Hashed password
-    :rtype: ????
+    :rtype: str
     """
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
     pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
@@ -29,7 +30,7 @@ def verify_password(stored_password, provided_password):
     TODO expand / tell where we've got it from?
 
     :param stored_password: The password-hash retrieved from MongoDB
-    :type stored_password: ????
+    :type stored_password: str
     :param provided_password: The password provided by the user
     :type provided_password: str
     :return: True or False, depending on match
