@@ -16,7 +16,7 @@ def clear_interface():
 
 def cli_add_business():
     clear_interface()
-    business = input("Input name or VAT of business to be added: ")  # TODO check input for valid 8-digit if only digits
+    business = input("Input name or VAT of business to be added: ")
     # attempt to grab a business
     try:
         business = business_from_api(business)
