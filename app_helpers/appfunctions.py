@@ -1,6 +1,7 @@
 from api_helpers.mapquestapi import *
 from db_helper.mongofunctions import *
 from user_helpers import users
+from user_helpers.password_hashing import verify_password
 from user_helpers.users import pull_user
 
 
@@ -23,8 +24,7 @@ def app_add_business(business):
         business = business_from_api(business)
     except ValueError as err:
         print("API ERROR: " + err.args[0])
-        #: breaks function and bubbles error to front-end
-        raise ValueError("Business doesn't exist.")
+        raise ValueError("Business doesn't exist.")  # breaks function and bubbles error to front-end
     # Attempt to fetch coordinates
     try:
         business = attach_coords(business)
@@ -46,12 +46,12 @@ def app_add_business(business):
 def app_change_status(business, new_status):
     """
 
-    :param business:
-    :type business:
-    :param new_status:
-    :raises: ValueError,
-    :return:
-    :rtype:
+    :param business: A name or VAT number of a buisness
+    :type business: str or int
+    :param new_status: the new status that replaces an old or non-existiting one
+    :raises: ValueError, if the status is not a number between 1-5
+    :return: new dictionary with the updated status
+    :rtype: dict
     """
     try:
         new_status = int(new_status)
@@ -68,15 +68,18 @@ def app_change_status(business, new_status):
 
 def app_change_note(business, new_note):
     """
+    
+    This function is made for changing the note that appears in the database and front-end
+    the function works by invoking one of our mongofunctions so it takes the DB entry called notes
+    and updates it to whatever the user enters
 
-
-    :param business:
-    :type business:
-    :param new_note:
-    :type new_note:
-    :raises: ValueError,
-    :return:
-    :rtype:
+    :param business: a name or VAT of a buisness
+    :type business: str or int
+    :param new_note: the note that the user wants to appear on the site
+    :type new_note: str
+    :raises: ValueError, if an error occurs in the change_note function it's raised to the front-end
+    :return: the buisness with the updated note
+    :rtype: dict
     """
     try:
         result = change_note(business, new_note)
@@ -99,12 +102,14 @@ def app_create_user(username, email, password, address):
 def app_delete_user(username):
     """
 
+    This function lets the user delete the user from the front end, it's enabled by calling the delete_user()
+    function from db_helpers/mongofunctions.py
 
-    :param username:
-    :type username:
-    :raises: ValueError,
-    :return:
-    :rtype:
+    :param username: the username of the active user
+    :type username: str
+    :raises: ValueError, if an error occurs it's caught and displays it as an error message instead of crashing the system
+    :return: returns the string to the delete_user() function in mongofunctions.py
+    :rtype: str
     """
     try:
         users.delete_user(username)
@@ -117,15 +122,20 @@ def app_delete_user(username):
 
 def app_create_optimized_route(list_of_vat, username):
     """
+    This function is for creating a route from a list of coordinates from buisnesses chosen by the user
+    it works by taking a list of coordinates using the list_to_coords() function, aftewards
+    it checks the coordinates connected to the username of the active user and appends them to the list
+    which is going to be the final optimized route. By calling optimized_order() and 
+    create_optimized_url() by using the location sequence in the returned mapquest json we're able to
+    construct the google maps URL.
 
-
-    :param list_of_vat:
-    :type list_of_vat:
-    :param username:
-    :type username:
-    :raises:
-    :return:
-    :rtype:
+    :param list_of_vat: a list of VAT numbers
+    :type list_of_vat: dict
+    :param username: the username of the current user
+    :type username: str
+    :raises: ValueError, if any errors occur during the process it displays an error message instead of crashing
+    :return: the optimized route in google maps in the form of a URL
+    :rtype: str
     """
     try:
         list_of_coords = vat_to_coords(list_of_vat)

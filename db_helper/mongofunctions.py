@@ -30,7 +30,7 @@ def insert_business(business):
 def pull_single_business(searchable):
     """
     Pulls a single business from MongoDB from VAT-parameter or name of business
-
+    
     :param searchable: The search-term inputted by the end-user
     :type searchable: str
     :raises ValueError: if no business in DB found with that name or VAT
