@@ -12,7 +12,13 @@ def hash_password(password):
     for converting it from ascii to binary data and back again 
     
 
+<<<<<<< HEAD
     :param password: the password the user supplied during the sign up process
+=======
+    TODO expand / tell where we've got it from?
+
+    :param password:
+>>>>>>> 9c6089d7ddfbcb6fa235c468e63a1d17ce3086d0
     :type password: str
     :return: Hashed password
     :rtype: str
@@ -27,7 +33,7 @@ def verify_password(stored_password, provided_password):
     """
     Verify a stored password against one provided by user
 
-    TODO expand
+    TODO expand / tell where we've got it from?
 
     :param stored_password: The password-hash retrieved from MongoDB
     :type stored_password: str
@@ -40,4 +46,4 @@ def verify_password(stored_password, provided_password):
     stored_password = stored_password[64:]
     pwdhash = hashlib.pbkdf2_hmac('sha512', provided_password.encode('utf-8'), salt.encode('ascii'), 100000)
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
-    return pwdhash == stored_password
+    return pwdhash == stored_password  # True or False
