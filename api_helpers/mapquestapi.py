@@ -50,8 +50,8 @@ def fetch_coords_from_string(address_string):
 
     :param address_string: the adresse in string format, which can be used to fetch the coordinates
     :type address_string: str
-    :return: the coordinates of the adress which is input
-    :rtype: 
+    :return: the coordinates of the adress which is input through mapquest
+    :rtype: list 
     """
     response = requests.get(
         url='https://www.mapquestapi.com/geocoding/v1/address',
