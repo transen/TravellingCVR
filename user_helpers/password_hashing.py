@@ -12,13 +12,7 @@ def hash_password(password):
     for converting it from ascii to binary data and back again 
     
 
-<<<<<<< HEAD
     :param password: the password the user supplied during the sign up process
-=======
-    TODO expand / tell where we've got it from?
-
-    :param password:
->>>>>>> 9c6089d7ddfbcb6fa235c468e63a1d17ce3086d0
     :type password: str
     :return: Hashed password
     :rtype: str
