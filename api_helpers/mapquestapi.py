@@ -48,8 +48,10 @@ def fetch_coords_from_string(address_string):
     In the event of MapQuest returning a less-than-perfect quality, the function will raise a ValueError, and an error
     will be logged to the console.
 
-    :param address_string:
-    :return:
+    :param address_string: the adresse in string format, which can be used to fetch the coordinates
+    :type address_string: str
+    :return: the coordinates of the adress which is input
+    :rtype: 
     """
     response = requests.get(
         url='https://www.mapquestapi.com/geocoding/v1/address',
