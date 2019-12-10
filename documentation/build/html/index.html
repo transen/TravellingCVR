@@ -1,0 +1,969 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Travelling CVR’s documentation! &#8212; Travelling CVR 0.9 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-travelling-cvr-s-documentation">
+<h1>Welcome to Travelling CVR’s documentation!<a class="headerlink" href="#welcome-to-travelling-cvr-s-documentation" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-app"></span><dl class="function">
+<dt id="app.add_business">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">add_business</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.add_business" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to insert a business into the DB (see documentation for app_add_business()), from a VAT-number provided by a
+HTML-form. If successful, the user is directed to the success-page, and presented with a link to inspect the new
+business. If unsuccessful the user will be notified of the error.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="app.app">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">app</code><em class="property"> = &lt;Flask 'app'&gt;</em><a class="headerlink" href="#app.app" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises Flask app</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.app_delete_business">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">app_delete_business</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.app_delete_business" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows a user to delete a business from the front-end. If a VAT-parameter isn’t provided, a deletion HTML-form is
+provided. If a VAT-parameter is passed, the function will try to delete the business from the db with the
+VAT (see documentation for (delete_business()). If successful, the user will be presented to a success-page, and if
+unsuccessful the user will be presented with the error, and errors will be logged both to the console and the DB.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.app_delete_current_user">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">app_delete_current_user</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.app_delete_current_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the request is a POST-request and the POST-parameter username and currently-logged-in username matches, the user
+for the currently logged in visitor will be deleted and the current logged-in session will be destroyed via the
+flask-login module, and the user is redirected to the login page with a confirmation of deletion. If any errors
+occur, the user will be redirected to the login-page and presented with the error. If it is a GET-request, the user
+is redirected to the front-page.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="app.env">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">env</code><em class="property"> = &lt;flask.templating.Environment object&gt;</em><a class="headerlink" href="#app.env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables adding of extra controls in jinja-environment</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.front_page">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">front_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.front_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simply renders the home.html located in /templates, when index (site-root) is requested.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.internal_error">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">internal_error</code><span class="sig-paren">(</span><em class="sig-param">e</em><span class="sig-paren">)</span><a class="headerlink" href="#app.internal_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Catches 500-errors, prints error to console (for later debugging), and renders a custom 500-page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>e</strong> (<em>object</em><em> (</em><em>&lt;class 'werkzeug.exceptions.InternalServerError'&gt;</em><em>)</em>) – The default HTTP-exception raised by Flask when encountering a 500-error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.load_user">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">load_user</code><span class="sig-paren">(</span><em class="sig-param">username</em><span class="sig-paren">)</span><a class="headerlink" href="#app.load_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required for login-manager to function, looks up DB to check whether username exists, before constructing
+a user-object from User-class (in app_helpers/models.py)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – The username passed, to construct a user-object from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Constructs the user-object and passes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.login">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the logging-in-process. Accesible via both GET (for browser requests, rendering the page) and POST
+(for posting login-credentials). If the current_user (the person/browser requesting the page) is already logged in,
+the system will redirect to index. The function takes username and password from the POST-request; if they’re passed
+then the they will be the values posted by the user, otherwise None, and the login-page will be rendered. If
+username and password are posted, the function will check whether the user exists and whether the provided password
+is valid. If yes, then the user will be logged in, via the module flask-login, and the user enters a logged-in-
+session. Then the ‘last login’ in the DB for the corresponding user will try be updated with the current time. If it
+fails, it will continue the login-process, and print the raised error to console (for later debugging). The user
+will then be redirected to the page the user tried to request if any, otherwise to the front-page. If the username
+doesn’t exist or the password doesn’t match, the user will be redirected to the login page, and presented with the
+error, ready for a new try. This is passed along through the “result”-parameter, which is captured in the
+HTML-template.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="app.login_manager">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">login_manager</code><em class="property"> = &lt;flask_login.login_manager.LoginManager object&gt;</em><a class="headerlink" href="#app.login_manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables logging in, handled by flask-login module</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.logout">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs out the current user; destroys the logged-in session. Handled by flask-login. Redirects to login-page.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.optimize_route">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">optimize_route</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.optimize_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows the user to create optimized routes from the front-end. If the request is not a POST-request, the user is
+redirected to “/show_all_businesses”-page. If it is a POST-request, the function will determine the logged-in user’s
+username and the list of businesses (list_of_vats) the user wants to generate an optimized route for. If the list is
+less than two, the user will be presented with the error “You must check 2 or more businesses to generate an
+optimized route”. Otherwise a URL will try to be built (see documentation for app_create_optimized_route()) and
+presented to the user through the ‘success’-template. If any errors occur, the user will be presented with it, and
+it will be printed to the console and logged to the error-db.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.page_not_found">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">page_not_found</code><span class="sig-paren">(</span><em class="sig-param">e</em><span class="sig-paren">)</span><a class="headerlink" href="#app.page_not_found" title="Permalink to this definition">¶</a></dt>
+<dd><p>Catches 404-errors, prints error to console (for later debugging), and renders a custom 404-page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>e</strong> (<em>object</em><em> (</em><em>&lt;class 'werkzeug.exceptions.NotFound'&gt;</em><em>)</em>) – The default HTTP-exception raised by Flask when encountering a 404-error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.search_business">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">search_business</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.search_business" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows the user to search the businesses from the front-end. If no ‘search’-parameter is passed it will render a
+HTML-form for searching. If a ‘search’-parameter is passed, it will try to search the db (see documentation for
+search_businesses()) and present the findings in a HTML-table. If it fails, the user will be presented with the
+error, and it will be printed to the console and logged to the error-db.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.show_all_businesses">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_all_businesses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.show_all_businesses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all business in the db in a HTML-table. If no “sort”-argument is provided, it simply tries to pull and present
+the businesses with the default sorting (see documentation for pull_all_businesses()) and if it fails,
+the user will be presented to the error which will also be logged. If a “sort”-argument is provided, it will pass
+the sorting along to the pull_all_businesses()-function. If it fails, it does the same as with no sorting-parameter.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.show_business">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">show_business</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.show_business" title="Permalink to this definition">¶</a></dt>
+<dd><p>Presents a requested business to the user. If a VAT-parameter isn’t provided, a searching-HTML form is provided.
+If a VAT-parameter is provided, the function will determine whether the VAT-parameter is in fact supposed to be an
+integer, or if it is supposed to be a string (via the is.digit()-method), then tries to pull a business from the DB
+(see documentation for pull_single_business()). If successful, the business will be presented in a HTML-table, and
+if unsuccessful, the user will be presented with the error.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.signup">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">signup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.signup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows a visitor to sign up. If the user is already logged in, they will be redirected to the front-page. If the
+request is a GET-request, the signup-HTML-template will be rendered. If it is a POST-request, a complete address
+will be defined as a formatted string from the ‘address’, ‘zipcode’ and ‘country’ POST-parameters, and the
+signup-credentials will be passed along to the the app_create_user-function in /app_helpers/appfunctions.py. If it
+raises an exception, that error will be presented to user to try again. If successful, the user will be redirected
+to the login-page, with the flashed (passed) message “Signup successful!”.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="app.sslify">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">sslify</code><em class="property"> = &lt;flask_sslify.SSLify object&gt;</em><a class="headerlink" href="#app.sslify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises sslify, which forces https-connections in deployment</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.update_business_note">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">update_business_note</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.update_business_note" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lets the user update the note of a business, from a VAT-number and wanted note-change provided by a HTML-form.
+If successful, the user is directedto the success-page, and presented with a link to inspect the updated business.
+If unsuccessful the user will be notified of the error.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.update_business_status">
+<code class="sig-prename descclassname">app.</code><code class="sig-name descname">update_business_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.update_business_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lets the user update the status of a business, from a VAT-number and wanted status-change provided by a HTML-form.
+If successful, the user is directedto the success-page, and presented with a link to inspect the updated business.
+If unsuccessful the user will be notified of the error.</p>
+</dd></dl>
+
+<hr class="docutils" />
+<span class="target" id="module-api_helpers.cvrapi"></span><dl class="function">
+<dt id="api_helpers.cvrapi.business_from_api">
+<code class="sig-prename descclassname">api_helpers.cvrapi.</code><code class="sig-name descname">business_from_api</code><span class="sig-paren">(</span><em class="sig-param">vat_or_name</em>, <em class="sig-param">country='dk'</em><span class="sig-paren">)</span><a class="headerlink" href="#api_helpers.cvrapi.business_from_api" title="Permalink to this definition">¶</a></dt>
+<dd><p>Looks up the CVR-register of a company name OR VAT and returns a dictionary from the API, operated by a third party.
+The API responds to a HTTP GET- or POST-query, with the inclusion of a search-parameter, a name or VAT in this case.
+It also requires a country-parameter, which we’ve set to default to ‘dk’ for Denmark.
+The API responds to other parameters as well, but we’ve omitted them,
+as they’re optional and not relevant for this project. It also requires an User-Agent in the header.
+See documentation here: <a class="reference external" href="https://cvrapi.dk/documentation">https://cvrapi.dk/documentation</a> (only in Danish, however).
+The function relies on the module ‘requests’, which handles HTTP for python, and we utilize the .json()-method, to
+decode the JSON response to a dictionary. If the HTTP-request returns a valid response, the function
+will return the business-info as a dictionary. If not, the function will raise the response-error to the console
+and raise a ValueError.
+The object “response” return True if it recieves a 200- or 301-response. Defaults to False for 4xx- or 5xx-responses</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vat_or_name</strong> (<em>int</em><em> or </em><em>str</em>) – The name or VAT (8 digits) of the company searched for, must be an exact match</p></li>
+<li><p><strong>country</strong> (<em>str</em><em>, </em><em>optional</em>) – The country in which one wishes to search for the company in, defaults to ‘dk’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – The business doesn’t exist</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dictionary of the company, served from the API</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<span class="target" id="module-api_helpers.mapquestapi"></span><dl class="function">
+<dt id="api_helpers.mapquestapi.attach_coords">
+<code class="sig-prename descclassname">api_helpers.mapquestapi.</code><code class="sig-name descname">attach_coords</code><span class="sig-paren">(</span><em class="sig-param">business</em><span class="sig-paren">)</span><a class="headerlink" href="#api_helpers.mapquestapi.attach_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function starts off by creating a string being the address of the business, derived from the original
+dictionary served from the CVR-API. It does so by utilizing formatted strings, creating a single string from values
+within the passed business-dictionary.
+This function then queries the MapQuest Geocoding API with an address formatted in a string, and if successful,
+returns a JSON-formatted response including quality, latitude and longtitude. The function then checks the reported
+quality of the response and only if the quality is perfect (=P1A.A), the function will read off the response’s
+latitude and longtitude, then save them in a list, which is in the end attached to the business which is returned.
+In the event of MapQuest returning a less-than-perfect quality, the function will raise a ValueError.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>business</strong> (<em>dict</em>) – A dictinary that contains address-, zipcode- and city-key/value-pairs.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ValueError, if the quality-response is sub-par</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the business with coordinates attached</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="api_helpers.mapquestapi.build_map_url">
+<code class="sig-prename descclassname">api_helpers.mapquestapi.</code><code class="sig-name descname">build_map_url</code><span class="sig-paren">(</span><em class="sig-param">coords</em><span class="sig-paren">)</span><a class="headerlink" href="#api_helpers.mapquestapi.build_map_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions builds a, basic, Google Maps URL from a set of coordinates, using formatted strings with a list of
+coordinates as an argument, and returns the URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coords</strong> (<em>list</em>) – a 2-dimensional list of longtitude/latitude coordinates</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Google Maps URL</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="api_helpers.mapquestapi.create_optimized_url">
+<code class="sig-prename descclassname">api_helpers.mapquestapi.</code><code class="sig-name descname">create_optimized_url</code><span class="sig-paren">(</span><em class="sig-param">optimized_coords_list</em><span class="sig-paren">)</span><a class="headerlink" href="#api_helpers.mapquestapi.create_optimized_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs a google map url with the optimized route for the buisness selected.
+The passed list of optimized coordinates are converted to strings and put into a new list, except for the user’s
+home address, and then joined into a string, separated by the “|”-character, as that’s a requirement for the Google
+Maps URL. The function then use the requests-module to generate a request-object, with the appropriate
+HTTP-parameters needed. The URL is then derived as an attribute of the request-object’s “prepare()”-method, and
+returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>optimized_coords_list</strong> (<em>list</em>) – list of the optimized coordinates for the route</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns a google maps url with the provided coordinates set to driving</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="api_helpers.mapquestapi.fetch_coords_from_string">
+<code class="sig-prename descclassname">api_helpers.mapquestapi.</code><code class="sig-name descname">fetch_coords_from_string</code><span class="sig-paren">(</span><em class="sig-param">address_string</em><span class="sig-paren">)</span><a class="headerlink" href="#api_helpers.mapquestapi.fetch_coords_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function queries the MapQuest Geocoding API from an address-string, and if successful,
+returns a JSON-formatted response including quality, latitude and longtitude. The function then checks the reported
+quality of the response, and only if the quality is perfect (=P1A.A), the function will read off the response’s
+latitude and longtitude, then save them in a list, which is then returned.
+In the event of MapQuest returning a less-than-perfect quality, the function will raise a ValueError, and an error
+will be logged to the console.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>address_string</strong> (<em>str</em>) – the adresse in string format, which can be used to fetch the coordinates</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the coordinates of the adress which is input through mapquest</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="api_helpers.mapquestapi.optimize_order">
+<code class="sig-prename descclassname">api_helpers.mapquestapi.</code><code class="sig-name descname">optimize_order</code><span class="sig-paren">(</span><em class="sig-param">coords_list</em><span class="sig-paren">)</span><a class="headerlink" href="#api_helpers.mapquestapi.optimize_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the function that generates the optimized order for the locations for solving
+“the travelling salesmen problem”, it checks if the statuscode returned by mapquest is = 0 and if it is it checks
+the locationSequence in in the returned JSON file. The locationSequence is the order in which the points are placed
+for the optimized route. If not, a ValueError is raised for handling in the front-end, with additional info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coords_list</strong> (<em>list</em>) – the coordinates required for generating the list</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of coordinates ordered in which route is optimized</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<hr class="docutils" />
+<span class="target" id="module-app_helpers.appfunctions"></span><dl class="function">
+<dt id="app_helpers.appfunctions.app_add_business">
+<code class="sig-prename descclassname">app_helpers.appfunctions.</code><code class="sig-name descname">app_add_business</code><span class="sig-paren">(</span><em class="sig-param">business</em><span class="sig-paren">)</span><a class="headerlink" href="#app_helpers.appfunctions.app_add_business" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function runs through the steps of adding a new business to the database. It starts out pulling the business
+from an API (see documentation for business_from_api()), it then fetches and attaches coordinates (see documentation
+for attach_coords()), then attempts to insert the business into the database. If successfull throughout, it will
+return the business in the form of a dictionary for use in the front-end. If any ValueErrors are raised in the
+function-chain, the function will except it, break, and reraise it for handling in the frontend, after the error is
+printed to the console.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>business</strong> (<em>str</em><em> or </em><em>int</em>) – a name or VAT-number of a business</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ValueError, raises if something is caught in the intermediary functions.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the business</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app_helpers.appfunctions.app_change_note">
+<code class="sig-prename descclassname">app_helpers.appfunctions.</code><code class="sig-name descname">app_change_note</code><span class="sig-paren">(</span><em class="sig-param">business</em>, <em class="sig-param">new_note</em><span class="sig-paren">)</span><a class="headerlink" href="#app_helpers.appfunctions.app_change_note" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is made for changing the note that appears in the database and front-end
+the function works by invoking one of our mongofunctions so it takes the DB entry called notes
+and updates it to whatever the user enters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>business</strong> (<em>str</em><em> or </em><em>int</em>) – a name or VAT of a buisness</p></li>
+<li><p><strong>new_note</strong> (<em>str</em>) – the note that the user wants to appear on the site</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ValueError, if an error occurs in the change_note function it’s raised to the front-end</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the buisness with the updated note</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app_helpers.appfunctions.app_change_status">
+<code class="sig-prename descclassname">app_helpers.appfunctions.</code><code class="sig-name descname">app_change_status</code><span class="sig-paren">(</span><em class="sig-param">business</em>, <em class="sig-param">new_status</em><span class="sig-paren">)</span><a class="headerlink" href="#app_helpers.appfunctions.app_change_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is able to change the status shown on the frontend by calling the change_status()
+function. If an error is caught changing the status it reraises the valueError and prints an error message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>business</strong> (<em>str</em><em> or </em><em>int</em>) – A name or VAT number of a buisness</p></li>
+<li><p><strong>new_status</strong> – the new status that replaces an old or non-existiting one</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ValueError, if the status is not a number between 1-5</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new dictionary with the updated status</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app_helpers.appfunctions.app_create_optimized_route">
+<code class="sig-prename descclassname">app_helpers.appfunctions.</code><code class="sig-name descname">app_create_optimized_route</code><span class="sig-paren">(</span><em class="sig-param">list_of_vat</em>, <em class="sig-param">username</em><span class="sig-paren">)</span><a class="headerlink" href="#app_helpers.appfunctions.app_create_optimized_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is for creating a route from a list of coordinates from buisnesses chosen by the user
+it works by taking a list of coordinates using the list_to_coords() function, aftewards
+it checks the coordinates connected to the username of the active user and appends them to the list
+which is going to be the final optimized route. By calling optimized_order() and 
+create_optimized_url() by using the location sequence in the returned mapquest json we’re able to
+construct the google maps URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_of_vat</strong> (<em>dict</em>) – a list of VAT numbers</p></li>
+<li><p><strong>username</strong> (<em>str</em>) – the username of the current user</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ValueError, if any errors occur during the process it displays an error message instead of crashing</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the optimized route in google maps in the form of a URL</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app_helpers.appfunctions.app_delete_user">
+<code class="sig-prename descclassname">app_helpers.appfunctions.</code><code class="sig-name descname">app_delete_user</code><span class="sig-paren">(</span><em class="sig-param">username</em><span class="sig-paren">)</span><a class="headerlink" href="#app_helpers.appfunctions.app_delete_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function lets the user delete the user from the front end, it’s enabled by calling the delete_user()
+function from db_helpers/mongofunctions.py</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – the username of the active user</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>ValueError, if an error occurs it’s caught and displays it as an error message instead of crashing the system</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns the string to the delete_user() function in mongofunctions.py</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-db_helper.logging"></span><dl class="function">
+<dt id="db_helper.logging.add_applog">
+<code class="sig-prename descclassname">db_helper.logging.</code><code class="sig-name descname">add_applog</code><span class="sig-paren">(</span><em class="sig-param">actor=None</em>, <em class="sig-param">action=None</em>, <em class="sig-param">result=None</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.logging.add_applog" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions adds error-logging-capabilites for the webapp. Whenever the functions is called, it logs the current
+time, the actor (who did something), the action (what that person did), and the result (what has changed).
+All the parameters are optional, and will default to None if nothing is passed.  It then inserts the error into
+the app-log-database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actor</strong> (<em>str</em>) – Who did something</p></li>
+<li><p><strong>action</strong> (<em>str</em>) – What someone did</p></li>
+<li><p><strong>result</strong> (<em>str</em>) – What has changed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.logging.add_errorlog">
+<code class="sig-prename descclassname">db_helper.logging.</code><code class="sig-name descname">add_errorlog</code><span class="sig-paren">(</span><em class="sig-param">actor=None</em>, <em class="sig-param">action=None</em>, <em class="sig-param">error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.logging.add_errorlog" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions adds error-logging-capabilites for the webapp. Whenever the functions is called, it logs the current
+time, the actor (who did something), the action (what that person did), and the error (what went wrong), from the
+errors raised down through the stack. All the parameters are optional, and will default to None if nothing is
+passed. It then inserts the error into the error-log-database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actor</strong> (<em>str</em>) – Who did something</p></li>
+<li><p><strong>action</strong> (<em>str</em>) – What someone did</p></li>
+<li><p><strong>error</strong> (<em>str</em>) – What error occurred</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-db_helper.mongofunctions"></span><dl class="function">
+<dt id="db_helper.mongofunctions.business_exists_in_db">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">business_exists_in_db</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.business_exists_in_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks the DB for the existance of the business being passed as an argument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>searchable</strong> (<em>int</em><em> or </em><em>str</em>) – An unique identifier for the business that need check for existence</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True or false</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.mongofunctions.change_note">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">change_note</code><span class="sig-paren">(</span><em class="sig-param">searchable</em>, <em class="sig-param">wanted_note</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.change_note" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function changes the status of a business in the database. It starts out checking whether the searchable is
+representing a VAT, and if so, changes the type to int from str. It then checks whether a business exists, which
+matches the searchable. It then updates the “note”-field in the database via the unique “_id”-field, and returns
+the business. If no business is found, a ValueError is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>searchable</strong> (<em>str</em><em> or </em><em>int</em>) – The search-term inputted by the end-user</p></li>
+<li><p><strong>wanted_note</strong> (<em>str</em>) – any note that the end-user wants to put to a single buisness</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The updated business</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.mongofunctions.change_status">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">change_status</code><span class="sig-paren">(</span><em class="sig-param">searchable</em>, <em class="sig-param">wanted_status</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.change_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function changes the status of a business in the database. It starts out checking whether the searchable is
+representing a VAT, and if so, changes the type to int from str. It then checks whether a business exists, which
+matches the searchable. It then updates the “status”-field in the database via the unique “_id”-field, and returns
+the document after the update has happened. If no business is found, a ValueError is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>searchable</strong> (<em>str</em><em> or </em><em>int</em>) – The search-term inputted by the end-user</p></li>
+<li><p><strong>wanted_status</strong> (<em>int</em>) – number between 1-5</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The updated business</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.mongofunctions.delete_business">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">delete_business</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.delete_business" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function aims to delete a business from the MongoDB, if it exists. It starts off checking whether the queried
+business exists in the DB. If ‘result’ returns a dictionary, the business exists, and utilizes the built-in pymongo
+“delete_one”-method to delete the business-document from the DB. The function then returns the deleted business,
+for further handling and presentation to the end-user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>searchable</strong> (<em>str</em>) – The search-term inputted by the end-user</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If no buisness with the provided name or VAT is found</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The business which has just been deleted</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.mongofunctions.insert_business">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">insert_business</code><span class="sig-paren">(</span><em class="sig-param">business</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.insert_business" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function inserts a business into the mongodb, via the module “Pymongo” which bridges the gap between python and
+and the hosted MongoDB-database. MongoDB is inherently noSQL, compared to a traditional relational SQL-database,
+which we are accustomed to, and used to work with. This has been an intentionally added challenge, in order to
+obtain more practical knowledge of noSQL-moddeled behaviour in regards to non-structured data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>business</strong> (<em>dict</em>) – it’s a dictonary of a buisness with all the data included</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if a buisness with the the identifier (vat) already exists it raises a valueError</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns the dictonary again so it can be presented to the user, much like a callback</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.mongofunctions.pull_all_businesses">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">pull_all_businesses</code><span class="sig-paren">(</span><em class="sig-param">sorted_by='name'</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.pull_all_businesses" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions pulls all businesses in MongoDB and returns a list of businesses as output.
+the list includes all data regarding the businesses, it’s done by simply running a for loop through
+all entries in the database and then appending it to a list one by one. This insures that everytime
+a new buisness is created it will always get pulled with this function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sorted_by</strong> (<em>str</em>) – just there to sort each buisness by the name</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – </p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of all businesses located in the database.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.mongofunctions.pull_single_business">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">pull_single_business</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.pull_single_business" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pulls a single business from MongoDB from VAT-parameter or name of business</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>searchable</strong> (<em>str</em>) – The search-term inputted by the end-user</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if no business in DB found with that name or VAT</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The queried business</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.mongofunctions.search_businesses">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">search_businesses</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.search_businesses" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions runs a $search query on mongodb, through a $text-index, and returns a list of dictionaries,
+which are the individual businesses queried by the searchable. The searchable is checked whether it is supposed
+to be a VAT (if it’s a string, only digits and lenght is 8), and is then handled as and converted to int, querying
+the mongodb only for VAT-fields. If the result is empty (len = 0) a ValueError is raised, which is handled later on
+by either front-end (Flask or CLI). Otherwise the result is pakced into a list and returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>searchable</strong> (<em>str</em>) – The search-term inputted by the end-user</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – When result is empty</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of businesses in dict-form</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="db_helper.mongofunctions.vat_to_coords">
+<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">vat_to_coords</code><span class="sig-paren">(</span><em class="sig-param">list_of_vat</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.vat_to_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a list of VAT numbers and pulls the coordinates from the mongoDB and returns them as a list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>list_of_vat</strong> (<em>list</em>) – takes a list with vat numbers in it</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – raises an value error if no buisness with that VAT exists</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of coordinates from a single business</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-user_helpers.password_hashing"></span><dl class="function">
+<dt id="user_helpers.password_hashing.hash_password">
+<code class="sig-prename descclassname">user_helpers.password_hashing.</code><code class="sig-name descname">hash_password</code><span class="sig-paren">(</span><em class="sig-param">password</em><span class="sig-paren">)</span><a class="headerlink" href="#user_helpers.password_hashing.hash_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hashes a password for storing in mongodb, through SHA512, with a randomly generated salt.
+We’re using the modules haslib and binascii which are used for hashing the passwords and binascii
+for converting it from ascii to binary data and back again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>password</strong> (<em>str</em>) – the password the user supplied during the sign up process</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Hashed password</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="user_helpers.password_hashing.verify_password">
+<code class="sig-prename descclassname">user_helpers.password_hashing.</code><code class="sig-name descname">verify_password</code><span class="sig-paren">(</span><em class="sig-param">stored_password</em>, <em class="sig-param">provided_password</em><span class="sig-paren">)</span><a class="headerlink" href="#user_helpers.password_hashing.verify_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify a stored password against one provided by user, returns True or False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stored_password</strong> (<em>str</em>) – The password-hash retrieved from MongoDB</p></li>
+<li><p><strong>provided_password</strong> (<em>str</em>) – The password provided by the user</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True or False, depending on match</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-user_helpers.users"></span><dl class="function">
+<dt id="user_helpers.users.add_user">
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">add_user</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">email</em>, <em class="sig-param">password</em>, <em class="sig-param">address</em>, <em class="sig-param">isadmin=False</em><span class="sig-paren">)</span><a class="headerlink" href="#user_helpers.users.add_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions creates a user-dictionary from the below-described parameters, and tries to insert it into the db.
+It uses the datetime-module to capture the current time, and saves that as ‘Time added’ and ‘Last login’.
+If an error occurs during insertion of the user, the function will faise a ValueError.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – The chosen username</p></li>
+<li><p><strong>email</strong> (<em>str</em>) – The chosen email</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – The chosen password</p></li>
+<li><p><strong>address</strong> (<em>str</em>) – The chosen address</p></li>
+<li><p><strong>isadmin</strong> (<em>bool</em>) – Whether the user is an admin, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The inputted user</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="user_helpers.users.db">
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">db</code><em class="property"> = Collection(Database(MongoClient(host=['cvrdataapi-shard-00-00-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-01-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-02-7bhwg.gcp.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, retrywrites=True, w='majority', authsource='admin', replicaset='CVRDATAAPI-shard-0', ssl=True), 'travellingcvr'), 'users')</em><a class="headerlink" href="#user_helpers.users.db" title="Permalink to this definition">¶</a></dt>
+<dd><p>MongoDB initial setup</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="user_helpers.users.delete_user">
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">delete_user</code><span class="sig-paren">(</span><em class="sig-param">username</em><span class="sig-paren">)</span><a class="headerlink" href="#user_helpers.users.delete_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function deletes an user from mongoDB. It checks whether the requested user for deletion exists, and if it does
+the user will be deleted, otherwise a ValueError is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – the username of the active user</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if no user with the specified username is found</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns the dictionary with the deleted username</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="user_helpers.users.logged_in_user">
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">logged_in_user</code><em class="property"> = None</em><a class="headerlink" href="#user_helpers.users.logged_in_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>A runtime-specific dict of user-details, which is populated at login, only eligible for CLI-version</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="user_helpers.users.login">
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">password</em><span class="sig-paren">)</span><a class="headerlink" href="#user_helpers.users.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows a user to login, if the username exists, and the password matches the hashed password located
+in MongoDB, only eligible for CLI-version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – the username which the user tries to log in with</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – the password which the user tries to log in with</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the logged in user</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="user_helpers.users.pull_user">
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">pull_user</code><span class="sig-paren">(</span><em class="sig-param">username</em><span class="sig-paren">)</span><a class="headerlink" href="#user_helpers.users.pull_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pulls a user from the database, returns the user if it exists, otherwise it raises an ValueError.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – The username of the active user</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if user can’t be found</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary of the specified user</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="user_helpers.users.update_user_last_login">
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">update_user_last_login</code><span class="sig-paren">(</span><em class="sig-param">username</em><span class="sig-paren">)</span><a class="headerlink" href="#user_helpers.users.update_user_last_login" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function updates the “last login” attribute in the db. It’s executed everytime a user successfully logs in
+from the front end app.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> (<em>str</em>) – The username of the active user</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if user can’t be found</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the updated user-dict from DB</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Travelling CVR</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Mads & Martin.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
