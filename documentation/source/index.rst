@@ -32,11 +32,18 @@ Indices and tables
 .. automodule:: app_helpers.appfunctions
    :members:
 
+.. automodule:: app_helpers.models
+   :members:
+
+==================
+
 .. automodule:: db_helper.logging
    :members:
 
 .. automodule:: db_helper.mongofunctions
    :members:
+
+==================
 
 .. automodule:: user_helpers.password_hashing
    :members:
