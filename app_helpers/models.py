@@ -2,7 +2,10 @@ from user_helpers.password_hashing import *
 
 
 class User():
-
+    """
+    User class required for flask-login to function, allows a logged-in-user-session to be constructed. Assigns username
+    as user ID.
+    """
     def __init__(self, username):
         self.username = username
         self.email = None
