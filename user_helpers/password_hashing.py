@@ -9,7 +9,7 @@ def hash_password(password):
     """
     Hashes a password for storing in mongodb, through SHA512, with a randomly generated salt.
     We're using the modules haslib and binascii which are used for hashing the passwords and binascii
-    for converting it from ascii to binary data and back again 
+    for converting it from ascii to binary data and back again.
     
 
     :param password: the password the user supplied during the sign up process
@@ -25,7 +25,7 @@ def hash_password(password):
 
 def verify_password(stored_password, provided_password):
     """
-    Verify a stored password against one provided by user
+    Verify a stored password against one provided by user, returns True or False.
 
     :param stored_password: The password-hash retrieved from MongoDB
     :type stored_password: str
