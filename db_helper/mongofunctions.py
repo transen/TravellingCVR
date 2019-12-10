@@ -30,7 +30,7 @@ def insert_business(business):
 def pull_single_business(searchable):
     """
     Pulls a single business from MongoDB from VAT-parameter or name of business
-
+    
     :param searchable: The search-term inputted by the end-user
     :type searchable: str
     :raises ValueError: if no business in DB found with that name or VAT
@@ -127,7 +127,10 @@ def search_businesses(searchable):
 
 def change_status(searchable, wanted_status):
     """
-    This function changes the status of a business in the mongodb.
+    This function changes the status of a business in the database. It starts out checking whether the searchable is
+    representing a VAT, and if so, changes the type to int from str. It then checks whether a business exists, which
+    matches the searchable. It then updates the "status"-field in the database via the unique "_id"-field, and returns
+    the document after the update has happened. If no business is found, a ValueError is raised.
 
     :param searchable: The search-term inputted by the end-user
     :type searchable: str or int
@@ -153,7 +156,10 @@ def change_status(searchable, wanted_status):
 
 def change_note(searchable, wanted_note):
     """
-    This function changes the note of a business in the mongodb.
+    This function changes the status of a business in the database. It starts out checking whether the searchable is
+    representing a VAT, and if so, changes the type to int from str. It then checks whether a business exists, which
+    matches the searchable. It then updates the "note"-field in the database via the unique "_id"-field, and returns
+    the business. If no business is found, a ValueError is raised.
 
     :param searchable: The search-term inputted by the end-user
     :type searchable: str or int
@@ -179,7 +185,7 @@ def change_note(searchable, wanted_note):
 
 def business_exists_in_db(searchable):
     """
-    This function checks the DB for the existance of the business being passed as an argument
+    This function checks the DB for the existance of the business being passed as an argument.
 
     :param searchable: An unique identifier for the business that need check for existence
     :type searchable: int or str

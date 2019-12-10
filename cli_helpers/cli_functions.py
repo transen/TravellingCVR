@@ -16,7 +16,7 @@ def clear_interface():
 
 def cli_add_business():
     clear_interface()
-    business = input("Input name or VAT of business to be added: ")  # TODO check input for valid 8-digit if only digits
+    business = input("Input name or VAT of business to be added: ")
     # attempt to grab a business
     try:
         business = business_from_api(business)
@@ -179,7 +179,7 @@ def cli_delete_user():
         users.logout()
 
 
-def cli_save_to_selection():  # TODO IMPLEMENT
+def cli_save_to_selection():
     clear_interface()
     business_to_add = input("Enter VAT: ")
     if business_exists_in_db(business_to_add):
@@ -190,7 +190,7 @@ def cli_save_to_selection():  # TODO IMPLEMENT
     cli_return_to_main_menu()
 
 
-def cli_show_selection():  # TODO IMPLEMENT
+def cli_show_selection():
     clear_interface()
     print("Your current selection:")
     print(*cli_main.current_selection)
