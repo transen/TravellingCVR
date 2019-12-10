@@ -27,8 +27,6 @@ def verify_password(stored_password, provided_password):
     """
     Verify a stored password against one provided by user
 
-    TODO expand / tell where we've got it from?
-
     :param stored_password: The password-hash retrieved from MongoDB
     :type stored_password: str
     :param provided_password: The password provided by the user
