@@ -45,6 +45,8 @@ def app_add_business(business):
 
 def app_change_status(business, new_status):
     """
+    This function is able to change the status shown on the frontend by calling the change_status()
+    function. If an error is caught changing the status it reraises the valueError and prints an error message.
 
     :param business: A name or VAT number of a buisness
     :type business: str or int
