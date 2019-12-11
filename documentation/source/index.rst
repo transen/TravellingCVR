@@ -22,8 +22,6 @@ Indices and tables
 .. automodule:: api_helpers.cvrapi
    :members:
 
-==================
-
 .. automodule:: api_helpers.mapquestapi
    :members:
 
