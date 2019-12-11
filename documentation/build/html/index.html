@@ -460,7 +460,7 @@ construct the google maps URL.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>list_of_vat</strong> (<em>dict</em>) – a list of VAT numbers</p></li>
+<li><p><strong>list_of_vat</strong> (<em>list</em>) – a list of VAT numbers</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – the username of the current user</p></li>
 </ul>
 </dd>
@@ -472,6 +472,30 @@ construct the google maps URL.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app_helpers.appfunctions.app_create_user">
+<code class="sig-prename descclassname">app_helpers.appfunctions.</code><code class="sig-name descname">app_create_user</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">email</em>, <em class="sig-param">password</em>, <em class="sig-param">address</em><span class="sig-paren">)</span><a class="headerlink" href="#app_helpers.appfunctions.app_create_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function attempts to add a user to the database (see documentation for user_helpers.users.add_user()).
+If successful, a confirmation-message will be printed to the console, and the username will be returned for handling
+in the front-end. If an error occurs, a ValueError will be raised for handling in the front-end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – The chosen username</p></li>
+<li><p><strong>email</strong> (<em>str</em>) – The chosen email</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – The chosen password</p></li>
+<li><p><strong>address</strong> (<em>str</em>) – The chosen address</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The username of the newly created user</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -816,7 +840,7 @@ If an error occurs during insertion of the user, the function will faise a Value
 
 <dl class="data">
 <dt id="user_helpers.users.db">
-<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">db</code><em class="property"> = Collection(Database(MongoClient(host=['cvrdataapi-shard-00-01-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-02-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-00-7bhwg.gcp.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, retrywrites=True, w='majority', authsource='admin', replicaset='CVRDATAAPI-shard-0', ssl=True), 'travellingcvr'), 'users')</em><a class="headerlink" href="#user_helpers.users.db" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">db</code><em class="property"> = Collection(Database(MongoClient(host=['cvrdataapi-shard-00-02-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-00-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-01-7bhwg.gcp.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, retrywrites=True, w='majority', authsource='admin', replicaset='CVRDATAAPI-shard-0', ssl=True), 'travellingcvr'), 'users')</em><a class="headerlink" href="#user_helpers.users.db" title="Permalink to this definition">¶</a></dt>
 <dd><p>MongoDB initial setup</p>
 </dd></dl>
 
