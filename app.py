@@ -5,7 +5,7 @@ from app_helpers.appfunctions import *
 from app_helpers.models import *
 from user_helpers import users
 from user_helpers.users import update_user_last_login
-from db_helper.logging import *
+from db_helpers.logging import *
 
 #: Initialises Flask app
 app = Flask(__name__)
