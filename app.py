@@ -396,6 +396,6 @@ def internal_error(e):
     return render_template("500.html"), 500
 
 
-#: Executes if cli_main.py is executed from CLI, but not if loaded/executed as a module during imports
+#: Executes if app.py is executed from CLI, but not if loaded/executed as a module during imports
 if __name__ == '__main__':
-    app.run()
+    app.run()$
