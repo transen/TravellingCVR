@@ -1,5 +1,5 @@
 from api_helpers.mapquestapi import *
-from db_helper.mongofunctions import *
+from db_helpers.mongofunctions import *
 from user_helpers import users
 from user_helpers.password_hashing import verify_password
 from user_helpers.users import pull_user
@@ -93,6 +93,22 @@ def app_change_note(business, new_note):
 
 
 def app_create_user(username, email, password, address):
+    """
+    This function attempts to add a user to the database (see documentation for user_helpers.users.add_user()).
+    If successful, a confirmation-message will be printed to the console, and the username will be returned for handling
+    in the front-end. If an error occurs, a ValueError will be raised for handling in the front-end.
+
+    :param username: The chosen username
+    :type username: str
+    :param email: The chosen email
+    :type email: str
+    :param password: The chosen password
+    :type password: str
+    :param address: The chosen address
+    :type address: str
+    :return: The username of the newly created user
+    :rtype: str
+    """
     try:
         users.add_user(username, email, password, address)
         print(f'User "{username}" created successfully!')
@@ -103,7 +119,6 @@ def app_create_user(username, email, password, address):
 
 def app_delete_user(username):
     """
-
     This function lets the user delete the user from the front end, it's enabled by calling the delete_user()
     function from db_helpers/mongofunctions.py
 
@@ -132,7 +147,7 @@ def app_create_optimized_route(list_of_vat, username):
     construct the google maps URL.
 
     :param list_of_vat: a list of VAT numbers
-    :type list_of_vat: dict
+    :type list_of_vat: list
     :param username: the username of the current user
     :type username: str
     :raises: ValueError, if any errors occur during the process it displays an error message instead of crashing

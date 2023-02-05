@@ -5,7 +5,7 @@ from app_helpers.appfunctions import *
 from app_helpers.models import *
 from user_helpers import users
 from user_helpers.users import update_user_last_login
-from db_helper.logging import *
+from db_helpers.logging import *
 
 #: Initialises Flask app
 app = Flask(__name__)
@@ -396,6 +396,6 @@ def internal_error(e):
     return render_template("500.html"), 500
 
 
-#: Executes if cli_main.py is executed from CLI, but not if loaded/executed as a module during imports
+#: Executes if app.py is executed from CLI, but not if loaded/executed as a module during imports
 if __name__ == '__main__':
     app.run()

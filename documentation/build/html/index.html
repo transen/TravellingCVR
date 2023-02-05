@@ -264,7 +264,6 @@ The object “response” return True if it recieves a 200- or 301-response. Def
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
 <span class="target" id="module-api_helpers.mapquestapi"></span><dl class="function">
 <dt id="api_helpers.mapquestapi.attach_coords">
 <code class="sig-prename descclassname">api_helpers.mapquestapi.</code><code class="sig-name descname">attach_coords</code><span class="sig-paren">(</span><em class="sig-param">business</em><span class="sig-paren">)</span><a class="headerlink" href="#api_helpers.mapquestapi.attach_coords" title="Permalink to this definition">¶</a></dt>
@@ -461,7 +460,7 @@ construct the google maps URL.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>list_of_vat</strong> (<em>dict</em>) – a list of VAT numbers</p></li>
+<li><p><strong>list_of_vat</strong> (<em>list</em>) – a list of VAT numbers</p></li>
 <li><p><strong>username</strong> (<em>str</em>) – the username of the current user</p></li>
 </ul>
 </dd>
@@ -473,6 +472,30 @@ construct the google maps URL.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app_helpers.appfunctions.app_create_user">
+<code class="sig-prename descclassname">app_helpers.appfunctions.</code><code class="sig-name descname">app_create_user</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">email</em>, <em class="sig-param">password</em>, <em class="sig-param">address</em><span class="sig-paren">)</span><a class="headerlink" href="#app_helpers.appfunctions.app_create_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function attempts to add a user to the database (see documentation for user_helpers.users.add_user()).
+If successful, a confirmation-message will be printed to the console, and the username will be returned for handling
+in the front-end. If an error occurs, a ValueError will be raised for handling in the front-end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>str</em>) – The chosen username</p></li>
+<li><p><strong>email</strong> (<em>str</em>) – The chosen email</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – The chosen password</p></li>
+<li><p><strong>address</strong> (<em>str</em>) – The chosen address</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The username of the newly created user</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -506,9 +529,9 @@ as user ID.</p>
 </dd></dl>
 
 <hr class="docutils" />
-<span class="target" id="module-db_helper.logging"></span><dl class="function">
-<dt id="db_helper.logging.add_applog">
-<code class="sig-prename descclassname">db_helper.logging.</code><code class="sig-name descname">add_applog</code><span class="sig-paren">(</span><em class="sig-param">actor=None</em>, <em class="sig-param">action=None</em>, <em class="sig-param">result=None</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.logging.add_applog" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-db_helpers.logging"></span><dl class="function">
+<dt id="db_helpers.logging.add_applog">
+<code class="sig-prename descclassname">db_helpers.logging.</code><code class="sig-name descname">add_applog</code><span class="sig-paren">(</span><em class="sig-param">actor=None</em>, <em class="sig-param">action=None</em>, <em class="sig-param">result=None</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.logging.add_applog" title="Permalink to this definition">¶</a></dt>
 <dd><p>This functions adds error-logging-capabilites for the webapp. Whenever the functions is called, it logs the current
 time, the actor (who did something), the action (what that person did), and the result (what has changed).
 All the parameters are optional, and will default to None if nothing is passed.  It then inserts the error into
@@ -531,8 +554,8 @@ the app-log-database.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.logging.add_errorlog">
-<code class="sig-prename descclassname">db_helper.logging.</code><code class="sig-name descname">add_errorlog</code><span class="sig-paren">(</span><em class="sig-param">actor=None</em>, <em class="sig-param">action=None</em>, <em class="sig-param">error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.logging.add_errorlog" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.logging.add_errorlog">
+<code class="sig-prename descclassname">db_helpers.logging.</code><code class="sig-name descname">add_errorlog</code><span class="sig-paren">(</span><em class="sig-param">actor=None</em>, <em class="sig-param">action=None</em>, <em class="sig-param">error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.logging.add_errorlog" title="Permalink to this definition">¶</a></dt>
 <dd><p>This functions adds error-logging-capabilites for the webapp. Whenever the functions is called, it logs the current
 time, the actor (who did something), the action (what that person did), and the error (what went wrong), from the
 errors raised down through the stack. All the parameters are optional, and will default to None if nothing is
@@ -554,9 +577,9 @@ passed. It then inserts the error into the error-log-database.</p>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-db_helper.mongofunctions"></span><dl class="function">
-<dt id="db_helper.mongofunctions.business_exists_in_db">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">business_exists_in_db</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.business_exists_in_db" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-db_helpers.mongofunctions"></span><dl class="function">
+<dt id="db_helpers.mongofunctions.business_exists_in_db">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">business_exists_in_db</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.business_exists_in_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function checks the DB for the existance of the business being passed as an argument.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -572,8 +595,8 @@ passed. It then inserts the error into the error-log-database.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.mongofunctions.change_note">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">change_note</code><span class="sig-paren">(</span><em class="sig-param">searchable</em>, <em class="sig-param">wanted_note</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.change_note" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.mongofunctions.change_note">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">change_note</code><span class="sig-paren">(</span><em class="sig-param">searchable</em>, <em class="sig-param">wanted_note</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.change_note" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function changes the status of a business in the database. It starts out checking whether the searchable is
 representing a VAT, and if so, changes the type to int from str. It then checks whether a business exists, which
 matches the searchable. It then updates the “note”-field in the database via the unique “_id”-field, and returns
@@ -595,8 +618,8 @@ the business. If no business is found, a ValueError is raised.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.mongofunctions.change_status">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">change_status</code><span class="sig-paren">(</span><em class="sig-param">searchable</em>, <em class="sig-param">wanted_status</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.change_status" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.mongofunctions.change_status">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">change_status</code><span class="sig-paren">(</span><em class="sig-param">searchable</em>, <em class="sig-param">wanted_status</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.change_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function changes the status of a business in the database. It starts out checking whether the searchable is
 representing a VAT, and if so, changes the type to int from str. It then checks whether a business exists, which
 matches the searchable. It then updates the “status”-field in the database via the unique “_id”-field, and returns
@@ -618,8 +641,8 @@ the document after the update has happened. If no business is found, a ValueErro
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.mongofunctions.delete_business">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">delete_business</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.delete_business" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.mongofunctions.delete_business">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">delete_business</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.delete_business" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function aims to delete a business from the MongoDB, if it exists. It starts off checking whether the queried
 business exists in the DB. If ‘result’ returns a dictionary, the business exists, and utilizes the built-in pymongo
 “delete_one”-method to delete the business-document from the DB. The function then returns the deleted business,
@@ -641,8 +664,8 @@ for further handling and presentation to the end-user.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.mongofunctions.insert_business">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">insert_business</code><span class="sig-paren">(</span><em class="sig-param">business</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.insert_business" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.mongofunctions.insert_business">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">insert_business</code><span class="sig-paren">(</span><em class="sig-param">business</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.insert_business" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function inserts a business into the mongodb, via the module “Pymongo” which bridges the gap between python and
 and the hosted MongoDB-database. MongoDB is inherently noSQL, compared to a traditional relational SQL-database,
 which we are accustomed to, and used to work with. This has been an intentionally added challenge, in order to
@@ -664,8 +687,8 @@ obtain more practical knowledge of noSQL-moddeled behaviour in regards to non-st
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.mongofunctions.pull_all_businesses">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">pull_all_businesses</code><span class="sig-paren">(</span><em class="sig-param">sorted_by='name'</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.pull_all_businesses" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.mongofunctions.pull_all_businesses">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">pull_all_businesses</code><span class="sig-paren">(</span><em class="sig-param">sorted_by='name'</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.pull_all_businesses" title="Permalink to this definition">¶</a></dt>
 <dd><p>This functions pulls all businesses in MongoDB and returns a list of businesses as output.
 the list includes all data regarding the businesses, it’s done by simply running a for loop through
 all entries in the database and then appending it to a list one by one. This insures that everytime
@@ -687,8 +710,8 @@ a new buisness is created it will always get pulled with this function.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.mongofunctions.pull_single_business">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">pull_single_business</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.pull_single_business" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.mongofunctions.pull_single_business">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">pull_single_business</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.pull_single_business" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pulls a single business from MongoDB from VAT-parameter or name of business</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -707,8 +730,8 @@ a new buisness is created it will always get pulled with this function.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.mongofunctions.search_businesses">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">search_businesses</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.search_businesses" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.mongofunctions.search_businesses">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">search_businesses</code><span class="sig-paren">(</span><em class="sig-param">searchable</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.search_businesses" title="Permalink to this definition">¶</a></dt>
 <dd><p>This functions runs a $search query on mongodb, through a $text-index, and returns a list of dictionaries,
 which are the individual businesses queried by the searchable. The searchable is checked whether it is supposed
 to be a VAT (if it’s a string, only digits and lenght is 8), and is then handled as and converted to int, querying
@@ -731,8 +754,8 @@ by either front-end (Flask or CLI). Otherwise the result is pakced into a list a
 </dd></dl>
 
 <dl class="function">
-<dt id="db_helper.mongofunctions.vat_to_coords">
-<code class="sig-prename descclassname">db_helper.mongofunctions.</code><code class="sig-name descname">vat_to_coords</code><span class="sig-paren">(</span><em class="sig-param">list_of_vat</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helper.mongofunctions.vat_to_coords" title="Permalink to this definition">¶</a></dt>
+<dt id="db_helpers.mongofunctions.vat_to_coords">
+<code class="sig-prename descclassname">db_helpers.mongofunctions.</code><code class="sig-name descname">vat_to_coords</code><span class="sig-paren">(</span><em class="sig-param">list_of_vat</em><span class="sig-paren">)</span><a class="headerlink" href="#db_helpers.mongofunctions.vat_to_coords" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function takes a list of VAT numbers and pulls the coordinates from the mongoDB and returns them as a list</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -817,7 +840,7 @@ If an error occurs during insertion of the user, the function will faise a Value
 
 <dl class="data">
 <dt id="user_helpers.users.db">
-<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">db</code><em class="property"> = Collection(Database(MongoClient(host=['cvrdataapi-shard-00-00-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-01-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-02-7bhwg.gcp.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, retrywrites=True, w='majority', authsource='admin', replicaset='CVRDATAAPI-shard-0', ssl=True), 'travellingcvr'), 'users')</em><a class="headerlink" href="#user_helpers.users.db" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">db</code><em class="property"> = Collection(Database(MongoClient(host=['cvrdataapi-shard-00-02-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-00-7bhwg.gcp.mongodb.net:27017', 'cvrdataapi-shard-00-01-7bhwg.gcp.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, retrywrites=True, w='majority', authsource='admin', replicaset='CVRDATAAPI-shard-0', ssl=True), 'travellingcvr'), 'users')</em><a class="headerlink" href="#user_helpers.users.db" title="Permalink to this definition">¶</a></dt>
 <dd><p>MongoDB initial setup</p>
 </dd></dl>
 
@@ -838,33 +861,6 @@ the user will be deleted, otherwise a ValueError is raised.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="data">
-<dt id="user_helpers.users.logged_in_user">
-<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">logged_in_user</code><em class="property"> = None</em><a class="headerlink" href="#user_helpers.users.logged_in_user" title="Permalink to this definition">¶</a></dt>
-<dd><p>A runtime-specific dict of user-details, which is populated at login, only eligible for CLI-version</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="user_helpers.users.login">
-<code class="sig-prename descclassname">user_helpers.users.</code><code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param">username</em>, <em class="sig-param">password</em><span class="sig-paren">)</span><a class="headerlink" href="#user_helpers.users.login" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function allows a user to login, if the username exists, and the password matches the hashed password located
-in MongoDB, only eligible for CLI-version.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>username</strong> (<em>str</em>) – the username which the user tries to log in with</p></li>
-<li><p><strong>password</strong> (<em>str</em>) – the password which the user tries to log in with</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the logged in user</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -963,7 +959,7 @@ from the front end app.</p>
       &copy;2019, Mads & Martin.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

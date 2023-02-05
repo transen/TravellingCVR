@@ -22,8 +22,6 @@ Indices and tables
 .. automodule:: api_helpers.cvrapi
    :members:
 
-==================
-
 .. automodule:: api_helpers.mapquestapi
    :members:
 
@@ -37,10 +35,10 @@ Indices and tables
 
 ==================
 
-.. automodule:: db_helper.logging
+.. automodule:: db_helpers.logging
    :members:
 
-.. automodule:: db_helper.mongofunctions
+.. automodule:: db_helpers.mongofunctions
    :members:
 
 ==================

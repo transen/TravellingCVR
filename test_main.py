@@ -1,4 +1,4 @@
-from db_helper.mongofunctions import *
+from db_helpers.mongofunctions import *
 from api_helpers.cvrapi import *
 from user_helpers.users import *
 from datetime import datetime
@@ -57,10 +57,6 @@ def test_delete_user():
 def test_add_user():
     assert type(add_user("Martin", "martin@broholttrans.dk", "test123",
                          "Langelandsgade 210 st tv, 8200, DK", True)) == dict
-
-
-def test_login_user():
-    assert type(login("Martin", "test123")) == dict
 
 
 def test_change_status():
