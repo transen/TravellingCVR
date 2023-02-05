@@ -16,5 +16,4 @@ mongo_user = '***REMOVED***'
 mongo_passw = '***REMOVED***'
 
 #: The client-string to access the external MongoDB
-mongoclientstring = 'mongodb+srv://***REMOVED***:***REMOVED***@cvrdataapi-7bhwg.gcp.mongodb.net/travellingcvr' \
-***REMOVED***'
+mongoclientstring = '***REMOVED***'
