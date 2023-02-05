@@ -10,7 +10,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -130,3 +129,7 @@ dmypy.json
 .vscode/settings.json
 !/config.py
 
+/newvenv/
+
+#Launch.json for Visual Studio Code
+.vscode

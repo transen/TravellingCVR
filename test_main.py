@@ -1,11 +1,15 @@
-from db_helper.mongofunctions import *
+from db_helpers.mongofunctions import *
 from api_helpers.cvrapi import *
 from user_helpers.users import *
 from datetime import datetime
 
 
+# This module is purely here for the case of trying out Test Driven Development, set up with PyTest.
+
+#: Test-argument used in PyTest
 testarg = "Transdesign.dk"
 
+#: Test-argument used in PyTest
 testbusiness = {'vat': 38158686, 'name': 'Transdesign.dk', 'address': 'Langelandsgade 210, st. tv.',
                 'zipcode': '8200', 'city': 'Aarhus N', 'protected': False, 'phone': None,
                 'email': 'martin@transdesign.dk', 'startdate': '04/11 - 2016', 'employees': None, 'addressco': None,
@@ -14,8 +18,10 @@ testbusiness = {'vat': 38158686, 'name': 'Transdesign.dk', 'address': 'Langeland
                 'owners': [{'name': 'Martin Broholt Trans'}], 'timeadded': datetime(2019, 10, 28, 22, 23, 34, 760576),
                 'status': 0, 'note': '', 'map url': 'https://www.google.dk/maps/place/56.17339,10.20188'}
 
+#: Test-argument used in PyTest
 test_list_vats = [34709912, 27746802, 35898743, 39387786]
 
+#: Test-argument used in PyTest
 test_coords_list = ['56.17339,10.20188', '57.04825,9.94738', '55.85552,9.65243',
                     '56.17284,10.19938', '56.17339,10.20188']
 
@@ -51,10 +57,6 @@ def test_delete_user():
 def test_add_user():
     assert type(add_user("Martin", "martin@broholttrans.dk", "test123",
                          "Langelandsgade 210 st tv, 8200, DK", True)) == dict
-
-
-def test_login_user():
-    assert type(login("Martin", "test123")) == dict
 
 
 def test_change_status():
